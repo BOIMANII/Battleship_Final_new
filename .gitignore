@@ -1,0 +1,30 @@
+# Eclipse metadata
+.project
+.classpath
+.settings/
+
+# Eclipse build output
+bin/
+tmp/
+
+# Java build output
+target/
+out/
+build/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE-specific (optional but recommended)
+.idea/
+*.iml
+.vscode/
+
+# Maven/Gradle caches (if used)
+.mvn/
+.gradle/
+/bin/
