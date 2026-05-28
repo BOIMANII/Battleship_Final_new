@@ -28,3 +28,6 @@ Thumbs.db
 .mvn/
 .gradle/
 /bin/
+.settings/
+.classpath
+.project
