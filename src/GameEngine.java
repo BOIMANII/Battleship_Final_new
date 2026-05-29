@@ -24,13 +24,14 @@ public class GameEngine implements ActionListener{
 	private JLabel background;
 	private ImageIcon backgroundI;
 	private ImageIcon titleI;
-	private JPanel southPanel;
+	private JPanel westPanel;
 	private JPanel northPanel;
 	private JLabel title;
 	private JButton playAgain;
 	private JButton loadButton;
 	private JButton infoButton;
 	private Dimension buttonSize;
+	private JPanel displaceTitle;
 	
 	private String name;
 	private Boolean difficultyNormal;
@@ -46,19 +47,19 @@ public class GameEngine implements ActionListener{
 	
 	public GameEngine() {
 		frame = new JFrame("Star Wars Battleship");
-		launchEasyButton = new JButton("Start New Normal Match");
-		launchHardButton = new JButton("Start New Hard Match");
+		launchEasyButton = new JButton("New Normal");
+		launchHardButton = new JButton("New Hard");
 		nameField = new JTextField("Enter Name");
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
-		loadButton = new JButton("Load Previous Match");
+		loadButton = new JButton("Load Previous");
 		infoButton = new JButton("?");
 		buttonSize = new Dimension(180,50);
-
 		background = new JLabel(backgroundI);
-		southPanel = new JPanel();
+		westPanel = new JPanel();
 		northPanel = new JPanel();
 		title = new JLabel(titleI);
+		displaceTitle = new JPanel();
 
 		
 		background.setBounds(0,0,frameX, frameY);
@@ -78,8 +79,9 @@ public class GameEngine implements ActionListener{
 		nameField.setHorizontalAlignment(JTextField.CENTER);
 		nameField.setPreferredSize(buttonSize);
 		
-		southPanel.setPreferredSize(new Dimension(960,100));
-		southPanel.setOpaque(false);
+		westPanel.setPreferredSize(new Dimension(300,540));
+		westPanel.setOpaque(false);
+		westPanel.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 		
 		northPanel.setPreferredSize(new Dimension(960,200));
 		northPanel.setOpaque(false);
@@ -96,19 +98,23 @@ public class GameEngine implements ActionListener{
 		infoButton.setForeground(Color.yellow);
 		infoButton.setFocusable(false);
 		
+		displaceTitle.setPreferredSize(new Dimension(370,50));
+		displaceTitle.setOpaque(false);
+		
 		frame.add(background);
 		background.setLayout(new BorderLayout());
 		frame.setSize(frameX,frameY);
 		
-		background.add(southPanel, BorderLayout.SOUTH);
+		background.add(westPanel, BorderLayout.WEST);
 		background.add(northPanel, BorderLayout.NORTH);
 		
-		//southPanel.add(infoButton);
-		southPanel.add(nameField);
-		southPanel.add(launchEasyButton);
-		southPanel.add(launchHardButton);
-		southPanel.add(loadButton);
+		westPanel.add(nameField);
+		westPanel.add(launchEasyButton);
+		westPanel.add(launchHardButton);
+		westPanel.add(loadButton);
+		westPanel.add(infoButton);
 		northPanel.add(title);
+		northPanel.add(displaceTitle);
 		
 		frame.setResizable(false);
 		frame.setVisible(true);
