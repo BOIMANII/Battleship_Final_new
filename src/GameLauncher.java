@@ -14,9 +14,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class GameEngine implements ActionListener{
+public class GameLauncher implements ActionListener{
 
-	//private Board board;
+	private Board board;
 	private JFrame frame;
 	private JButton launchEasyButton;
 	private JButton launchHardButton;
@@ -41,11 +41,11 @@ public class GameEngine implements ActionListener{
 	private int frameY = 540;
 	
 	public static void main(String[] args) {
-		GameEngine engine = new GameEngine();
+		GameLauncher engine = new GameLauncher();
 		launch();
 	}
 	
-	public GameEngine() {
+	public GameLauncher() {
 		frame = new JFrame("Star Wars Battleship");
 		launchEasyButton = new JButton("New Normal");
 		launchHardButton = new JButton("New Hard");
