@@ -29,7 +29,10 @@ public class ComplexAI {
 					else guess[1] = origin[1] + 1;
 				}
 				else if (dir == 2) {
-					
+					if (guess[0] == 9) {
+						dir++;
+					}
+					else guess[1] = origin[1] + 1;
 				}
 			}
 			else {
