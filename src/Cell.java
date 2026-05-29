@@ -7,14 +7,15 @@ public class Cell {
 	private boolean computerGuessed;
 	private static int indexX;
 	private static int indexY;
+	
 	public Cell(int indexX, int indexY) {
 		this.indexX = indexX;
 		this.indexY = indexY;
-		this.playerGuessed = playerGuessed;
-		this.computerGuessed = computerGuessed;
-		this.playerShipPresent = playerShipPresent;
-		this.computerShipPresent = computerShipPresent;
 	}
+	
+	public int getX() {return indexX;}
+	public int getY() {return indexY;}
+	
 	public boolean isPlayerShipPresent() {
 		return playerShipPresent;
 	}
