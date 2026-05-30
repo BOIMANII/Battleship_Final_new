@@ -153,7 +153,7 @@ public class GameLauncher implements ActionListener{
 		}
 		if(e.getSource() == infoButton) {
 			System.out.println("Dumping info");
-			//Pop up window 
+			new InfoFrame();
 		}
 		System.out.println(name);
 	}
