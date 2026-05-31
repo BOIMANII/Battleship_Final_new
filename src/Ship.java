@@ -2,25 +2,54 @@
 import java.util.*;
 
 public class Ship {
-	private static int length;
-	private int hitCount;
+	private int length;
+	private int hitCount = 0;
 	private boolean isSunk;
 	private int[][] shipPosition;
-	public Ship(int[][] pos) {
+	
+	public Ship(int[][] pos, int length) {
 		this.shipPosition = pos;
 		this.length = length;
-		this.hitCount = hitCount;
-		this.isSunk = isSunk;
 	}
-	public boolean evaluateSunk() {
-		return (length == hitCount);
+	
+	public void evaluateSunk() {
+		isSunk = (length == hitCount);
 	}
+	
 	public boolean getSunk() {
 		return isSunk;
 	}
-	public void setShipPositions() {
-		this.shipPosition = shipPosition;
+	
+	public int[][] getPositions() {
+		return shipPosition;
 	}
 	
+	public int getHitCount() {
+		return hitCount;
+	}
+	
+	public void setSunk(boolean sunk) {
+		isSunk = sunk;
+	}
+	
+	public void setHitCount(int hits) {
+		hitCount = hits;
+	}
+	
+	public String getName()  {
+		if (length == 2) {
+			return "Interceptor";
+		} else if (length == 3) {
+			return "Arquintis";
+		} else if (length == 4) {
+			return "Acclimator";
+		} else {
+			return "Venator";
+		}
+	}
+	
+	public void incrementHitCount() {
+		hitCount++;
+	}
 
 }
