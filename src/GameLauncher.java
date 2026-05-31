@@ -15,30 +15,36 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class GameLauncher implements ActionListener{
-
-	private Board board;
-	private JFrame frame;
-	private JButton launchEasyButton;
-	private JButton launchHardButton;
-	private JTextField nameField;
-	private JLabel background;
-	private ImageIcon backgroundI;
-	private ImageIcon titleI;
-	private JPanel westPanel;
-	private JPanel northPanel;
-	private JLabel title;
-	private JButton playAgain;
-	private JButton loadButton;
-	private JButton infoButton;
-	private Dimension buttonSize;
-	private JPanel displaceTitle;
 	
+	// GUI Components 
+	private JFrame frame;
+    private JPanel westPanel;
+    private JPanel northPanel;
+    private JPanel displaceTitle;
+    
+    private JLabel background;
+    private JLabel title;
+    private ImageIcon backgroundI;
+    private ImageIcon titleI;
+    
+    private JTextField nameField;
+    private JButton launchEasyButton;
+    private JButton launchHardButton;
+    private JButton loadButton;
+    private JButton infoButton;
+    private JButton playAgain;//Unused for now
+    
+    private int frameX = 960;
+	private int frameY = 540;
+	private Dimension buttonSize = new Dimension(180, 50);
+	
+    // Variables 
+    private Board board;
 	private String name;
 	private Boolean difficultyNormal;
 	
 
-	private int frameX = 960;
-	private int frameY = 540;
+	
 	
 	public static void main(String[] args) {
 		GameLauncher engine = new GameLauncher();
@@ -59,22 +65,25 @@ public class GameLauncher implements ActionListener{
 		westPanel = new JPanel();
 		northPanel = new JPanel();
 		title = new JLabel(titleI);
-		displaceTitle = new JPanel();
+		displaceTitle = new JPanel();//To offset the title and to potentialy hold other buttons 
 
+		frame.setSize(frameX,frameY);
 		
 		background.setBounds(0,0,frameX, frameY);
+		background.setLayout(new BorderLayout());
+
 		
 		launchEasyButton.addActionListener(this);
-		launchHardButton.addActionListener(this);
 		launchEasyButton.setPreferredSize(buttonSize);
-		launchHardButton.setPreferredSize(buttonSize);
 		launchEasyButton.setBackground(Color.black);
 		launchEasyButton.setForeground(Color.yellow);
+		launchEasyButton.setFocusable(false);
+		
+		launchHardButton.addActionListener(this);
+		launchHardButton.setPreferredSize(buttonSize);
 		launchHardButton.setBackground(Color.black);
 		launchHardButton.setForeground(Color.yellow);
-		launchEasyButton.setFocusable(false);
 		launchHardButton.setFocusable(false);
-		
 		
 		nameField.setHorizontalAlignment(JTextField.CENTER);
 		nameField.setPreferredSize(buttonSize);
@@ -102,12 +111,8 @@ public class GameLauncher implements ActionListener{
 		displaceTitle.setOpaque(false);
 		
 		frame.add(background);
-		background.setLayout(new BorderLayout());
-		frame.setSize(frameX,frameY);
-		
 		background.add(westPanel, BorderLayout.WEST);
 		background.add(northPanel, BorderLayout.NORTH);
-		
 		westPanel.add(nameField);
 		westPanel.add(launchEasyButton);
 		westPanel.add(launchHardButton);
@@ -122,12 +127,14 @@ public class GameLauncher implements ActionListener{
 	}
 	
 	public static void launch() {
+		//Temperary will probably get rid of 
 		System.out.println("Launch Test");
 		
 		
 	}
 	
 	public void isEnd() {
+		//To display a pop up screen for the winner. Not sure if it will happen in Board or GameLauncher
 		System.out.println("End test");
 
 	}
@@ -139,16 +146,17 @@ public class GameLauncher implements ActionListener{
 			difficultyNormal = false;
 			name = nameField.getText();
 			frame.dispose();
-			launch();
+			launch();//Dont forget to remove if launch is removed
 		}
 		if(e.getSource() == launchEasyButton) {
 			System.out.println("Launch Normal");
 			difficultyNormal = true;
 			name = nameField.getText();
 			frame.dispose();
-			launch();
+			launch();//Dont forget to remove if launch is removed
 		}
 		if(e.getSource() == loadButton) {
+			//Save file stuff
 			System.out.println("Gonna load something");
 		}
 		if(e.getSource() == infoButton) {

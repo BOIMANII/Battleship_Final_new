@@ -17,7 +17,6 @@ public class InfoFrame extends JFrame{
 		
 		
 		this.add(background);
-		this.setDefaultCloseOperation(3);
 		this.setVisible(true);
 	}
 }
