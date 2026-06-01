@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
 import javax.swing.*;
 
@@ -47,6 +48,7 @@ public class GameLauncher implements ActionListener{
 	
 	
 	public static void main(String[] args) {
+		
 		GameLauncher engine = new GameLauncher();
 		launch();
 	}
@@ -146,7 +148,12 @@ public class GameLauncher implements ActionListener{
 			difficultyNormal = false;
 			name = nameField.getText();
 			frame.dispose();
-			launch();//Dont forget to remove if launch is removed
+			try {
+				board = new Board(name, true, false);
+			} catch (FileNotFoundException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		if(e.getSource() == launchEasyButton) {
 			System.out.println("Launch Normal");

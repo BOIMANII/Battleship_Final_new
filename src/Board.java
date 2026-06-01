@@ -16,12 +16,7 @@ import java.util.Scanner;
 public class Board extends JFrame implements ActionListener{
 
 	Cell[][] grid = new Cell[10][10];
-	JFrame frame;
-	JButton[][] playerCellButtons;
-	JButton[][] computerCells;
-	JButton saveButton;
-	JButton loadButton;
-	JCheckBox toggleHorizontal; // Checking this box means horizontal is used
+	
 	boolean useHorizontal = false;
 	boolean useComplex;
 	boolean computerFirst;
@@ -29,6 +24,18 @@ public class Board extends JFrame implements ActionListener{
 	HumanPlayer humanPlayer = new HumanPlayer();
 	ComputerPlayer computerPlayer = new ComputerPlayer();
 	int guesses = 0;
+	
+	
+	//Gui components 
+	JFrame frame;
+	JButton[][] playerCellButtons;
+	JButton[][] computerCells;
+	JButton saveButton;
+	JButton loadButton;
+	JCheckBox toggleHorizontal; // Checking this box means horizontal is used
+	JLabel background;
+	ImageIcon backgroundImage;
+	
 	
 	/**
 	 * Constructor for board
@@ -62,6 +69,15 @@ public class Board extends JFrame implements ActionListener{
 		 * Place in [y][x] format (just a suggestion, I have no idea how you are doing it)
 		 * All other times we use [x][y] format (placing [y][x] will format so that x is actually horizontal, etc)
 		 */
+		backgroundImage = new ImageIcon("backgroundBoard.jpg");
+		background = new JLabel(backgroundImage);
+		
+		
+		this.add(background);
+		this.setSize(2000,1000);
+		this.setDefaultCloseOperation(3);
+		this.setVisible(true);
+		
 		if (isLoad == false) {
 			humanPlayer.setName(playerName);
 			this.useComplex = useComplex;
