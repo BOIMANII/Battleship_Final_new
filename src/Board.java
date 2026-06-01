@@ -35,7 +35,7 @@ public class Board extends JFrame implements ActionListener{
 	JFrame frame;
 	JButton[][] playerCellButtons;
 	JButton[][] computerCells;
-	JPanel[] shipPlaceImage;
+	JLabel[] shipPlaceImage;
 	JButton saveButton;
 	JButton loadButton;
 	JCheckBox toggleHorizontal; // Checking this box means horizontal is used
@@ -45,6 +45,14 @@ public class Board extends JFrame implements ActionListener{
 	JPanel eastPanel;
 	JPanel westGrid;
 	JPanel eastGrid;
+	JPanel eastEastGrid;//East of the east grid
+	JPanel westEastGrid;// west of the east grid
+	
+	ImageIcon iconVenator; // Cruiser 5 length
+	ImageIcon iconAcclamator; // Battleship 4 Length
+	ImageIcon iconArquitens; // Destoryer 3 Length
+	ImageIcon iconInterceptor; // Patrol 2 length
+	
 	
 	
 	
@@ -81,18 +89,31 @@ public class Board extends JFrame implements ActionListener{
 		 * All other times we use [x][y] format (placing [y][x] will format so that x is actually horizontal, etc)
 		 */
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
+		
 		background = new JLabel(backgroundImage);
 		westPanel = new JPanel();
 		eastPanel = new JPanel();
 		westGrid = new JPanel();
 		eastGrid = new JPanel();
 		playerCellButtons = new JButton[10][10];
-		shipPlaceImage = new JPanel[4];
+		shipPlaceImage = new JLabel[4];
 		computerCells = new JButton[10][10];
+		westEastGrid = new JPanel();
+		eastEastGrid = new JPanel();
 		
-		for (int y = 0; y < 4; y++) {
-		    	shipPlaceImage[y] = new JPanel();
-		}
+		iconVenator     = scaleImage("iconVenator.png", 250, 100);
+		iconAcclamator  = scaleImage("iconAcclamator.png", 250, 100);
+		iconArquitens   = scaleImage("iconArquitens.png", 250, 100);
+		iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
+		
+		
+		shipPlaceImage[0] = new JLabel(iconVenator);
+		shipPlaceImage[1] = new JLabel(iconAcclamator);
+		shipPlaceImage[2] = new JLabel(iconArquitens);
+		shipPlaceImage[3] = new JLabel(iconInterceptor);
+		
+
+		
 		for (int y = 0; y < 10; y++) {
 		    for (int x = 0; x < 10; x++) {
 		    	
@@ -265,7 +286,7 @@ public class Board extends JFrame implements ActionListener{
 		
 		eastGrid.setPreferredSize(new Dimension(800,800));
 		eastGrid.setOpaque(false);
-		eastGrid.setLayout(new GridLayout(4,2));
+		eastGrid.setLayout(new GridLayout(1,2));
 		eastGrid.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
 		
 		westPanel.setPreferredSize(new Dimension(1000,1000));
@@ -276,6 +297,13 @@ public class Board extends JFrame implements ActionListener{
 		eastPanel.setOpaque(false);
 		eastPanel.setLayout(new BorderLayout());
 				
+		westEastGrid.setOpaque(false);
+		westEastGrid.setLayout(new GridLayout(4,1, 2, 2));
+		
+		
+		eastEastGrid.setOpaque(false);
+		eastEastGrid.setLayout(new GridLayout(4,1));
+		
 		this.setSize(2000,1000);
 		this.setDefaultCloseOperation(3);
 		this.setResizable(false);
@@ -286,9 +314,14 @@ public class Board extends JFrame implements ActionListener{
 		background.add(eastPanel, BorderLayout.EAST);
 		westPanel.add(westGrid, BorderLayout.CENTER);
 		eastPanel.add(eastGrid);
+		eastGrid.add(westEastGrid);
+		eastGrid.add(eastEastGrid);
+		
 		
 		for (int y = 0; y < 4; y++) {
-		    	eastGrid.add(shipPlaceImage[y]);
+		    	westEastGrid.add(shipPlaceImage[y]);
+		    	shipPlaceImage[y].setBackground(Color.black);
+		    	shipPlaceImage[y].setOpaque(true);
 		}
 		
 		for (int i = 0; i < 10; i++) {
@@ -849,6 +882,14 @@ public class Board extends JFrame implements ActionListener{
 		}
 		this.revalidate();
 		this.repaint();
+	}
+	
+	//Ai made method to scale images
+	public ImageIcon scaleImage(String filePath, int width, int height) {
+	    ImageIcon originalIcon = new ImageIcon(filePath);
+	    // Scale the image smoothly using Java's built-in image scaling algorithm
+	    java.awt.Image scaledImage = originalIcon.getImage().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+	    return new ImageIcon(scaledImage);
 	}
 
 }
