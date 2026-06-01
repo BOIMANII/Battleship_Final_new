@@ -1,5 +1,6 @@
 /**
  * @author Max
+ * @author Anthony
  * @date 2026-05-27
  * Description: The main class for which most board and game logic is located
  */
@@ -64,7 +65,7 @@ public class Board extends JFrame implements ActionListener{
 	 * @param useComplex
 	 * @throws FileNotFoundException 
 	 */
-	public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
+	public Board(String playerName, boolean useComplex, boolean isLoad) {
 		/*
 		 * GUI note:
 		 * 
@@ -136,83 +137,98 @@ public class Board extends JFrame implements ActionListener{
 			 */
 			updateGrids();
 		} else {
-			// TODO Read all info from files
-			File humanPlayerFile = new File(playerName + "HumanPlayer.txt");
-			Scanner humanScanner = new Scanner(humanPlayerFile);
-			
-			// Set the player name
-			humanPlayer.setName(playerName);
-			
-			// Set up ships
-			for (int i = 0; i < 5; i++) {
-				String positions = "";
-				positions = humanScanner.nextLine();
-				String[] coordinates = positions.split(" - ");
+			try {
+				// TODO Read all info from files
+				File humanPlayerFile = new File(playerName + "HumanPlayer.txt");
+				Scanner humanScanner = new Scanner(humanPlayerFile);
 				
-				// Take the String[] of a ship's positions and create an int[][] based on the String
-				int length = coordinates.length - 1;
-				int[][] shipPositions = toCoords(coordinates);
+				// Set the player name
+				humanPlayer.setName(playerName);
 				
-				// Initialize ship, read hit count and evaluate if the ship is sunk
-				Ship ship = new Ship(shipPositions, length);
-				ship.setHitCount(Integer.parseInt(humanScanner.nextLine()));
-				ship.evaluateSunk();
-				
-				// Add ship to Player's ships
-				humanPlayer.getShips().add(ship);
-			}
-			
-			File computerPlayerFile = new File(playerName + "ComputerPlayer.txt");
-			Scanner computerScanner = new Scanner(computerPlayerFile);
-			
-			// Computer name is already set at initialization
-			
-			// Set up ships
-			for (int i = 0; i < 5; i++) {
-				String positions = "";
-				positions = computerScanner.nextLine();
-				String[] coordinates = positions.split(" - ");
-
-				// Take the String[] of a ship's positions and create an int[][] based on the String
-				int length = coordinates.length - 1;
-				int[][] shipPositions = toCoords(coordinates);
-
-				// Initialize ship, read hit count and evaluate if the ship is sunk
-				Ship ship = new Ship(shipPositions, length);
-				ship.setHitCount(Integer.parseInt(computerScanner.nextLine()));
-				ship.evaluateSunk();
-
-				// Add ship to Computer's ships
-				computerPlayer.getShips().add(ship);
-			}
-			
-			File boardFile = new File(playerName + "BoardGrid.txt");
-			Scanner boardScanner = new Scanner(boardFile);
-			
-			guesses = Integer.parseInt(boardScanner.nextLine());
-			useComplex = Boolean.parseBoolean(boardScanner.nextLine());
-			
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
-					grid[i][j] = new Cell(i, j);
+				// Set up ships
+				for (int i = 0; i < 5; i++) {
+					String positions = "";
+					positions = humanScanner.nextLine();
+					String[] coordinates = positions.split(" - ");
 					
-					String storageRow = boardScanner.nextLine();
-					String[] conditions = storageRow.split(",");
+					// Take the String[] of a ship's positions and create an int[][] based on the String
+					int length = coordinates.length - 1;
+					int[][] shipPositions = toCoords(coordinates);
 					
-					grid[i][j].setPlayerShipPresent(Boolean.parseBoolean(conditions[0]));
-					grid[i][j].setComputerShipPresent(Boolean.parseBoolean(conditions[1]));
-					grid[i][j].setPlayerGuessed(Boolean.parseBoolean(conditions[2]));
-					grid[i][j].setComputerGuessed(Boolean.parseBoolean(conditions[3]));
+					// Initialize ship, read hit count and evaluate if the ship is sunk
+					Ship ship = new Ship(shipPositions, length);
+					ship.setHitCount(Integer.parseInt(humanScanner.nextLine()));
+					ship.evaluateSunk();
+					
+					// Add ship to Player's ships
+					humanPlayer.getShips().add(ship);
 				}
+				
+				File computerPlayerFile = new File(playerName + "ComputerPlayer.txt");
+				Scanner computerScanner = new Scanner(computerPlayerFile);
+				
+				// Computer name is already set at initialization
+				
+				// Set up ships
+				for (int i = 0; i < 5; i++) {
+					String positions = "";
+					positions = computerScanner.nextLine();
+					String[] coordinates = positions.split(" - ");
+
+					// Take the String[] of a ship's positions and create an int[][] based on the String
+					int length = coordinates.length - 1;
+					int[][] shipPositions = toCoords(coordinates);
+
+					// Initialize ship, read hit count and evaluate if the ship is sunk
+					Ship ship = new Ship(shipPositions, length);
+					ship.setHitCount(Integer.parseInt(computerScanner.nextLine()));
+					ship.evaluateSunk();
+
+					// Add ship to Computer's ships
+					computerPlayer.getShips().add(ship);
+				}
+				
+				File boardFile = new File(playerName + "BoardGrid.txt");
+				Scanner boardScanner = new Scanner(boardFile);
+				
+				guesses = Integer.parseInt(boardScanner.nextLine());
+				useComplex = Boolean.parseBoolean(boardScanner.nextLine());
+				
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++) {
+						grid[i][j] = new Cell(i, j);
+						
+						String storageRow = boardScanner.nextLine();
+						String[] conditions = storageRow.split(",");
+						
+						grid[i][j].setPlayerShipPresent(Boolean.parseBoolean(conditions[0]));
+						grid[i][j].setComputerShipPresent(Boolean.parseBoolean(conditions[1]));
+						grid[i][j].setPlayerGuessed(Boolean.parseBoolean(conditions[2]));
+						grid[i][j].setComputerGuessed(Boolean.parseBoolean(conditions[3]));
+					}
+				}
+				
+				// Close scanners
+				humanScanner.close();
+				computerScanner.close();
+				boardScanner.close();
+				
+				// Update grids to reflect changes
+				updateGrids();
+			// If unable to load, closes window and opens new one from game start (ship placement)
+			} catch (Exception e) {
+				/*
+				 * GUI Note:
+				 * 
+				 * Popup:
+				 * 
+				 * Unable to load for whatever reason
+				 * 
+				 */
+				@SuppressWarnings("unused")
+				Board newBoard = new Board(playerName, useComplex, false);
+				frame.dispose();
 			}
-			
-			// Close scanners
-			humanScanner.close();
-			computerScanner.close();
-			boardScanner.close();
-			
-			// Update grids to reflect changes
-			updateGrids();
 			// TODO
 		}
 		/*
