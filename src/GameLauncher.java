@@ -130,7 +130,6 @@ public class GameLauncher implements ActionListener{
 	
 	public static void launch() {
 		//Temperary will probably get rid of 
-		System.out.println("Launch Test");
 		
 		
 	}
