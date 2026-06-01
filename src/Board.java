@@ -85,12 +85,16 @@ public class Board extends JFrame implements ActionListener{
 		westGrid = new JPanel();
 		eastGrid = new JPanel();
 		playerCellButtons = new JButton[10][10];
+		computerCells = new JButton[10][10];
 		
 		for (int i = 0; i < 10; i++) {
 		    for (int j = 0; j < 10; j++) {
 		        playerCellButtons[i][j] = new JButton();
 		        playerCellButtons[i][j].addActionListener(this);
 		        playerCellButtons[i][j].setPreferredSize(new Dimension(80, 80));
+		        
+		        playerCellButtons[i][j].putClientProperty("row", i);// AI couldent figure it out
+		        playerCellButtons[i][j].putClientProperty("col", j);
 		        
 		    }
 		}
@@ -126,7 +130,7 @@ public class Board extends JFrame implements ActionListener{
 				//wait();
 			//}
 			// Set AI ships
-			setShips();
+			//setShips();
 			
 			/*
 			 * GUI note:
@@ -447,10 +451,11 @@ public class Board extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Check if the button clicked is one of the player's
-		if (e.getSource() instanceof JButton) {
+		if (e.getSource() instanceof JButton) {//AI couldent figure it out
 		    JButton clickedButton = (JButton) e.getSource();
-		    
+
 		    if (clickedButton.getClientProperty("row") != null) {
+
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
 		        
