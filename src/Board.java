@@ -4,6 +4,9 @@
  * Description: The main class for which most board and game logic is located
  */
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -35,6 +38,7 @@ public class Board extends JFrame implements ActionListener{
 	JCheckBox toggleHorizontal; // Checking this box means horizontal is used
 	JLabel background;
 	ImageIcon backgroundImage;
+	JPanel westPanel;
 	
 	
 	/**
@@ -71,11 +75,37 @@ public class Board extends JFrame implements ActionListener{
 		 */
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
 		background = new JLabel(backgroundImage);
+		westPanel = new JPanel();
+		playerCellButtons = new JButton[10][10];
 		
+		for (int i = 0; i < 10; i++) {
+		    for (int j = 0; j < 10; j++) {
+		        playerCellButtons[i][j] = new JButton();
+		        playerCellButtons[i][j].addActionListener(this);
+		        playerCellButtons[i][j].setPreferredSize(new Dimension(100, 100));
+		        
+		    }
+		}
 		
-		this.add(background);
+		background.setLayout(new BorderLayout());
+		
+		westPanel.setPreferredSize(new Dimension(1000,1000));
+		westPanel.setOpaque(false);
+		westPanel.setLayout(new GridLayout(10,10));
+				
 		this.setSize(2000,1000);
 		this.setDefaultCloseOperation(3);
+		
+		this.add(background);
+		
+		background.add(westPanel, BorderLayout.WEST);
+		
+		for (int i = 0; i < 10; i++) {
+		    for (int j = 0; j < 10; j++) {
+		        westPanel.add(playerCellButtons[i][j]);
+		    }
+		}
+
 		this.setVisible(true);
 		
 		if (isLoad == false) {
@@ -372,6 +402,10 @@ public class Board extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Check if the button clicked is one of the player's
+		if(e.getSource() == playerCellButtons) {
+			System.out.println("Test");
+			// Not sure where the end bracket goes ask max later
+		}
 		boolean isPlace = false;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
