@@ -1,10 +1,10 @@
 
 
 public class Cell {
-	private boolean playerShipPresent;
-	private boolean computerShipPresent;
-	private boolean playerGuessed;
-	private boolean computerGuessed;
+	private boolean playerShipPresent = false;
+	private boolean computerShipPresent = false;
+	private boolean playerGuessed = false;
+	private boolean computerGuessed = false;
 	private static int indexX;
 	private static int indexY;
 	

@@ -31,16 +31,14 @@ public abstract class Player {
 	 * Evaluates whether or not the player has lost (if all ships are sunk) and
 	 * automatically sets hasLost
 	 */
-//	public void evaluateHasLost() {
-//		boolean lost = true;
-//		for (Ship ship : ships) {
-//			if (ship.isSunk == false) {
-//				lost = false;
-//			}
-//		}
-//		if (hasLost != lost) {
-//			hasLost = lost;
-//		}
-//	}
+	public void evaluateHasLost() {
+		boolean lost = true;
+		for (Ship ship : ships) {
+			if (ship.getSunk() == false) {
+				lost = false;
+			}
+		}
+		hasLost = lost;
+	}
 
 }
