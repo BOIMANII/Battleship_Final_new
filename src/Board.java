@@ -5,6 +5,7 @@
  */
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,9 @@ public class Board extends JFrame implements ActionListener{
 	JLabel background;
 	ImageIcon backgroundImage;
 	JPanel westPanel;
+	JPanel eastPanel;
+	JPanel westGrid;
+	JPanel eastGrid;
 	
 	
 	/**
@@ -76,37 +80,27 @@ public class Board extends JFrame implements ActionListener{
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
 		background = new JLabel(backgroundImage);
 		westPanel = new JPanel();
+		eastPanel = new JPanel();
+		westGrid = new JPanel();
+		eastGrid = new JPanel();
 		playerCellButtons = new JButton[10][10];
 		
 		for (int i = 0; i < 10; i++) {
 		    for (int j = 0; j < 10; j++) {
 		        playerCellButtons[i][j] = new JButton();
 		        playerCellButtons[i][j].addActionListener(this);
-		        playerCellButtons[i][j].setPreferredSize(new Dimension(100, 100));
+		        playerCellButtons[i][j].setPreferredSize(new Dimension(80, 80));
 		        
 		    }
 		}
-		
-		background.setLayout(new BorderLayout());
-		
-		westPanel.setPreferredSize(new Dimension(1000,1000));
-		westPanel.setOpaque(false);
-		westPanel.setLayout(new GridLayout(10,10));
-				
-		this.setSize(2000,1000);
-		this.setDefaultCloseOperation(3);
-		
-		this.add(background);
-		
-		background.add(westPanel, BorderLayout.WEST);
-		
-		for (int i = 0; i < 10; i++) {
-		    for (int j = 0; j < 10; j++) {
-		        westPanel.add(playerCellButtons[i][j]);
-		    }
-		}
+		//playerCellButtons[y][x].setBackground(Color.green);
+		playerCellButtons[0][0].setBackground(Color.green); //Test 1
+		playerCellButtons[1][0].setBackground(Color.red); //Test 2
+		playerCellButtons[0][1].setBackground(Color.black); //Test 3
 
-		this.setVisible(true);
+		
+		
+
 		
 		if (isLoad == false) {
 			humanPlayer.setName(playerName);
@@ -127,9 +121,9 @@ public class Board extends JFrame implements ActionListener{
 			 * Whether or not it is checked effects the boolean value of useHorizontal
 			 */
 			// This should pause program running until player has placed all ships
-			while (!(shipsPlaced == 5)) {
-				wait();
-			}
+			//while (!(shipsPlaced == 5)) {
+				//wait();
+			//}
 			// Set AI ships
 			setShips();
 			
@@ -235,8 +229,43 @@ public class Board extends JFrame implements ActionListener{
 		 * 
 		 * 
 		 */
-		updateGrids();
+		background.setLayout(new BorderLayout());
 		
+		westGrid.setPreferredSize(new Dimension(800,800));
+		westGrid.setOpaque(false);
+		westGrid.setLayout(new GridLayout(10,10));
+		westGrid.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
+		
+		eastGrid.setPreferredSize(new Dimension(800,800));
+		eastGrid.setOpaque(false);
+		eastGrid.setLayout(new GridLayout(2,4));
+		
+		westPanel.setPreferredSize(new Dimension(1000,1000));
+		westPanel.setOpaque(false);
+		westPanel.setLayout(new BorderLayout());
+		
+		eastPanel.setPreferredSize(new Dimension(1000,1000));
+		eastPanel.setOpaque(false);
+		eastPanel.setLayout(new BorderLayout());
+				
+		this.setSize(2000,1000);
+		this.setDefaultCloseOperation(3);
+		
+		this.add(background);
+		
+		background.add(westPanel, BorderLayout.WEST);
+		background.add(eastPanel, BorderLayout.EAST);
+		westPanel.add(westGrid, BorderLayout.CENTER);
+		eastPanel.add(eastGrid);
+		
+		for (int i = 0; i < 10; i++) {
+		    for (int j = 0; j < 10; j++) {
+		        westGrid.add(playerCellButtons[i][j]);
+		    }
+		}
+
+		this.setVisible(true);
+		updateGrids();		
 		// Check to see if the computer "goes first" (50% chance of doing so)
 		Random randgen = new Random();
 		if (randgen.nextInt(0, 2) == 0) {
@@ -402,10 +431,17 @@ public class Board extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Check if the button clicked is one of the player's
-		if(e.getSource() == playerCellButtons) {
-			System.out.println("Test");
-			// Not sure where the end bracket goes ask max later
+		if (e.getSource() instanceof JButton) {
+		    JButton clickedButton = (JButton) e.getSource();
+		    
+		    if (clickedButton.getClientProperty("row") != null) {
+		        int row = (int) clickedButton.getClientProperty("row");
+		        int col = (int) clickedButton.getClientProperty("col");
+		        
+		        System.out.println("Test: Clicked " + row + ", " + col);
+		    }
 		}
+		
 		boolean isPlace = false;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -432,6 +468,22 @@ public class Board extends JFrame implements ActionListener{
 				humanPlayer.getShips().add(new Ship(place, length));
 				// Update grid so placement is seen
 				updateGrids();
+				if (shipsPlaced == 5) {
+		            System.out.println("All player ships placed! Setting up computer board...");
+		            
+		            // 1. Let the AI place its ships
+		            setShips();
+		            
+		            // 2. Clear out placement components / update GUI states
+		            // (e.g., make toggleHorizontal invisible, enable computer grid buttons)
+		            toggleHorizontal.setVisible(false);
+		            
+		            // 3. Refresh grids to show the game layout
+		            updateGrids();
+		            
+		            // 4. (Optional) If computer randoms to go first, run it here:
+		            // if (computerGoesFirst) { computerGuess(); }
+		        }
 			}
 		// If the button pressed is the save button
 		} else if (saveButton == e.getSource()) {
@@ -753,6 +805,19 @@ public class Board extends JFrame implements ActionListener{
 		 * 
 		 * Cell has a bunch of boolean values for this very reason
 		 */
+		for(int y = 0; y < 10; y++) {
+			for(int x = 0; x < 10; x++) {
+				if(grid[x][y].isPlayerShipPresent() == false) {
+					playerCellButtons[y][x].setBackground(Color.green);
+				}
+				if(grid[x][y].isPlayerShipPresent() == true) {
+					playerCellButtons[y][x].setBackground(Color.gray);
+				}
+				
+			}
+		}
+		this.revalidate();
+		this.repaint();
 	}
 
 }
