@@ -34,6 +34,7 @@ public class Board extends JFrame implements ActionListener{
 	JFrame frame;
 	JButton[][] playerCellButtons;
 	JButton[][] computerCells;
+	JButton[][] shipPlaceButtons;
 	JButton saveButton;
 	JButton loadButton;
 	JCheckBox toggleHorizontal; // Checking this box means horizontal is used
@@ -84,16 +85,23 @@ public class Board extends JFrame implements ActionListener{
 		westGrid = new JPanel();
 		eastGrid = new JPanel();
 		playerCellButtons = new JButton[10][10];
+		shipPlaceButtons = new JButton[2][4];
 		computerCells = new JButton[10][10];
 		
-		for (int i = 0; i < 10; i++) {
-		    for (int j = 0; j < 10; j++) {
-		        playerCellButtons[i][j] = new JButton();
-		        playerCellButtons[i][j].addActionListener(this);
-		        playerCellButtons[i][j].setPreferredSize(new Dimension(80, 80));
+		for (int y = 0; y < 4; y++) {
+		    for (int x = 0; x < 2; x++) {
+		    	shipPlaceButtons[x][y] = new JButton();
+		    }
+		}
+		for (int y = 0; y < 10; y++) {
+		    for (int x = 0; x < 10; x++) {
+		    	
+		        playerCellButtons[y][x] = new JButton();
+		        playerCellButtons[y][x].addActionListener(this);
+		        playerCellButtons[y][x].setPreferredSize(new Dimension(80, 80));
 		        
-		        playerCellButtons[i][j].putClientProperty("row", i);// AI couldent figure it out
-		        playerCellButtons[i][j].putClientProperty("col", j);
+		        playerCellButtons[y][x].putClientProperty("row", y);// AI couldent figure it out
+		        playerCellButtons[y][x].putClientProperty("col", x);
 		        
 		    }
 		}
@@ -242,7 +250,8 @@ public class Board extends JFrame implements ActionListener{
 		
 		eastGrid.setPreferredSize(new Dimension(800,800));
 		eastGrid.setOpaque(false);
-		eastGrid.setLayout(new GridLayout(2,4));
+		eastGrid.setLayout(new GridLayout(4,2));
+		eastGrid.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
 		
 		westPanel.setPreferredSize(new Dimension(1000,1000));
 		westPanel.setOpaque(false);
@@ -254,6 +263,7 @@ public class Board extends JFrame implements ActionListener{
 				
 		this.setSize(2000,1000);
 		this.setDefaultCloseOperation(3);
+		this.setResizable(false);
 		
 		this.add(background);
 		
@@ -261,6 +271,12 @@ public class Board extends JFrame implements ActionListener{
 		background.add(eastPanel, BorderLayout.EAST);
 		westPanel.add(westGrid, BorderLayout.CENTER);
 		eastPanel.add(eastGrid);
+		
+		for (int y = 0; y < 4; y++) {
+		    for (int x = 0; x < 2; x++) {
+		    	eastGrid.add(shipPlaceButtons[x][y]);
+		    }
+		}
 		
 		for (int i = 0; i < 10; i++) {
 		    for (int j = 0; j < 10; j++) {
@@ -443,7 +459,10 @@ public class Board extends JFrame implements ActionListener{
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
 		        
-		        System.out.println("Test: Clicked " + row + ", " + col);
+		        System.out.println("Test: Clicked Y:" + row + ", X:" + col);
+		        
+		        //Put Ship placed stuff here idk how it works.
+		        
 		    }
 		}
 		
