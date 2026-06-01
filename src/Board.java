@@ -34,7 +34,7 @@ public class Board extends JFrame implements ActionListener{
 	JFrame frame;
 	JButton[][] playerCellButtons;
 	JButton[][] computerCells;
-	JButton[][] shipPlaceButtons;
+	JPanel[] shipPlaceImage;
 	JButton saveButton;
 	JButton loadButton;
 	JCheckBox toggleHorizontal; // Checking this box means horizontal is used
@@ -44,6 +44,8 @@ public class Board extends JFrame implements ActionListener{
 	JPanel eastPanel;
 	JPanel westGrid;
 	JPanel eastGrid;
+	
+	J
 	
 	
 	/**
@@ -65,7 +67,7 @@ public class Board extends JFrame implements ActionListener{
 	 * @param useComplex
 	 * @throws FileNotFoundException 
 	 */
-	public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
+	 Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
 		/*
 		 * GUI note:
 		 * 
@@ -85,13 +87,11 @@ public class Board extends JFrame implements ActionListener{
 		westGrid = new JPanel();
 		eastGrid = new JPanel();
 		playerCellButtons = new JButton[10][10];
-		shipPlaceButtons = new JButton[2][4];
+		shipPlaceImage = new JPanel[4];
 		computerCells = new JButton[10][10];
 		
 		for (int y = 0; y < 4; y++) {
-		    for (int x = 0; x < 2; x++) {
-		    	shipPlaceButtons[x][y] = new JButton();
-		    }
+		    	shipPlaceImage[y] = new JPanel();
 		}
 		for (int y = 0; y < 10; y++) {
 		    for (int x = 0; x < 10; x++) {
@@ -273,9 +273,7 @@ public class Board extends JFrame implements ActionListener{
 		eastPanel.add(eastGrid);
 		
 		for (int y = 0; y < 4; y++) {
-		    for (int x = 0; x < 2; x++) {
-		    	eastGrid.add(shipPlaceButtons[x][y]);
-		    }
+		    	eastGrid.add(shipPlaceImage[y]);
 		}
 		
 		for (int i = 0; i < 10; i++) {
@@ -450,30 +448,24 @@ public class Board extends JFrame implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Check if the button clicked is one of the player's
+		boolean isPlace = false;
+
+		// Check if the button clicked is one of the player's grid
 		if (e.getSource() instanceof JButton) {//AI couldent figure it out
 		    JButton clickedButton = (JButton) e.getSource();
 
 		    if (clickedButton.getClientProperty("row") != null) {
-
+		    	isPlace = true;
+		    	
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
 		        
-		        System.out.println("Test: Clicked Y:" + row + ", X:" + col);
-		        
-		        //Put Ship placed stuff here idk how it works.
+		        System.out.println("Grid button pressed");
 		        
 		    }
 		}
 		
-		boolean isPlace = false;
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (playerCellButtons[i][j] == e.getSource()) {
-					isPlace = true;
-				}
-			}
-		}
+		
 		
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)

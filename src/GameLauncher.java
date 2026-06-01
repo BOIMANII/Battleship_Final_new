@@ -146,35 +146,20 @@ public class GameLauncher implements ActionListener{
 			System.out.println("Launch Hard");
 			difficultyNormal = false;
 			name = nameField.getText();
+			board = new Board(name, true, false);
 			frame.dispose();
-			try {
-				board = new Board(name, true, false);
-			} catch (FileNotFoundException | InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		}
 		if(e.getSource() == launchEasyButton) {
 			System.out.println("Launch Normal");
 			difficultyNormal = true;
 			name = nameField.getText();
+			board = new Board(name, false, false);
 			frame.dispose();
-			try {
-				board = new Board(name, false, false);
-			} catch (FileNotFoundException | InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}		
 		}
 		if(e.getSource() == loadButton) {
 			//Save file stuff
 			System.out.println("Gonna load something");
-			try {
-				board = new Board(name, false, true);
-			} catch (FileNotFoundException | InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}		
+			board = new Board(name, false, true);
 		}
 		if(e.getSource() == infoButton) {
 			System.out.println("Dumping info");
