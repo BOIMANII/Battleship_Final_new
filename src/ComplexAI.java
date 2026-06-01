@@ -6,10 +6,14 @@ public class ComplexAI {
 	private int hitDist = 1;;
 	private int dir = 0;
 	private int[] origin;
+	public boolean dirSet;
+	public int hitCount;
+	
 	public int [] guess() {
 		int[] guess = new int[2];
 		
 		if (!hit) {
+			dirSet = false;
 			if (previous[0] + hitDist > 9 && previous[1] != 9) {
 				guess[1] +=1;
 			}
@@ -22,18 +26,35 @@ public class ComplexAI {
 		}
 		else {
 			if (dir != 0) {
-				if (dir == 1) {
-					if (guess[1] == 0) {
-						dir++;
-					}
-					else guess[1] = origin[1] + 1;
+				if (hit) {
+					dirSet = true;
 				}
-				else if (dir == 2) {
-					if (guess[0] == 9) {
-						dir++;
+				if (dirSet) {
+					if (hit) {
+						
 					}
-					else guess[1] = origin[1] + 1;
+					else {
+						hitCount+=1;
+						if (hitCount >= 2) {
+							dirSet = false;
+						}
+					}
 				}
+				else {
+					if (dir == 1) {
+						if (guess[1] == 0) {
+							dir++;
+						}
+						else guess[1] = origin[1] + 1;
+					}
+					else if (dir == 2) {
+						if (guess[0] == 9) {
+							dir++;
+						}
+						else guess[1] = origin[1] + 1;
+					}
+				}
+				
 			}
 			else {
 				dir+=1;
