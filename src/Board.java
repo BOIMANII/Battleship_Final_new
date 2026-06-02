@@ -88,6 +88,7 @@ public class Board extends JFrame implements ActionListener{
 	 * @throws FileNotFoundException 
 	 */
 	public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
+		// GUI Components 
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
 		background = new JLabel(backgroundImage);
 		westPanel = new JPanel();
@@ -134,7 +135,8 @@ public class Board extends JFrame implements ActionListener{
 		playerCellButtons[0][0].setBackground(Color.green);
 		playerCellButtons[1][0].setBackground(Color.red);
 		playerCellButtons[0][1].setBackground(Color.black);
-
+		
+		// Board Logic
 		if (isLoad == false) {
 			humanPlayer.setName(playerName);
 			this.useComplex = useComplex;
@@ -216,6 +218,7 @@ public class Board extends JFrame implements ActionListener{
 			}
 		}
 		
+		// GUI Componenets 
 		background.setLayout(new BorderLayout());
 		
 		westGrid.setPreferredSize(new Dimension(800,800));
@@ -226,7 +229,7 @@ public class Board extends JFrame implements ActionListener{
 		eastGrid.setPreferredSize(new Dimension(800,800));
 		eastGrid.setOpaque(false);
 		eastGrid.setLayout(new GridLayout(1,2));
-		//.setBorder(BorderFactory.createEmptyBorder(0,25,50,50));
+		//eastGrid.setBorder(BorderFactory.createEmptyBorder(0,25,50,50));
 		
 		westPanel.setPreferredSize(new Dimension(1000,1000));
 		westPanel.setOpaque(false);
@@ -268,21 +271,21 @@ public class Board extends JFrame implements ActionListener{
 		textVenator.setForeground(Color.yellow);
 		textVenator.setOpaque(true);
 
-		textAcclamator.setText("<html><center>Acclamator: 1<br>Length: 4</center></html>");
+		textAcclamator.setText("<html><center>Acclamator: 1<br>Length: 4</center></html>");// Ai Acceleration 
 		textAcclamator.setFont(shipFont);
 		textAcclamator.setHorizontalAlignment(JLabel.CENTER);
 		textAcclamator.setBackground(Color.black);
 		textAcclamator.setForeground(Color.yellow);
 		textAcclamator.setOpaque(true);
 
-		textArquitens.setText("<html><center>Arquitens: 1<br>Length: 3</center></html>");
+		textArquitens.setText("<html><center>Arquitens: 1<br>Length: 3</center></html>");// Ai Acceleration 
 		textArquitens.setFont(shipFont);
 		textArquitens.setHorizontalAlignment(JLabel.CENTER);
 		textArquitens.setBackground(Color.black);
 		textArquitens.setForeground(Color.yellow);
 		textArquitens.setOpaque(true);
 
-		textInterceptor.setText("<html><center>Interceptor: 1<br>Length: 2</center></html>");
+		textInterceptor.setText("<html><center>Interceptor: 1<br>Length: 2</center></html>");// Ai Acceleration 
 		textInterceptor.setFont(shipFont);
 		textInterceptor.setHorizontalAlignment(JLabel.CENTER);
 		textInterceptor.setBackground(Color.black);
@@ -341,8 +344,9 @@ public class Board extends JFrame implements ActionListener{
 		}
 
 		this.setVisible(true);
-		updateGrids();		
+		updateGrids();	
 		
+		//Board Logic 
 		Random randgen = new Random();
 		if (randgen.nextInt(0, 2) == 0) {
 			computerGuess();
@@ -517,6 +521,7 @@ public class Board extends JFrame implements ActionListener{
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
 		        
+		        System.out.println("Y: " + row + "X: " + col);
 		        System.out.println("Grid button pressed");
 		        
 		    }
@@ -886,7 +891,12 @@ public class Board extends JFrame implements ActionListener{
 				if(grid[x][y].isPlayerShipPresent() == true) {
 					playerCellButtons[y][x].setBackground(Color.gray);
 				}
-				
+				if(grid[x][y].isPlayerGuessed() == true) {
+					playerCellButtons[y][x].setBackground(Color.black);
+				}	
+				if(grid[x][y].isPlayerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
+					playerCellButtons[y][x].setBackground(Color.red);
+				}
 			}
 		}
 		this.revalidate();

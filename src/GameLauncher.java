@@ -1,9 +1,9 @@
+
 /**
  * @author Anthony
  * @date 2026-05-27
  * Description: The class that launches the Board and deals with winning screen
  */
-
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,44 +14,48 @@ import java.io.FileNotFoundException;
 
 import javax.swing.*;
 
-public class GameLauncher implements ActionListener{
-	
-	// GUI Components 
+public class GameLauncher implements ActionListener {
+
+	// GUI Components
 	private JFrame frame;
-    private JPanel westPanel;
-    private JPanel northPanel;
-    private JPanel displaceTitle;
-    
-    private JLabel background;
-    private JLabel title;
-    private ImageIcon backgroundI;
-    private ImageIcon titleI;
-    
-    private JTextField nameField;
-    private JButton launchEasyButton;
-    private JButton launchHardButton;
-    private JButton loadButton;
-    private JButton infoButton;
-    private JButton playAgain; //Unused for now
-    
-    private int frameX = 960;
+	private JPanel westPanel;
+	private JPanel northPanel;
+	private JPanel displaceTitle;
+
+	private JLabel background;
+	private JLabel title;
+	private ImageIcon backgroundI;
+	private ImageIcon titleI;
+
+	private JTextField nameField;
+	private JButton launchEasyButton;
+	private JButton launchHardButton;
+	private JButton loadButton;
+	private JButton infoButton;
+	private JButton playAgain; // Unused for now
+
+	private int frameX = 960;
 	private int frameY = 540;
 	private Dimension buttonSize = new Dimension(180, 50);
-	
-    // Variables 
-    private Board board;
+
+	// Variables
+	private Board board;
 	private String name;
 	private Boolean difficultyNormal;
-	
 
-	
-	
 	public static void main(String[] args) {
-		
+
 		GameLauncher engine = new GameLauncher();
-		launch();
 	}
-	
+
+	/**
+	 * Constructor for GameLauncher
+	 * 
+	 * Holds the graphics for the launcher
+	 * 
+	 * Buttons hold the logic and code to launch board
+	 * 
+	 */
 	public GameLauncher() {
 		frame = new JFrame("Star Wars Battleship");
 		launchEasyButton = new JButton("New Normal");
@@ -61,56 +65,55 @@ public class GameLauncher implements ActionListener{
 		titleI = new ImageIcon("titleText.png");
 		loadButton = new JButton("Load Previous");
 		infoButton = new JButton("?");
-		buttonSize = new Dimension(180,50);
+		buttonSize = new Dimension(180, 50);
 		background = new JLabel(backgroundI);
 		westPanel = new JPanel();
 		northPanel = new JPanel();
 		title = new JLabel(titleI);
-		displaceTitle = new JPanel();//To offset the title and to potentialy hold other buttons 
+		displaceTitle = new JPanel();// To offset the title and to potentialy hold other buttons
 
-		frame.setSize(frameX,frameY);
-		
-		background.setBounds(0,0,frameX, frameY);
+		frame.setSize(frameX, frameY);
+
+		background.setBounds(0, 0, frameX, frameY);
 		background.setLayout(new BorderLayout());
 
-		
 		launchEasyButton.addActionListener(this);
 		launchEasyButton.setPreferredSize(buttonSize);
 		launchEasyButton.setBackground(Color.black);
 		launchEasyButton.setForeground(Color.yellow);
 		launchEasyButton.setFocusable(false);
-		
+
 		launchHardButton.addActionListener(this);
 		launchHardButton.setPreferredSize(buttonSize);
 		launchHardButton.setBackground(Color.black);
 		launchHardButton.setForeground(Color.yellow);
 		launchHardButton.setFocusable(false);
-		
+
 		nameField.setHorizontalAlignment(JTextField.CENTER);
 		nameField.setPreferredSize(buttonSize);
-		
-		westPanel.setPreferredSize(new Dimension(300,540));
+
+		westPanel.setPreferredSize(new Dimension(300, 540));
 		westPanel.setOpaque(false);
-		westPanel.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
-		
-		northPanel.setPreferredSize(new Dimension(960,200));
+		westPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
+
+		northPanel.setPreferredSize(new Dimension(960, 200));
 		northPanel.setOpaque(false);
-		
+
 		loadButton.addActionListener(this);
 		loadButton.setPreferredSize(buttonSize);
 		loadButton.setBackground(Color.black);
 		loadButton.setForeground(Color.yellow);
 		loadButton.setFocusable(false);
-		
+
 		infoButton.addActionListener(this);
 		infoButton.setPreferredSize(buttonSize);
 		infoButton.setBackground(Color.black);
 		infoButton.setForeground(Color.yellow);
 		infoButton.setFocusable(false);
-		
-		displaceTitle.setPreferredSize(new Dimension(370,50));
+
+		displaceTitle.setPreferredSize(new Dimension(370, 50));
 		displaceTitle.setOpaque(false);
-		
+
 		frame.add(background);
 		background.add(westPanel, BorderLayout.WEST);
 		background.add(northPanel, BorderLayout.NORTH);
@@ -121,50 +124,72 @@ public class GameLauncher implements ActionListener{
 		westPanel.add(infoButton);
 		northPanel.add(title);
 		northPanel.add(displaceTitle);
-		
+
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(3);
 	}
-	
-	public static void launch() {
-		//Temperary will probably get rid of 
-		
-		
-	}
-	
+
+	/**
+	 * Method for end of game
+	 * 
+	 * When the game ends this method will be called
+	 * 
+	 * It will display a win screen congratulating the winner and a play again
+	 * button for the human player
+	 * 
+	 * @param playerName
+	 * @param useComplex
+	 * @throws FileNotFoundException
+	 */
 	public void isEnd() {
-		//To display a pop up screen for the winner. Not sure if it will happen in Board or GameLauncher
+		// To display a pop up screen for the winner. Not sure if it will happen in
+		// Board or GameLauncher
 		System.out.println("End test");
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == launchHardButton) {
+		if (e.getSource() == launchHardButton) {
 			System.out.println("Launch Hard");
 			difficultyNormal = false;
 			name = nameField.getText();
-			board = new Board(name, true, false);
+			try {
+				board = new Board(name, true, false);
+			} catch (FileNotFoundException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			frame.dispose();
 		}
-		if(e.getSource() == launchEasyButton) {
+		if (e.getSource() == launchEasyButton) {
 			System.out.println("Launch Normal");
 			difficultyNormal = true;
 			name = nameField.getText();
-			board = new Board(name, false, false);
+			try {
+				board = new Board(name, false, false);
+			} catch (FileNotFoundException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			frame.dispose();
 		}
-		if(e.getSource() == loadButton) {
-			//Save file stuff
+		if (e.getSource() == loadButton) {
+			// Save file stuff
 			System.out.println("Gonna load something");
-			board = new Board(name, false, true);
+			try {
+				board = new Board(name, false, true);
+			} catch (FileNotFoundException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		if(e.getSource() == infoButton) {
+		if (e.getSource() == infoButton) {
 			System.out.println("Dumping info");
 			new InfoFrame();
 		}
 		System.out.println(name);
 	}
-	
+
 }
