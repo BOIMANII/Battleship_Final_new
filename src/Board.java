@@ -29,9 +29,11 @@ public class Board extends JFrame implements ActionListener{
 	HumanPlayer humanPlayer = new HumanPlayer();
 	ComputerPlayer computerPlayer = new ComputerPlayer();
 	int guesses = 0;
+	String playerName;
 	
 	
 	//Gui components 
+	// Note for naming convention alot of the oroginal code and names were for a borderLayout but something got chagned to grid 
 	JFrame frame;
 	JButton[][] playerCellButtons;
 	JButton[][] computerCells;
@@ -52,6 +54,7 @@ public class Board extends JFrame implements ActionListener{
 	JPanel westWestPanel;
 	JPanel eastEastPanel;
 	JLabel nameLabel;
+	JOptionPane invalidPlacment; 
 	
 	ImageIcon iconVenator; // Cruiser 5 length
 	ImageIcon iconAcclamator; // Battleship 4 Length
@@ -88,6 +91,7 @@ public class Board extends JFrame implements ActionListener{
 	 * @throws FileNotFoundException 
 	 */
 	public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
+		this.playerName = playerName;
 		// GUI Components 
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
 		background = new JLabel(backgroundImage);
@@ -106,6 +110,8 @@ public class Board extends JFrame implements ActionListener{
 		westWestPanel = new JPanel();
 		eastEastPanel = new JPanel();
 		toggleHorizontal = new JCheckBox();
+		computerCells = new JButton[10][10];
+		invalidPlacment = new JOptionPane();
 		
 		textVenator = new JLabel();
 		textAcclamator = new JLabel();
@@ -129,6 +135,12 @@ public class Board extends JFrame implements ActionListener{
 		        playerCellButtons[y][x].setPreferredSize(new Dimension(80, 80));
 		        playerCellButtons[y][x].putClientProperty("row", y);
 		        playerCellButtons[y][x].putClientProperty("col", x);
+		        
+		        computerCells[y][x] = new JButton();
+		        computerCells[y][x].addActionListener(this);
+		        computerCells[y][x].setPreferredSize(new Dimension(80, 80));
+		        computerCells[y][x].putClientProperty("row", y);
+		        computerCells[y][x].putClientProperty("col", x);
 		    }
 		}
 
@@ -138,7 +150,12 @@ public class Board extends JFrame implements ActionListener{
 		
 		// Board Logic
 		if (isLoad == false) {
-			
+			this.useComplex = useComplex;
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					grid[i][j] = new Cell(i, j);
+				}
+			}
 			/*
 			 * GUI note:
 			 * 
@@ -146,14 +163,9 @@ public class Board extends JFrame implements ActionListener{
 			 * 
 			 * Also there should be 2 length 3 ships
 			 */
-			
+			guiSetup();
 			humanPlayer.setName(playerName);
-			this.useComplex = useComplex;
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
-					grid[i][j] = new Cell(i, j);
-				}
-			}
+			
 			
 		} else {
 			try {
@@ -228,7 +240,11 @@ public class Board extends JFrame implements ActionListener{
 		}
 		
 
-		background.setLayout(new BorderLayout());
+			
+	}
+	
+	public void guiSetup() {
+		background.setLayout(new GridLayout(1, 2));
 		
 		westGrid.setPreferredSize(new Dimension(800,800));
 		westGrid.setOpaque(false);
@@ -317,8 +333,8 @@ public class Board extends JFrame implements ActionListener{
 		
 		this.add(background);
 		
-		background.add(westPanel, BorderLayout.WEST);
-		background.add(eastPanel, BorderLayout.EAST);
+		background.add(westPanel);
+		background.add(eastPanel);
 		
 		westPanel.add(westGrid, BorderLayout.CENTER);
 		westPanel.add(northWestPanel, BorderLayout.NORTH);
@@ -353,7 +369,29 @@ public class Board extends JFrame implements ActionListener{
 		}
 
 		this.setVisible(true);
-		updateGrids();	
+		updateGrids();
+	}
+	
+	public void guiChange() {
+		eastPanel.removeAll();
+		eastGrid.removeAll();
+		eastEastPanel.removeAll();
+		northEastPanel.removeAll();
+		
+		eastGrid.setPreferredSize(new Dimension(800,800));
+		eastGrid.setLayout(new GridLayout(10,10));
+		
+		eastPanel.add(northEastPanel, BorderLayout.NORTH);
+		eastPanel.add(eastEastPanel, BorderLayout.EAST);
+		eastPanel.add(eastGrid, BorderLayout.CENTER);
+		
+		for (int i = 0; i < 10; i++) {
+		    for (int j = 0; j < 10; j++) {
+		    	eastGrid.add(computerCells[i][j]);
+		        playerCellButtons[i][j].setEnabled(false);
+		        
+		    }
+		}
 	}
 	
 	public int[][] toCoords(String[] coordinates) {
@@ -463,6 +501,8 @@ public class Board extends JFrame implements ActionListener{
 		}
 		// If invalid selection is made by player, popup error message
 		if (isHuman == true && canPlace == false) {
+			
+			JOptionPane.showMessageDialog(null, "Invalid Placment", "ERROR", JOptionPane.WARNING_MESSAGE);
 			/*
 			 * GUI note:
 			 * 
@@ -569,6 +609,7 @@ public class Board extends JFrame implements ActionListener{
 		            setShips();
 		            
 		            // 2. Clear out placement components / update GUI states
+		            guiChange();
 		            // (e.g., make toggleHorizontal invisible, enable computer grid buttons)
 		            toggleHorizontal.setVisible(false);
 		            
@@ -904,6 +945,7 @@ public class Board extends JFrame implements ActionListener{
 		 */
 		for(int y = 0; y < 10; y++) {
 			for(int x = 0; x < 10; x++) {
+				computerCells[y][x].setBackground(Color.green);
 				if(grid[x][y].isPlayerShipPresent() == false) {
 					playerCellButtons[y][x].setBackground(Color.green);
 				}
@@ -912,10 +954,18 @@ public class Board extends JFrame implements ActionListener{
 				}
 				if(grid[x][y].isPlayerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.black);
-				}	
-				if(grid[x][y].isPlayerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
+				}
+				if(grid[x][y].isComputerGuessed() == true) {
+					computerCells[y][x].setBackground(Color.black);
+				}
+				if(grid[x][y].isComputerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.red);
 				}
+				if(grid[x][y].isPlayerShipPresent() == true && grid[x][y].isComputerGuessed() == true) {
+					computerCells[y][x].setBackground(Color.red);
+				}
+				
+				
 			}
 		}
 		this.revalidate();
