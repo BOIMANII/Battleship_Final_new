@@ -47,6 +47,10 @@ public class Board extends JFrame implements ActionListener{
 	JPanel eastGrid;
 	JPanel eastEastGrid;//East of the east grid
 	JPanel westEastGrid;// west of the east grid
+	JPanel northEastPanel;
+	JPanel northWestPanel;
+	JPanel westWestPanel;
+	JPanel eastEastPanel;
 	JLabel nameLabel;
 	
 	ImageIcon iconVenator; // Cruiser 5 length
@@ -96,9 +100,11 @@ public class Board extends JFrame implements ActionListener{
 		westEastGrid = new JPanel();
 		eastEastGrid = new JPanel();
 		nameLabel = new JLabel();
-		
-		JPanel westNorthPanel = new JPanel();
-		JPanel westWestPanel = new JPanel();
+		northEastPanel = new JPanel();
+		northWestPanel = new JPanel();
+		westWestPanel = new JPanel();
+		eastEastPanel = new JPanel();
+		toggleHorizontal = new JCheckBox();
 		
 		textVenator = new JLabel();
 		textAcclamator = new JLabel();
@@ -215,23 +221,22 @@ public class Board extends JFrame implements ActionListener{
 		westGrid.setPreferredSize(new Dimension(800,800));
 		westGrid.setOpaque(false);
 		westGrid.setLayout(new GridLayout(10,10));
-		westGrid.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
+		//westGrid.setBorder(BorderFactory.createEmptyBorder(0,50,50,25));
 		
 		eastGrid.setPreferredSize(new Dimension(800,800));
 		eastGrid.setOpaque(false);
 		eastGrid.setLayout(new GridLayout(1,2));
-		eastGrid.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
+		//.setBorder(BorderFactory.createEmptyBorder(0,25,50,50));
 		
 		westPanel.setPreferredSize(new Dimension(1000,1000));
 		westPanel.setOpaque(false);
 		westPanel.setLayout(new BorderLayout());
 		
-		westNorthPanel.setOpaque(false);
-		westNorthPanel.setLayout(new BoxLayout(westNorthPanel, BoxLayout.Y_AXIS));
-		westNorthPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+		northWestPanel.setPreferredSize(new Dimension(1000,100));
+		northWestPanel.setOpaque(false);
 		
-		westWestPanel.setOpaque(false);
-		westWestPanel.setPreferredSize(new Dimension(100, 800));
+		northEastPanel.setPreferredSize(new Dimension(1000,100));
+		northEastPanel.setOpaque(false);
 		
 		eastPanel.setPreferredSize(new Dimension(1000,1000));
 		eastPanel.setOpaque(false);
@@ -242,6 +247,17 @@ public class Board extends JFrame implements ActionListener{
 		
 		eastEastGrid.setOpaque(false);
 		eastEastGrid.setLayout(new GridLayout(4,1, 5, 5));
+		
+		eastEastPanel.setPreferredSize(new Dimension(100,1000));
+		eastEastPanel.setOpaque(false);
+		
+		westWestPanel.setPreferredSize(new Dimension(100,1000));
+		westWestPanel.setOpaque(false);
+		
+		toggleHorizontal.setPreferredSize(new Dimension(200,50));
+		toggleHorizontal.setBackground(Color.black);
+		toggleHorizontal.setText("Set Horizontal");
+		toggleHorizontal.setForeground(Color.yellow);
 		
 		java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
 		
@@ -293,10 +309,13 @@ public class Board extends JFrame implements ActionListener{
 		background.add(eastPanel, BorderLayout.EAST);
 		
 		westPanel.add(westGrid, BorderLayout.CENTER);
-		westPanel.add(westNorthPanel, BorderLayout.NORTH);
+		westPanel.add(northWestPanel, BorderLayout.NORTH);
 		westPanel.add(westWestPanel, BorderLayout.WEST);
 		
-		westNorthPanel.add(nameLabel);
+		eastPanel.add(eastEastPanel, BorderLayout.EAST);
+		eastPanel.add(northEastPanel, BorderLayout.NORTH);
+		
+		northWestPanel.add(nameLabel);
 		
 		eastPanel.add(eastGrid);
 		eastGrid.add(westEastGrid);
@@ -306,6 +325,8 @@ public class Board extends JFrame implements ActionListener{
 		eastEastGrid.add(textAcclamator);
 		eastEastGrid.add(textArquitens);
 		eastEastGrid.add(textInterceptor);
+		
+		northEastPanel.add(toggleHorizontal);
 
 		for (int y = 0; y < 4; y++) {
 		    westEastGrid.add(shipPlaceImage[y]);
