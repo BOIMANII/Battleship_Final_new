@@ -138,6 +138,15 @@ public class Board extends JFrame implements ActionListener{
 		
 		// Board Logic
 		if (isLoad == false) {
+			
+			/*
+			 * GUI note:
+			 * 
+			 * Display the ships and stuff on the right here
+			 * 
+			 * Also there should be 2 length 3 ships
+			 */
+			
 			humanPlayer.setName(playerName);
 			this.useComplex = useComplex;
 			for (int i = 0; i < 10; i++) {
@@ -145,6 +154,21 @@ public class Board extends JFrame implements ActionListener{
 					grid[i][j] = new Cell(i, j);
 				}
 			}
+			
+			// Wait while player sets ships // TODO I'll fix this later don't touch
+			while (shipsPlaced != 5) {
+				wait();
+			}
+			
+			// Computer sets ships
+			setShips();
+			
+			/*
+			 * GUI note:
+			 * 
+			 * Get rid of the display ships thing here
+			 */
+			
 			updateGrids();
 		} else {
 			try {
@@ -218,7 +242,7 @@ public class Board extends JFrame implements ActionListener{
 			}
 		}
 		
-		// GUI Componenets 
+
 		background.setLayout(new BorderLayout());
 		
 		westGrid.setPreferredSize(new Dimension(800,800));
@@ -384,7 +408,7 @@ public class Board extends JFrame implements ActionListener{
 		// i variable serves to record size/length of ship being placed
 		for (int i = 2; i < 6; i++) {
 			// Reset initial evaluated to invalid result for each ship
-			evaluatedPositions = new int[10][10];
+			evaluatedPositions = new int[10][2];
 			evaluatedPositions[0][0] = -1;
 			
 			// Repeatedly randomly generate until valid selection is made

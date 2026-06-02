@@ -156,7 +156,11 @@ public class GameLauncher implements ActionListener {
 			difficultyNormal = false;
 			name = nameField.getText();
 			try {
+<<<<<<< HEAD
 				board = new Board(name, true, false);
+=======
+				new Board(name, true, false);
+>>>>>>> f4c3ec6a91d9d7fbc7c4578a90bbb8367a04ed66
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -168,7 +172,11 @@ public class GameLauncher implements ActionListener {
 			difficultyNormal = true;
 			name = nameField.getText();
 			try {
+<<<<<<< HEAD
 				board = new Board(name, false, false);
+=======
+				new Board(name, false, false);
+>>>>>>> f4c3ec6a91d9d7fbc7c4578a90bbb8367a04ed66
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -179,7 +187,11 @@ public class GameLauncher implements ActionListener {
 			// Save file stuff
 			System.out.println("Gonna load something");
 			try {
+<<<<<<< HEAD
 				board = new Board(name, false, true);
+=======
+				new Board(name, false, true);
+>>>>>>> f4c3ec6a91d9d7fbc7c4578a90bbb8367a04ed66
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
