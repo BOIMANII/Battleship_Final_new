@@ -154,9 +154,9 @@ public class Board extends JFrame implements ActionListener{
 			}
 			
 			// Wait while player sets ships // TODO I'll fix this later don't touch
-			while (shipsPlaced != 5) {
+			/*while (shipsPlaced != 5) {
 				wait();
-			}
+			}*/
 			
 			// Computer sets ships
 			setShips();
