@@ -155,14 +155,6 @@ public class Board extends JFrame implements ActionListener{
 				}
 			}
 			
-			// Wait while player sets ships // TODO I'll fix this later don't touch
-			/*while (shipsPlaced != 5) {
-				wait();
-			}*/
-			
-			// Computer sets ships
-			setShips();
-			
 			/*
 			 * GUI note:
 			 * 
@@ -199,10 +191,10 @@ public class Board extends JFrame implements ActionListener{
 					String positions = "";
 					positions = computerScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
-
+					
 					int length = coordinates.length - 1;
 					int[][] shipPositions = toCoords(coordinates);
-
+					
 					Ship ship = new Ship(shipPositions, length);
 					ship.setHitCount(Integer.parseInt(computerScanner.nextLine()));
 					ship.evaluateSunk();
@@ -403,7 +395,7 @@ public class Board extends JFrame implements ActionListener{
 	public void setShips() {
 		Random randgen = new Random();
 		int[] selection = new int[2];
-		int[][] evaluatedPositions = new int[10][10];
+		int[][] evaluatedPositions = new int[10][2];
 		boolean first = true;
 		// i variable serves to record size/length of ship being placed
 		for (int i = 2; i < 6; i++) {
@@ -459,7 +451,7 @@ public class Board extends JFrame implements ActionListener{
 		try {
 			for (int i = 0; i < length; i++) {
 				// If one of the cells the ship is supposed to be on already has a placement, placement invalid
-				boolean isPresent;
+				boolean isPresent = false;
 				if (isHuman == true) {
 					isPresent = thisCell.isPlayerShipPresent();
 				} else {
@@ -476,6 +468,7 @@ public class Board extends JFrame implements ActionListener{
 					thisCell = grid[thisCell.getX()][thisCell.getY() + 1];
 				}
 			}
+		// If it goes off the grid
 		} catch (Exception e) {
 			canPlace = false;
 		}
@@ -493,30 +486,29 @@ public class Board extends JFrame implements ActionListener{
 		// Go over all grids evaluated again, record them in an int[][], and set corresponding ship present boolean to true
 		int[][] placeCoords = new int[length][2];
 		if (canPlace == true) {
-			int[] coord = {selection[0], selection[1]};
 			for (int i = 0; i < length; i++) {
 				// Copy cell's grid coordinates into placeCoords
 				// Must be copying ints because int[]s act as pass by reference
-				placeCoords[i][0] = coord[0];
-				placeCoords[i][1] = coord[1];
+				placeCoords[i][0] = selection[0];
+				placeCoords[i][1] = selection[1];
 				// Change the cell's values to reflect the placement
 				if (isHuman == true) {
-					grid[coord[0]][coord[1]].setPlayerShipPresent(true);
+					grid[selection[0]][selection[1]].setPlayerShipPresent(true);
 				} else {
-					grid[coord[0]][coord[1]].setComputerShipPresent(true);
+					grid[selection[0]][selection[1]].setComputerShipPresent(true);
 				}
 				// Move to next valid cell
 				if (useHorizontal == true) {
-					coord[0]++;
+					selection[0] += 1;
 				} else {
-					coord[1]++;
+					selection[1] += 1;
 				}
 			}
 		} else {
 			// The invalid selection, signal no ship placement is to be made
 			placeCoords[0][0] = -1;
 		}
-		
+		System.out.println("Thingy: " + placeCoords[0][0]); // TODO
 		return placeCoords;
 	}
 	
@@ -551,7 +543,17 @@ public class Board extends JFrame implements ActionListener{
 		    }
 		}
 		
-		
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (playerCellButtons[i][j] == e.getSource()) {
+					isPlace = true;
+					break;
+				}
+			}
+			if (isPlace == true) {
+				break;
+			}
+		}
 		
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)
