@@ -551,7 +551,7 @@ public class Board extends JFrame implements ActionListener{
 			int[] selected = getGrid((JButton) e.getSource());
 			// By how many ships are placed, the length is determined (smallest ships placed first)
 			int length = shipsPlaced + 2;
-			if (length == 5 || length == 6) {
+			if (length == 4 || length == 5) {
 				length--;
 			}
 			// Will return an int[][] of grid coordinates and mark on grid[][] cells if placement valid
@@ -880,8 +880,8 @@ public class Board extends JFrame implements ActionListener{
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (button == playerCellButtons[i][j] || button == computerCells[i][j]) {
-					location[0] = i;
-					location[1] = j;
+					location[0] = j;
+					location[1] = i;
 				}
 			}
 		}
