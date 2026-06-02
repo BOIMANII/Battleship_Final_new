@@ -429,14 +429,16 @@ public class Board extends JFrame implements ActionListener{
 	 * @param isHuman
 	 * @return
 	 */
-	public int[][] evaluateShipPlacement(int[] selection, int length, boolean isHuman) {
+	public int[][] evaluateShipPlacement(int[] selection, int length, boolean isHuman) { // TODO
 		boolean canPlace = true;
-		Cell thisCell = grid[selection[0]][selection[1]];
+		int x = selection[0];
+		int y = selection[1];
 		
 		// Evaluates whether or not the squares are valid
 		// Try catch for out of bounds errors (selection is at the edge of the grid)
 		try {
 			for (int i = 0; i < length; i++) {
+				Cell thisCell = grid[x][y];
 				// If one of the cells the ship is supposed to be on already has a placement, placement invalid
 				boolean isPresent = false;
 				if (isHuman == true) {
@@ -450,13 +452,12 @@ public class Board extends JFrame implements ActionListener{
 				}
 				// Move onto the next cell the ship is supposed to be
 				if (useHorizontal == true) {
-					thisCell = grid[thisCell.getX() + 1][thisCell.getY()];
+					x++;
 				} else {
-					thisCell = grid[thisCell.getX()][thisCell.getY() + 1];
+					y++;
 				}
 			}
 		// If it goes off the grid
-//			hihihi
 		} catch (Exception e) {
 			canPlace = false;
 		}
