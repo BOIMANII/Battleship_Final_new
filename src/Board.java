@@ -456,6 +456,7 @@ public class Board extends JFrame implements ActionListener{
 				}
 			}
 		// If it goes off the grid
+//			hihihi
 		} catch (Exception e) {
 			canPlace = false;
 		}
