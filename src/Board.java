@@ -155,13 +155,6 @@ public class Board extends JFrame implements ActionListener{
 				}
 			}
 			
-			/*
-			 * GUI note:
-			 * 
-			 * Get rid of the display ships thing here
-			 */
-			
-			updateGrids();
 		} else {
 			try {
 				File humanPlayerFile = new File(playerName + "HumanPlayer.txt");
@@ -361,12 +354,6 @@ public class Board extends JFrame implements ActionListener{
 
 		this.setVisible(true);
 		updateGrids();	
-		
-		//Board Logic 
-		Random randgen = new Random();
-		if (randgen.nextInt(0, 2) == 0) {
-			computerGuess();
-		}
 	}
 	
 	public int[][] toCoords(String[] coordinates) {
@@ -537,12 +524,13 @@ public class Board extends JFrame implements ActionListener{
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
 		        
-		        System.out.println("Y: " + row + "X: " + col);
+		        System.out.println("Y: " + row + " X: " + col);
 		        System.out.println("Grid button pressed");
 		        
 		    }
 		}
 		
+		// Check if the button pressed is in the player's board
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (playerCellButtons[i][j] == e.getSource()) {
@@ -585,8 +573,11 @@ public class Board extends JFrame implements ActionListener{
 		            // 3. Refresh grids to show the game layout
 		            updateGrids();
 		            
-		            // 4. (Optional) If computer randoms to go first, run it here:
-		            // if (computerGoesFirst) { computerGuess(); }
+		    		// 50% chance computer goes first
+		    		Random randgen = new Random();
+		    		if (randgen.nextInt(0, 2) == 0) {
+		    			computerGuess();
+		    		}
 		        }
 			}
 		// If the button pressed is the save button
