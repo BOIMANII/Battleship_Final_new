@@ -47,11 +47,19 @@ public class Board extends JFrame implements ActionListener{
 	JPanel eastGrid;
 	JPanel eastEastGrid;//East of the east grid
 	JPanel westEastGrid;// west of the east grid
+	JLabel nameLabel;
 	
 	ImageIcon iconVenator; // Cruiser 5 length
 	ImageIcon iconAcclamator; // Battleship 4 Length
 	ImageIcon iconArquitens; // Destoryer 3 Length
 	ImageIcon iconInterceptor; // Patrol 2 length
+	
+	JLabel textVenator;
+	JLabel textAcclamator;
+	JLabel textArquitens;
+	JLabel textInterceptor;
+
+	
 	
 	
 	
@@ -75,21 +83,8 @@ public class Board extends JFrame implements ActionListener{
 	 * @param useComplex
 	 * @throws FileNotFoundException 
 	 */
-	 public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
-		/*
-		 * GUI note:
-		 * 
-		 * Set up new battleship game window
-		 * 
-		 * Set up player buttons on left, clickable
-		 * Player buttons are in a JButton[][]
-		 * Make sure 0,0 is top left value, 10,10 is bottom right
-		 * 
-		 * Place in [y][x] format (just a suggestion, I have no idea how you are doing it)
-		 * All other times we use [x][y] format (placing [y][x] will format so that x is actually horizontal, etc)
-		 */
+	public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException, FileNotFoundException {
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
-		
 		background = new JLabel(backgroundImage);
 		westPanel = new JPanel();
 		eastPanel = new JPanel();
@@ -100,41 +95,40 @@ public class Board extends JFrame implements ActionListener{
 		computerCells = new JButton[10][10];
 		westEastGrid = new JPanel();
 		eastEastGrid = new JPanel();
+		nameLabel = new JLabel();
+		
+		JPanel westNorthPanel = new JPanel();
+		JPanel westWestPanel = new JPanel();
+		
+		textVenator = new JLabel();
+		textAcclamator = new JLabel();
+		textArquitens = new JLabel();
+		textInterceptor = new JLabel();
 		
 		iconVenator     = scaleImage("iconVenator.png", 250, 100);
 		iconAcclamator  = scaleImage("iconAcclamator.png", 250, 100);
 		iconArquitens   = scaleImage("iconArquitens.png", 250, 100);
 		iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
 		
-		
 		shipPlaceImage[0] = new JLabel(iconVenator);
 		shipPlaceImage[1] = new JLabel(iconAcclamator);
 		shipPlaceImage[2] = new JLabel(iconArquitens);
 		shipPlaceImage[3] = new JLabel(iconInterceptor);
 		
-
-		
 		for (int y = 0; y < 10; y++) {
 		    for (int x = 0; x < 10; x++) {
-		    	
 		        playerCellButtons[y][x] = new JButton();
 		        playerCellButtons[y][x].addActionListener(this);
 		        playerCellButtons[y][x].setPreferredSize(new Dimension(80, 80));
-		        
-		        playerCellButtons[y][x].putClientProperty("row", y);// AI couldent figure it out
+		        playerCellButtons[y][x].putClientProperty("row", y);
 		        playerCellButtons[y][x].putClientProperty("col", x);
-		        
 		    }
 		}
-		//playerCellButtons[y][x].setBackground(Color.green);
-		playerCellButtons[0][0].setBackground(Color.green); //Test 1
-		playerCellButtons[1][0].setBackground(Color.red); //Test 2
-		playerCellButtons[0][1].setBackground(Color.black); //Test 3
 
-		
-		
+		playerCellButtons[0][0].setBackground(Color.green);
+		playerCellButtons[1][0].setBackground(Color.red);
+		playerCellButtons[0][1].setBackground(Color.black);
 
-		
 		if (isLoad == false) {
 			humanPlayer.setName(playerName);
 			this.useComplex = useComplex;
@@ -143,80 +137,44 @@ public class Board extends JFrame implements ActionListener{
 					grid[i][j] = new Cell(i, j);
 				}
 			}
-			
-			/*
-			 * GUI note:
-			 * Add ship types to right side of the board, add toggleHorizontal button
-			 * near that somewhere
-			 * 
-			 * Set the text of toggleHorizontal (now just an empty checkbox) to say "toggle horizontal"
-			 * 
-			 * Whether or not it is checked effects the boolean value of useHorizontal
-			 */
-			// This should pause program running until player has placed all ships
-			//while (!(shipsPlaced == 5)) {
-				//wait();
-			//}
-			// Set AI ships
-			//setShips();
-			
-			/*
-			 * GUI note:
-			 * 
-			 * Make the ship types labels nonvisible/get rid of them
-			 * 
-			 * Make toggleHorizontal nonclickable and set visibility to false
-			 */
 			updateGrids();
 		} else {
 			try {
-				// TODO Read all info from files
 				File humanPlayerFile = new File(playerName + "HumanPlayer.txt");
 				Scanner humanScanner = new Scanner(humanPlayerFile);
 				
-				// Set the player name
 				humanPlayer.setName(playerName);
 				
-				// Set up ships
 				for (int i = 0; i < 5; i++) {
 					String positions = "";
 					positions = humanScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
 					
-					// Take the String[] of a ship's positions and create an int[][] based on the String
 					int length = coordinates.length - 1;
 					int[][] shipPositions = toCoords(coordinates);
 					
-					// Initialize ship, read hit count and evaluate if the ship is sunk
 					Ship ship = new Ship(shipPositions, length);
 					ship.setHitCount(Integer.parseInt(humanScanner.nextLine()));
 					ship.evaluateSunk();
 					
-					// Add ship to Player's ships
 					humanPlayer.getShips().add(ship);
 				}
 				
 				File computerPlayerFile = new File(playerName + "ComputerPlayer.txt");
 				Scanner computerScanner = new Scanner(computerPlayerFile);
 				
-				// Computer name is already set at initialization
-				
-				// Set up ships
 				for (int i = 0; i < 5; i++) {
 					String positions = "";
 					positions = computerScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
 
-					// Take the String[] of a ship's positions and create an int[][] based on the String
 					int length = coordinates.length - 1;
 					int[][] shipPositions = toCoords(coordinates);
 
-					// Initialize ship, read hit count and evaluate if the ship is sunk
 					Ship ship = new Ship(shipPositions, length);
 					ship.setHitCount(Integer.parseInt(computerScanner.nextLine()));
 					ship.evaluateSunk();
 
-					// Add ship to Computer's ships
 					computerPlayer.getShips().add(ship);
 				}
 				
@@ -240,43 +198,18 @@ public class Board extends JFrame implements ActionListener{
 					}
 				}
 				
-				// Close scanners
 				humanScanner.close();
 				computerScanner.close();
 				boardScanner.close();
 				
-				// Update grids to reflect changes
 				updateGrids();
-			// If unable to load, closes window and opens new one from game start (ship placement)
 			} catch (Exception e) {
-				/*
-				 * GUI Note:
-				 * 
-				 * Popup:
-				 * 
-				 * Unable to load for whatever reason
-				 * 
-				 */
 				@SuppressWarnings("unused")
 				Board newBoard = new Board(playerName, useComplex, false);
 				frame.dispose();
 			}
-			// TODO
 		}
-		/*
-		 * GUI note:
-		 * 
-		 * Set the grid for computer's board to the right, and make the buttons clickable
-		 * 
-		 * If not already done, set those player buttons to unclickable
-		 * 
-		 * Make sure 0,0 is top left value, 10,10 is bottom right
-		 * 
-		 * At the top of each board, run the corresponding player's getName() and display
-		 * (ie Matt's ships, Computer's ships, etc)
-		 * 
-		 * 
-		 */
+		
 		background.setLayout(new BorderLayout());
 		
 		westGrid.setPreferredSize(new Dimension(800,800));
@@ -293,16 +226,62 @@ public class Board extends JFrame implements ActionListener{
 		westPanel.setOpaque(false);
 		westPanel.setLayout(new BorderLayout());
 		
+		westNorthPanel.setOpaque(false);
+		westNorthPanel.setLayout(new BoxLayout(westNorthPanel, BoxLayout.Y_AXIS));
+		westNorthPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+		
+		westWestPanel.setOpaque(false);
+		westWestPanel.setPreferredSize(new Dimension(100, 800));
+		
 		eastPanel.setPreferredSize(new Dimension(1000,1000));
 		eastPanel.setOpaque(false);
 		eastPanel.setLayout(new BorderLayout());
 				
 		westEastGrid.setOpaque(false);
-		westEastGrid.setLayout(new GridLayout(4,1, 2, 2));
-		
+		westEastGrid.setLayout(new GridLayout(4,1, 5, 5));
 		
 		eastEastGrid.setOpaque(false);
-		eastEastGrid.setLayout(new GridLayout(4,1));
+		eastEastGrid.setLayout(new GridLayout(4,1, 5, 5));
+		
+		java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
+		
+		textVenator.setText("<html><center>Venator: 1<br>Length: 5</center></html>");// Ai Acceleration 
+		textVenator.setFont(shipFont);
+		textVenator.setHorizontalAlignment(JLabel.CENTER);
+		textVenator.setBackground(Color.black);
+		textVenator.setForeground(Color.yellow);
+		textVenator.setOpaque(true);
+
+		textAcclamator.setText("<html><center>Acclamator: 1<br>Length: 4</center></html>");
+		textAcclamator.setFont(shipFont);
+		textAcclamator.setHorizontalAlignment(JLabel.CENTER);
+		textAcclamator.setBackground(Color.black);
+		textAcclamator.setForeground(Color.yellow);
+		textAcclamator.setOpaque(true);
+
+		textArquitens.setText("<html><center>Arquitens: 1<br>Length: 3</center></html>");
+		textArquitens.setFont(shipFont);
+		textArquitens.setHorizontalAlignment(JLabel.CENTER);
+		textArquitens.setBackground(Color.black);
+		textArquitens.setForeground(Color.yellow);
+		textArquitens.setOpaque(true);
+
+		textInterceptor.setText("<html><center>Interceptor: 1<br>Length: 2</center></html>");
+		textInterceptor.setFont(shipFont);
+		textInterceptor.setHorizontalAlignment(JLabel.CENTER);
+		textInterceptor.setBackground(Color.black);
+		textInterceptor.setForeground(Color.yellow);
+		textInterceptor.setOpaque(true);
+		
+		nameLabel.setText(playerName);
+		nameLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+		nameLabel.setPreferredSize(new Dimension(200,50));
+		nameLabel.setMaximumSize(new Dimension(200,50));
+		nameLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+		nameLabel.setBackground(Color.black);
+		nameLabel.setForeground(Color.yellow);
+		nameLabel.setHorizontalAlignment(JLabel.CENTER);
+		nameLabel.setOpaque(true); 
 		
 		this.setSize(2000,1000);
 		this.setDefaultCloseOperation(3);
@@ -312,16 +291,26 @@ public class Board extends JFrame implements ActionListener{
 		
 		background.add(westPanel, BorderLayout.WEST);
 		background.add(eastPanel, BorderLayout.EAST);
+		
 		westPanel.add(westGrid, BorderLayout.CENTER);
+		westPanel.add(westNorthPanel, BorderLayout.NORTH);
+		westPanel.add(westWestPanel, BorderLayout.WEST);
+		
+		westNorthPanel.add(nameLabel);
+		
 		eastPanel.add(eastGrid);
 		eastGrid.add(westEastGrid);
 		eastGrid.add(eastEastGrid);
 		
-		
+		eastEastGrid.add(textVenator);
+		eastEastGrid.add(textAcclamator);
+		eastEastGrid.add(textArquitens);
+		eastEastGrid.add(textInterceptor);
+
 		for (int y = 0; y < 4; y++) {
-		    	westEastGrid.add(shipPlaceImage[y]);
-		    	shipPlaceImage[y].setBackground(Color.black);
-		    	shipPlaceImage[y].setOpaque(true);
+		    westEastGrid.add(shipPlaceImage[y]);
+		    shipPlaceImage[y].setBackground(Color.black);
+		    shipPlaceImage[y].setOpaque(true);
 		}
 		
 		for (int i = 0; i < 10; i++) {
@@ -332,11 +321,10 @@ public class Board extends JFrame implements ActionListener{
 
 		this.setVisible(true);
 		updateGrids();		
-		// Check to see if the computer "goes first" (50% chance of doing so)
+		
 		Random randgen = new Random();
 		if (randgen.nextInt(0, 2) == 0) {
 			computerGuess();
-			// It is not possible for the computer to win first guess, hence no checkWin() is needed
 		}
 	}
 	
