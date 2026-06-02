@@ -1,10 +1,9 @@
 /**
- * 
+ * @author Anthony
+ * @date 2026-05-27
+ * Description: The class that launches the Board and deals with winning screen
  */
 
-/**
- * 
- */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,7 +32,7 @@ public class GameLauncher implements ActionListener{
     private JButton launchHardButton;
     private JButton loadButton;
     private JButton infoButton;
-    private JButton playAgain;//Unused for now
+    private JButton playAgain; //Unused for now
     
     private int frameX = 960;
 	private int frameY = 540;
