@@ -37,6 +37,7 @@ public class EndScreen implements ActionListener {
 	 * Formatted identically to GameLauncher.
 	 */
 	public EndScreen() {
+		//SoundPlayer.playMusic("musicEnding.wav");
 		frame = new JFrame("Star Wars Battleship - Game Over");
 		playAgainButton = new JButton("Play Again");
 		quitButton = new JButton("Quit");

@@ -127,30 +127,14 @@ public class GameLauncher implements ActionListener {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(3);
+		SoundPlayer.playMusic("musicLauncher .wav");
 	}
 
-	/**
-	 * Method for end of game
-	 * 
-	 * When the game ends this method will be called
-	 * 
-	 * It will display a win screen congratulating the winner and a play again
-	 * button for the human player
-	 * 
-	 * @param playerName
-	 * @param useComplex
-	 * @throws FileNotFoundException
-	 */
-	public void isEnd() {
-		// To display a pop up screen for the winner. Not sure if it will happen in
-		// Board or GameLauncher
-		System.out.println("End test");
-
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == launchHardButton) {
+			SoundPlayer.playSound("sfxJump.wav");
 			System.out.println("Launch Hard");
 			difficultyNormal = false;
 			name = nameField.getText();
@@ -163,6 +147,7 @@ public class GameLauncher implements ActionListener {
 			frame.dispose();
 		}
 		if (e.getSource() == launchEasyButton) {
+			SoundPlayer.playSound("sfxJump.wav");
 			System.out.println("Launch Normal");
 			difficultyNormal = true;
 			name = nameField.getText();
@@ -176,6 +161,7 @@ public class GameLauncher implements ActionListener {
 		}
 		if (e.getSource() == loadButton) {
 			// Save file stuff
+			SoundPlayer.playSound("sfxJump.wav");
 			System.out.println("Gonna load something");
 			name = nameField.getText();
 			try {
