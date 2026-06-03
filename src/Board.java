@@ -404,7 +404,7 @@ public class Board extends JFrame implements ActionListener {
 		textAcclamator.setForeground(Color.yellow);
 		textAcclamator.setOpaque(true);
 
-		textArquitens.setText("<html><center>Arquitens: 1<br>Length: 3</center></html>");
+		textArquitens.setText("<html><center>Arquitens: 2<br>Length: 3</center></html>");
 		textArquitens.setFont(shipFont);
 		textArquitens.setHorizontalAlignment(JLabel.CENTER);
 		textArquitens.setBackground(Color.black);
