@@ -177,6 +177,7 @@ public class GameLauncher implements ActionListener {
 		if (e.getSource() == loadButton) {
 			// Save file stuff
 			System.out.println("Gonna load something");
+			name = nameField.getText();
 			try {
 				board = new Board(name, false, true);
 				new Board(name, false, true);

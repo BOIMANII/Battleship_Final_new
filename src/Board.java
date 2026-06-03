@@ -252,8 +252,13 @@ public class Board extends JFrame implements ActionListener {
 
 				updateGrids();
 			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null,
+						"ERROR NO SAVE FILE EXISTS FOR USER " + playerName + ", OPENING NEW EASY MODE GAME INSTEAD",
+						"NO SAVE FOUND", JOptionPane.ERROR_MESSAGE);
 				@SuppressWarnings("unused")
-				Board newBoard = new Board(playerName, useComplex, false);
+				Board newBoard = new Board(playerName, false, false);
+				// This causes an error message to pop up in console but the error does not
+				// effect anything
 				frame.dispose();
 			}
 		}
