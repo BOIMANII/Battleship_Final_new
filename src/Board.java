@@ -130,6 +130,7 @@ public class Board extends JFrame implements ActionListener {
 		hitLabel = new JLabel();
 		missLabel = new JLabel();
 		sunkLabel = new JLabel();
+		saveButton = new JButton();
 
 		textVenator = new JLabel();
 		textAcclamator = new JLabel();
@@ -522,7 +523,17 @@ public class Board extends JFrame implements ActionListener {
 	    eastGrid.removeAll();
 	    eastEastPanel.removeAll();
 	    northEastPanel.removeAll();
-
+	    
+	    saveButton.setText(playerName);
+	    saveButton.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+	    saveButton.setPreferredSize(new Dimension(400, 50));
+	    saveButton.setMaximumSize(new Dimension(200, 50));
+	    saveButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+	    saveButton.setBackground(Color.black);
+		saveButton.setForeground(Color.yellow);
+		saveButton.setHorizontalAlignment(JLabel.CENTER);
+		saveButton.addActionListener(this);
+	    
 	    eastGrid.setPreferredSize(new Dimension(800, 800));
 	    eastGrid.setLayout(new GridLayout(10, 10));
 
@@ -541,6 +552,7 @@ public class Board extends JFrame implements ActionListener {
 	    compNameWrapper.setOpaque(false);
 	    compNameWrapper.add(computerNamePlate);
 	    northEastPanel.add(compNameWrapper, BorderLayout.NORTH);
+	    northEastPanel.add(saveButton);
 
 	    JPanel eastNumbersGrid = new JPanel(new GridLayout(1, 10));
 	    eastNumbersGrid.setOpaque(false);
