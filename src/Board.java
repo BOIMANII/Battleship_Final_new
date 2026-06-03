@@ -296,6 +296,7 @@ public class Board extends JFrame implements ActionListener {
 	    
 	    toggleHorizontal.setPreferredSize(new Dimension(200,50));
 	    toggleHorizontal.addActionListener(this);
+		toggleHorizontal.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
 	    toggleHorizontal.setBackground(Color.black);
 	    toggleHorizontal.setText("Set Horizontal");
 	    toggleHorizontal.setForeground(Color.yellow);
@@ -516,7 +517,7 @@ public class Board extends JFrame implements ActionListener {
 	    eastEastPanel.removeAll();
 	    northEastPanel.removeAll();
 	    
-	    saveButton.setText(playerName);
+	    saveButton.setText("SAVE");
 	    saveButton.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
 	    saveButton.setPreferredSize(new Dimension(400, 50));
 	    saveButton.setMaximumSize(new Dimension(200, 50));
