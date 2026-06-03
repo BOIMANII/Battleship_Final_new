@@ -927,14 +927,17 @@ public class Board extends JFrame implements ActionListener {
 					// ship there)
 					hit++;
 					Ship ship = findShip(guess, false);
+					
+					
 					ship.incrementHitCount();
 					ship.evaluateSunk();
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
 						sunk++;
-
+						
 						String internalName = ship.getName().toUpperCase();
 						String displayedName = internalName; // Default fallback if no match is found
+					
 						System.out.println(ship.getName());
 						System.out.println(internalName);
 						if (internalName.equals("VENATOR")) { 
@@ -990,11 +993,12 @@ public class Board extends JFrame implements ActionListener {
 
 		// Have the computer generate a valid guess - if not valid, it keeps guessing
 		// until a valid one is found
+		ComplexAI complex = new ComplexAI();
 		boolean valid = false;
 		while (valid == false) {
 			// Generate a guess
 			if (useComplex == true) {
-				ComplexAI complex = new ComplexAI();
+				
 				guess = complex.guess();
 			} else {
 				SimpleAI simple = new SimpleAI();
@@ -1023,7 +1027,9 @@ public class Board extends JFrame implements ActionListener {
 				
 				String enemyInternalName = ship.getName().toUpperCase();
 				String enemyDisplayedName = enemyInternalName;
-				
+				if(useComplex) {
+					complex.sunkList.add(enemyInternalName);
+				}
 				if (enemyInternalName.equals("VENATOR")) {
 					enemyDisplayedName = "VENATOR-CLASS STAR DESTROYER";
 				} else if (enemyInternalName.equals("ACCLIMATOR")) { 
