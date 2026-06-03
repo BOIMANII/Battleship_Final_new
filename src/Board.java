@@ -266,9 +266,7 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiSetup() {
-<<<<<<< HEAD
-		SoundPlayer.playMusic("musicSetup.wav");
-=======
+//		SoundPlayer.playMusic("musicSetup.wav");
 	    background.setLayout(new GridLayout(1, 2));
 	    
 	    westGrid.setPreferredSize(new Dimension(800,800));
@@ -318,7 +316,6 @@ public class Board extends JFrame implements ActionListener {
 	    textVenator.setForeground(Color.yellow);
 	    textVenator.setOpaque(true);
 	    
->>>>>>> b29a1cb9e84a662ad6329e6f051eb2710b39d08b
 		background.setLayout(new GridLayout(1, 2));
 
 		westGrid.setPreferredSize(new Dimension(800, 800));
