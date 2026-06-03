@@ -325,6 +325,7 @@ public class Board extends JFrame implements ActionListener {
 		toggleHorizontal.setBackground(Color.black);
 		toggleHorizontal.setText("Set Horizontal");
 		toggleHorizontal.setForeground(Color.yellow);
+		toggleHorizontal.addActionListener(this);
 
 		java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
 
@@ -871,7 +872,7 @@ public class Board extends JFrame implements ActionListener {
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
 						sunk++;
-						JOptionPane.showMessageDialog(null, "YOU SUNK A " + ship.getName(), "CONGRATULATIONS",
+						JOptionPane.showMessageDialog(null, "YOU SUNK A " + ship.getName().toUpperCase(), "CONGRATULATIONS",
 								JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 
 						/*
@@ -943,7 +944,7 @@ public class Board extends JFrame implements ActionListener {
 			ship.evaluateSunk();
 			// If the computer's guess sinks player's ship
 			if (ship.getSunk()) {
-				JOptionPane.showMessageDialog(null, "THE ENEMY SUNK A " + ship.getName(), "BOOO",
+				JOptionPane.showMessageDialog(null, "THE ENEMY SUNK A " + ship.getName().toUpperCase(), "BOOO",
 						JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 				/*
 				 * GUI notes:
