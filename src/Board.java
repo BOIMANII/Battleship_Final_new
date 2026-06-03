@@ -293,6 +293,7 @@ public class Board extends JFrame implements ActionListener{
 	    eastEastPanel.setOpaque(false);
 	    
 	    toggleHorizontal.setPreferredSize(new Dimension(200,50));
+	    toggleHorizontal.addActionListener(this);
 	    toggleHorizontal.setBackground(Color.black);
 	    toggleHorizontal.setText("Set Horizontal");
 	    toggleHorizontal.setForeground(Color.yellow);
@@ -680,6 +681,10 @@ public class Board extends JFrame implements ActionListener{
 			}
 		}
 		
+		System.out.println(e.getSource().getClass());
+		System.out.println(e.getSource() == toggleHorizontal);
+		System.out.println(isPlace);
+		
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)
 		if (isPlace == true) {
@@ -791,6 +796,7 @@ public class Board extends JFrame implements ActionListener{
 		// Checking the box means horizontal is used
 		} else if (toggleHorizontal == e.getSource()) {
 			useHorizontal = toggleHorizontal.isSelected();
+			System.out.println("hey");
 		// Any other selection would be on the computer's board, which would be a guess
 		} else {
 			int[] guess = getGrid((JButton) e.getSource());
