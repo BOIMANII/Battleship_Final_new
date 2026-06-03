@@ -998,7 +998,7 @@ public class Board extends JFrame implements ActionListener {
 			// If player lost, print loss message and do nothing else
 		} else if (humanPlayer.getHasLost()) {
 			isOver = true;
-
+			
 			/*
 			 * GUI notes:
 			 * 
@@ -1007,7 +1007,7 @@ public class Board extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "YOU LOST AND GOT BLOWN UP", "BOOO",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-
+		
 		if (isOver == true) {
 			/*
 			 * GUI notes:
