@@ -44,13 +44,6 @@ public class GameLauncher implements ActionListener {
 
 	public static void main(String[] args) {
 
-<<<<<<< HEAD
-		// EndScreen endScreen = new EndScreen();
-=======
-
-//		EndScreen endScreen = new EndScreen();
-
->>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 		GameLauncher engine = new GameLauncher();
 	}
 
@@ -79,14 +72,9 @@ public class GameLauncher implements ActionListener {
 		displaceTitle = new JPanel();// To offset the title and to potentialy hold other buttons
 
 		frame.setSize(frameX, frameY);
-		frame.setResizable(true);
 
-		background.setSize(frame.getWidth(), frame.getHeight());
+		background.setBounds(0, 0, frameX, frameY);
 		background.setLayout(new BorderLayout());
-		BackgroundPanel background = new BackgroundPanel(backgroundI);
-		background.setLayout(new BorderLayout());
-		frame.setContentPane(background);
-
 
 		launchEasyButton.addActionListener(this);
 		launchEasyButton.setPreferredSize(buttonSize);
@@ -125,7 +113,7 @@ public class GameLauncher implements ActionListener {
 		displaceTitle.setPreferredSize(new Dimension(370, 50));
 		displaceTitle.setOpaque(false);
 
-//		frame.add(background);
+		frame.add(background);
 		background.add(westPanel, BorderLayout.WEST);
 		background.add(northPanel, BorderLayout.NORTH);
 		westPanel.add(nameField);
@@ -136,7 +124,7 @@ public class GameLauncher implements ActionListener {
 		northPanel.add(title);
 		northPanel.add(displaceTitle);
 
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(3);
 	}
@@ -167,8 +155,7 @@ public class GameLauncher implements ActionListener {
 			difficultyNormal = false;
 			name = nameField.getText();
 			try {
-		
-				new Board(name, true, false);
+				board = new Board(name, true, false);
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -180,8 +167,7 @@ public class GameLauncher implements ActionListener {
 			difficultyNormal = true;
 			name = nameField.getText();
 			try {
-			
-				new Board(name, false, false);
+				board = new Board(name, false, false);
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
