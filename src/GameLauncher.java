@@ -45,7 +45,7 @@ public class GameLauncher implements ActionListener {
 	public static void main(String[] args) {
 
 		EndScreen endScreen = new EndScreen();
-		//GameLauncher engine = new GameLauncher();
+		GameLauncher engine = new GameLauncher();
 	}
 
 	/**
@@ -157,7 +157,6 @@ public class GameLauncher implements ActionListener {
 			name = nameField.getText();
 			try {
 				board = new Board(name, true, false);
-				new Board(name, true, false);
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -170,7 +169,6 @@ public class GameLauncher implements ActionListener {
 			name = nameField.getText();
 			try {
 				board = new Board(name, false, false);
-				new Board(name, false, false);
 			} catch (FileNotFoundException | InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

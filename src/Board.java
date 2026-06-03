@@ -158,9 +158,6 @@ public class Board extends JFrame implements ActionListener{
 		    }
 		}
 
-		playerCellButtons[0][0].setBackground(Color.green);
-		playerCellButtons[1][0].setBackground(Color.red);
-		playerCellButtons[0][1].setBackground(Color.black);
 		
 		// Board Logic
 		if (isLoad == false) {
