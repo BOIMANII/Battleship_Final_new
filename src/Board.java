@@ -256,7 +256,6 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiSetup() {
-<<<<<<< HEAD
 	    background.setLayout(new GridLayout(1, 2));
 	    
 	    westGrid.setPreferredSize(new Dimension(800,800));
@@ -306,8 +305,6 @@ public class Board extends JFrame implements ActionListener {
 	    textVenator.setForeground(Color.yellow);
 	    textVenator.setOpaque(true);
 	    
-=======
->>>>>>> e347aafc4046a763bada23b5a9dd14ae7ccbb80a
 		background.setLayout(new GridLayout(1, 2));
 
 		westGrid.setPreferredSize(new Dimension(800, 800));
@@ -770,11 +767,7 @@ public class Board extends JFrame implements ActionListener {
 				break;
 			}
 		}
-<<<<<<< HEAD
 		
-=======
-
->>>>>>> e347aafc4046a763bada23b5a9dd14ae7ccbb80a
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)
 		if (isPlace == true) {
@@ -954,6 +947,7 @@ public class Board extends JFrame implements ActionListener {
 				// After player's guess, computer will guess (this makes up one turn)
 				computerGuess();
 				checkWin();
+				
 			}
 		}
 	}
