@@ -55,7 +55,9 @@ public class Board extends JFrame implements ActionListener{
 	JPanel eastEastPanel;
 	JLabel nameLabel;
 	JOptionPane invalidPlacment; 
-	
+	JLabel computerNamePlate;
+
+	ImageIcon iconShipBoom;
 	ImageIcon iconVenator; // Cruiser 5 length
 	ImageIcon iconAcclamator; // Battleship 4 Length
 	ImageIcon iconArquitens; // Destoryer 3 Length
@@ -66,6 +68,11 @@ public class Board extends JFrame implements ActionListener{
 	JLabel textArquitens;
 	JLabel textInterceptor;
 
+	JPanel toggelPanel;
+    JPanel westBottomPanel;
+    JPanel westSpacer;
+    JPanel westNumbersGrid;
+    JPanel namePanel;
 	
 	
 	
@@ -112,15 +119,22 @@ public class Board extends JFrame implements ActionListener{
 		toggleHorizontal = new JCheckBox();
 		computerCells = new JButton[10][10];
 		invalidPlacment = new JOptionPane();
+		computerNamePlate = new JLabel();
+		toggelPanel = new JPanel();
+		westBottomPanel = new JPanel(new BorderLayout());
+	     westSpacer = new JPanel();
+	     westNumbersGrid = new JPanel(new GridLayout(1, 10));
+	     namePanel = new JPanel();
 		
 		textVenator = new JLabel();
 		textAcclamator = new JLabel();
 		textArquitens = new JLabel();
 		textInterceptor = new JLabel();
 		
-		iconVenator     = scaleImage("iconVenator.png", 250, 100);
-		iconAcclamator  = scaleImage("iconAcclamator.png", 250, 100);
-		iconArquitens   = scaleImage("iconArquitens.png", 250, 100);
+		iconShipBoom = new ImageIcon("iconShipBoom.png");
+		iconVenator = scaleImage("iconVenator.png", 250, 100);// Couldnet get images to scale to i asked ai
+		iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
+		iconArquitens = scaleImage("iconArquitens.png", 250, 100);
 		iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
 		
 		shipPlaceImage[0] = new JLabel(iconVenator);
@@ -244,154 +258,236 @@ public class Board extends JFrame implements ActionListener{
 	}
 	
 	public void guiSetup() {
-		background.setLayout(new GridLayout(1, 2));
-		
-		westGrid.setPreferredSize(new Dimension(800,800));
-		westGrid.setOpaque(false);
-		westGrid.setLayout(new GridLayout(10,10));
-		//westGrid.setBorder(BorderFactory.createEmptyBorder(0,50,50,25));
-		
-		eastGrid.setPreferredSize(new Dimension(800,800));
-		eastGrid.setOpaque(false);
-		eastGrid.setLayout(new GridLayout(1,2));
-		//eastGrid.setBorder(BorderFactory.createEmptyBorder(0,25,50,50));
-		
-		westPanel.setPreferredSize(new Dimension(1000,1000));
-		westPanel.setOpaque(false);
-		westPanel.setLayout(new BorderLayout());
-		
-		northWestPanel.setPreferredSize(new Dimension(1000,100));
-		northWestPanel.setOpaque(false);
-		
-		northEastPanel.setPreferredSize(new Dimension(1000,100));
-		northEastPanel.setOpaque(false);
-		
-		eastPanel.setPreferredSize(new Dimension(1000,1000));
-		eastPanel.setOpaque(false);
-		eastPanel.setLayout(new BorderLayout());
-				
-		westEastGrid.setOpaque(false);
-		westEastGrid.setLayout(new GridLayout(4,1, 5, 5));
-		
-		eastEastGrid.setOpaque(false);
-		eastEastGrid.setLayout(new GridLayout(4,1, 5, 5));
-		
-		eastEastPanel.setPreferredSize(new Dimension(100,1000));
-		eastEastPanel.setOpaque(false);
-		
-		westWestPanel.setPreferredSize(new Dimension(100,1000));
-		westWestPanel.setOpaque(false);
-		
-		toggleHorizontal.setPreferredSize(new Dimension(200,50));
-		toggleHorizontal.setBackground(Color.black);
-		toggleHorizontal.setText("Set Horizontal");
-		toggleHorizontal.setForeground(Color.yellow);
-		
-		java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
-		
-		textVenator.setText("<html><center>Venator: 1<br>Length: 5</center></html>");// Ai Acceleration 
-		textVenator.setFont(shipFont);
-		textVenator.setHorizontalAlignment(JLabel.CENTER);
-		textVenator.setBackground(Color.black);
-		textVenator.setForeground(Color.yellow);
-		textVenator.setOpaque(true);
+	    background.setLayout(new GridLayout(1, 2));
+	    
+	    westGrid.setPreferredSize(new Dimension(800,800));
+	    westGrid.setOpaque(false);
+	    westGrid.setLayout(new GridLayout(10,10));
+	    
+	    eastGrid.setPreferredSize(new Dimension(800,800));
+	    eastGrid.setOpaque(false);
+	    eastGrid.setLayout(new GridLayout(1,2));
+	    
+	    westPanel.setPreferredSize(new Dimension(1000,1000));
+	    westPanel.setOpaque(false);
+	    westPanel.setLayout(new BorderLayout());
+	    
+	    northWestPanel.setPreferredSize(new Dimension(1000, 100)); 
+	    northWestPanel.setOpaque(false);
+	    northWestPanel.setLayout(new BorderLayout()); 
+	    
+	    northEastPanel.setPreferredSize(new Dimension(1000, 100));
+	    northEastPanel.setOpaque(false);
+	    
+	    eastPanel.setPreferredSize(new Dimension(1000,1000));
+	    eastPanel.setOpaque(false);
+	    eastPanel.setLayout(new BorderLayout());
+	            
+	    westEastGrid.setOpaque(false);
+	    westEastGrid.setLayout(new GridLayout(4,1, 5, 5));
+	    
+	    eastEastGrid.setOpaque(false);
+	    eastEastGrid.setLayout(new GridLayout(4,1, 5, 5));
+	    
+	    eastEastPanel.setPreferredSize(new Dimension(100,1000));
+	    eastEastPanel.setOpaque(false);
+	    
+	    toggleHorizontal.setPreferredSize(new Dimension(200,50));
+	    toggleHorizontal.setBackground(Color.black);
+	    toggleHorizontal.setText("Set Horizontal");
+	    toggleHorizontal.setForeground(Color.yellow);
+	    
+	    java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
+	    
+	    textVenator.setText("<html><center>Venator: 1<br>Length: 5</center></html>"); // HTML was ai acceleration 
+	    textVenator.setFont(shipFont);
+	    textVenator.setHorizontalAlignment(JLabel.CENTER);
+	    textVenator.setBackground(Color.black);
+	    textVenator.setForeground(Color.yellow);
+	    textVenator.setOpaque(true);
 
-		textAcclamator.setText("<html><center>Acclamator: 1<br>Length: 4</center></html>");// Ai Acceleration 
-		textAcclamator.setFont(shipFont);
-		textAcclamator.setHorizontalAlignment(JLabel.CENTER);
-		textAcclamator.setBackground(Color.black);
-		textAcclamator.setForeground(Color.yellow);
-		textAcclamator.setOpaque(true);
+	    textAcclamator.setText("<html><center>Acclamator: 1<br>Length: 4</center></html>"); 
+	    textAcclamator.setFont(shipFont);
+	    textAcclamator.setHorizontalAlignment(JLabel.CENTER);
+	    textAcclamator.setBackground(Color.black);
+	    textAcclamator.setForeground(Color.yellow);
+	    textAcclamator.setOpaque(true);
 
-		textArquitens.setText("<html><center>Arquitens: 1<br>Length: 3</center></html>");// Ai Acceleration 
-		textArquitens.setFont(shipFont);
-		textArquitens.setHorizontalAlignment(JLabel.CENTER);
-		textArquitens.setBackground(Color.black);
-		textArquitens.setForeground(Color.yellow);
-		textArquitens.setOpaque(true);
+	    textArquitens.setText("<html><center>Arquitens: 1<br>Length: 3</center></html>"); 
+	    textArquitens.setFont(shipFont);
+	    textArquitens.setHorizontalAlignment(JLabel.CENTER);
+	    textArquitens.setBackground(Color.black);
+	    textArquitens.setForeground(Color.yellow);
+	    textArquitens.setOpaque(true);
 
-		textInterceptor.setText("<html><center>Interceptor: 1<br>Length: 2</center></html>");// Ai Acceleration 
-		textInterceptor.setFont(shipFont);
-		textInterceptor.setHorizontalAlignment(JLabel.CENTER);
-		textInterceptor.setBackground(Color.black);
-		textInterceptor.setForeground(Color.yellow);
-		textInterceptor.setOpaque(true);
-		
-		nameLabel.setText(playerName);
-		nameLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
-		nameLabel.setPreferredSize(new Dimension(200,50));
-		nameLabel.setMaximumSize(new Dimension(200,50));
-		nameLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-		nameLabel.setBackground(Color.black);
-		nameLabel.setForeground(Color.yellow);
-		nameLabel.setHorizontalAlignment(JLabel.CENTER);
-		nameLabel.setOpaque(true); 
-		
-		this.setSize(2000,1000);
-		this.setDefaultCloseOperation(3);
-		this.setResizable(false);
-		
-		this.add(background);
-		
-		background.add(westPanel);
-		background.add(eastPanel);
-		
-		westPanel.add(westGrid, BorderLayout.CENTER);
-		westPanel.add(northWestPanel, BorderLayout.NORTH);
-		westPanel.add(westWestPanel, BorderLayout.WEST);
-		
-		eastPanel.add(eastEastPanel, BorderLayout.EAST);
-		eastPanel.add(northEastPanel, BorderLayout.NORTH);
-		
-		northWestPanel.add(nameLabel);
-		
-		eastPanel.add(eastGrid);
-		eastGrid.add(westEastGrid);
-		eastGrid.add(eastEastGrid);
-		
-		eastEastGrid.add(textVenator);
-		eastEastGrid.add(textAcclamator);
-		eastEastGrid.add(textArquitens);
-		eastEastGrid.add(textInterceptor);
-		
-		northEastPanel.add(toggleHorizontal);
+	    textInterceptor.setText("<html><center>Interceptor: 1<br>Length: 2</center></html>"); 
+	    textInterceptor.setFont(shipFont);
+	    textInterceptor.setHorizontalAlignment(JLabel.CENTER);
+	    textInterceptor.setBackground(Color.black);
+	    textInterceptor.setForeground(Color.yellow);
+	    textInterceptor.setOpaque(true);
+	    
+	    nameLabel.setText(playerName);
+	    nameLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+	    nameLabel.setPreferredSize(new Dimension(200,50));
+	    nameLabel.setMaximumSize(new Dimension(200,50));
+	    nameLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+	    nameLabel.setBackground(Color.black);
+	    nameLabel.setForeground(Color.yellow);
+	    nameLabel.setHorizontalAlignment(JLabel.CENTER);
+	    nameLabel.setOpaque(true); 
+	     
+	    computerNamePlate.setText("SEPARATIST CIS");
+	    computerNamePlate.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+	    computerNamePlate.setPreferredSize(new Dimension(200,50));
+	    computerNamePlate.setMaximumSize(new Dimension(200,50));
+	    computerNamePlate.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+	    computerNamePlate.setBackground(Color.black);
+	    computerNamePlate.setForeground(Color.yellow);
+	    computerNamePlate.setHorizontalAlignment(JLabel.CENTER);
+	    computerNamePlate.setOpaque(true); 
+	    
+	    westWestPanel.setPreferredSize(new Dimension(50, 800)); 
+	    westWestPanel.setOpaque(false);
+	    westWestPanel.setLayout(new GridLayout(10, 1));
+	    for (int i = 0; i < 10; i++) {
+	        JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+	        label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
+	        label.setForeground(Color.green);
+	        westWestPanel.add(label);
+	    }
+	    
+	    
+	    namePanel.setOpaque(false);
+	    namePanel.add(nameLabel);
+	    northWestPanel.add(namePanel, BorderLayout.NORTH);
+	    
+	    
 
-		for (int y = 0; y < 4; y++) {
-		    westEastGrid.add(shipPlaceImage[y]);
-		    shipPlaceImage[y].setBackground(Color.black);
-		    shipPlaceImage[y].setOpaque(true);
-		}
-		
-		for (int i = 0; i < 10; i++) {
-		    for (int j = 0; j < 10; j++) {
-		        westGrid.add(playerCellButtons[i][j]);
-		    }
-		}
+	    westNumbersGrid.setOpaque(false);
+	    for (int i = 0; i < 10; i++) {
+	        JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+	        label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
+	        label.setForeground(Color.green);
+	        westNumbersGrid.add(label);
+	    }
+	    
+	   
+	    westSpacer.setPreferredSize(new Dimension(50, 50)); 
+	    westSpacer.setOpaque(false);
+	    
+	    
+	    westBottomPanel.setOpaque(false);
+	    westBottomPanel.add(westSpacer, BorderLayout.WEST);
+	    westBottomPanel.add(westNumbersGrid, BorderLayout.CENTER);
+	    
+	    northWestPanel.add(westBottomPanel, BorderLayout.SOUTH);
+	    
+	    this.setSize(2000,1000);
+	    this.setDefaultCloseOperation(3);
+	    this.setResizable(false);
+	    
+	    this.add(background);
+	    
+	    background.add(westPanel);
+	    background.add(eastPanel);
+	    
+	    westPanel.add(westGrid, BorderLayout.CENTER);
+	    westPanel.add(northWestPanel, BorderLayout.NORTH);
+	    westPanel.add(westWestPanel, BorderLayout.WEST);
+	    
+	    eastPanel.add(eastEastPanel, BorderLayout.EAST);
+	    eastPanel.add(northEastPanel, BorderLayout.NORTH);
+	    
+	    eastPanel.add(eastGrid, BorderLayout.CENTER);
+	    eastGrid.add(westEastGrid);
+	    eastGrid.add(eastEastGrid);
+	    
+	    eastEastGrid.add(textVenator);
+	    eastEastGrid.add(textAcclamator);
+	    eastEastGrid.add(textArquitens);
+	    eastEastGrid.add(textInterceptor);
+	    
+	    
+	    toggelPanel.setOpaque(false);
+	    toggelPanel.add(toggleHorizontal);
+	    northEastPanel.setLayout(new BorderLayout());
+	    northEastPanel.add(toggelPanel, BorderLayout.NORTH);
 
-		this.setVisible(true);
-		updateGrids();
+	    for (int y = 0; y < 4; y++) {
+	        westEastGrid.add(shipPlaceImage[y]);
+	        shipPlaceImage[y].setBackground(Color.black);
+	        shipPlaceImage[y].setOpaque(true);
+	    }
+	    
+	    for (int i = 0; i < 10; i++) {
+	        for (int j = 0; j < 10; j++) {
+	            westGrid.add(playerCellButtons[i][j]);
+	        }
+	    }
+
+	    this.setVisible(true);
+	    updateGrids();
 	}
-	
+
 	public void guiChange() {
-		eastPanel.removeAll();
-		eastGrid.removeAll();
-		eastEastPanel.removeAll();
-		northEastPanel.removeAll();
-		
-		eastGrid.setPreferredSize(new Dimension(800,800));
-		eastGrid.setLayout(new GridLayout(10,10));
-		
-		eastPanel.add(northEastPanel, BorderLayout.NORTH);
-		eastPanel.add(eastEastPanel, BorderLayout.EAST);
-		eastPanel.add(eastGrid, BorderLayout.CENTER);
-		
-		for (int i = 0; i < 10; i++) {
-		    for (int j = 0; j < 10; j++) {
-		    	eastGrid.add(computerCells[i][j]);
-		        playerCellButtons[i][j].setEnabled(false);
-		        
-		    }
-		}
+	    eastPanel.removeAll();
+	    eastGrid.removeAll();
+	    eastEastPanel.removeAll();
+	    northEastPanel.removeAll();
+	    
+	    eastGrid.setPreferredSize(new Dimension(800,800));
+	    eastGrid.setLayout(new GridLayout(10,10));
+	    
+	    eastEastPanel.setPreferredSize(new Dimension(50, 800)); 
+	    eastEastPanel.setLayout(new GridLayout(10, 1));
+	    for (int i = 0; i < 10; i++) {
+	        JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+	        label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
+	        label.setForeground(Color.green);
+	        eastEastPanel.add(label);
+	    }
+	    
+	    northEastPanel.setLayout(new BorderLayout());
+	    
+	    JPanel compNameWrapper = new JPanel();
+	    compNameWrapper.setOpaque(false);
+	    compNameWrapper.add(computerNamePlate);
+	    northEastPanel.add(compNameWrapper, BorderLayout.NORTH);
+	    
+	    JPanel eastNumbersGrid = new JPanel(new GridLayout(1, 10));
+	    eastNumbersGrid.setOpaque(false);
+	    for (int i = 0; i < 10; i++) {
+	        JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+	        label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
+	        label.setForeground(Color.green);
+	        eastNumbersGrid.add(label);
+	    }
+	    
+	    JPanel eastSpacer = new JPanel();
+	    eastSpacer.setPreferredSize(new Dimension(50, 50)); 
+	    eastSpacer.setOpaque(false);
+	    
+	    JPanel eastBottomWrapper = new JPanel(new BorderLayout());
+	    eastBottomWrapper.setOpaque(false);
+	    eastBottomWrapper.add(eastSpacer, BorderLayout.EAST); 
+	    eastBottomWrapper.add(eastNumbersGrid, BorderLayout.CENTER);
+	    
+	    northEastPanel.add(eastBottomWrapper, BorderLayout.SOUTH);
+	    
+	    eastPanel.add(northEastPanel, BorderLayout.NORTH);
+	    eastPanel.add(eastEastPanel, BorderLayout.EAST);
+	    eastPanel.add(eastGrid, BorderLayout.CENTER);
+	    
+	    for (int i = 0; i < 10; i++) {
+	        for (int j = 0; j < 10; j++) {
+	            eastGrid.add(computerCells[i][j]);
+	            playerCellButtons[i][j].setEnabled(false);
+	        }
+	    }
+	    
+	    eastPanel.revalidate();
+	    eastPanel.repaint();
 	}
 	
 	public int[][] toCoords(String[] coordinates) {
@@ -701,6 +797,8 @@ public class Board extends JFrame implements ActionListener{
 			
 			// If player already guessed grid, so inform them this selection is invalid
 			if (grid[guess[0]][guess[1]].isPlayerGuessed()) {
+				JOptionPane.showMessageDialog(null, "Already Guessed", "ERROR", JOptionPane.WARNING_MESSAGE);
+
 				/*
 				 * GUI notes:
 				 * 
@@ -722,6 +820,8 @@ public class Board extends JFrame implements ActionListener{
 					ship.evaluateSunk();
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
+						JOptionPane.showMessageDialog(null, "YOU SUNK A " + ship.getName(), "CONGRATULATIONS", JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
+
 						/*
 						 * GUI notes:
 						 * 
@@ -794,6 +894,7 @@ public class Board extends JFrame implements ActionListener{
 			ship.evaluateSunk();
 			// If the computer's guess sinks player's ship
 			if (ship.getSunk()) {
+				JOptionPane.showMessageDialog(null, "THE ENEMY SUNK A " + ship.getName(), "BOOO", JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 				/*
 				 * GUI notes:
 				 * 
@@ -836,6 +937,7 @@ public class Board extends JFrame implements ActionListener{
 			 * 
 			 * Popup victory message (include scoreboard)
 			 */
+			
 		// If player lost, print loss message and do nothing else
 		} else if (humanPlayer.getHasLost()) {
 			isOver = true;

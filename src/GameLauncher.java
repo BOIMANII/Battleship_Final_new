@@ -32,7 +32,6 @@ public class GameLauncher implements ActionListener {
 	private JButton launchHardButton;
 	private JButton loadButton;
 	private JButton infoButton;
-	private JButton playAgain; // Unused for now
 
 	private int frameX = 960;
 	private int frameY = 540;
@@ -45,7 +44,8 @@ public class GameLauncher implements ActionListener {
 
 	public static void main(String[] args) {
 
-		GameLauncher engine = new GameLauncher();
+		EndScreen endScreen = new EndScreen();
+		//GameLauncher engine = new GameLauncher();
 	}
 
 	/**
