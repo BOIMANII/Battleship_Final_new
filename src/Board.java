@@ -518,7 +518,7 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiChange() {
-		SoundPlayer.playMusic("musicBattle.wav");
+//		SoundPlayer.playMusic("musicBattle.wav");
 
 	    eastPanel.removeAll();
 	    eastGrid.removeAll();
