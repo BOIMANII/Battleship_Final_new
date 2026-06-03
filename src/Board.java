@@ -872,7 +872,22 @@ public class Board extends JFrame implements ActionListener {
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
 						sunk++;
-						JOptionPane.showMessageDialog(null, "YOU SUNK A " + ship.getName().toUpperCase(), "CONGRATULATIONS",
+
+						String internalName = ship.getName().toUpperCase();
+						String displayedName = internalName; // Default fallback if no match is found
+						System.out.println(ship.getName());
+						System.out.println(internalName);
+						if (internalName.equals("VENATOR")) { 
+							displayedName = "THE MALEVOLENCE";
+						} else if (internalName.equals("ACCLIMATOR")) {
+							displayedName = "PROVIDENCE-CLASS DREADNOUGHT";
+						} else if (internalName.equals("ARQUINTIS")) {
+							displayedName = "RECUSANT-CLASS LIGHT DESTROYER";
+						} else if (internalName.equals("INTERCEPTOR")) {
+							displayedName = "HYENA-CLASS BOMBER";
+						}
+
+						JOptionPane.showMessageDialog(null, "YOU SUNK A " + displayedName, "CONGRATULATIONS",
 								JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 
 						/*
