@@ -99,7 +99,7 @@ public class Board extends JFrame implements ActionListener {
 	 * @throws FileNotFoundException
 	 */
 	public Board(String playerName, boolean useComplex, boolean isLoad)
-			throws InterruptedException, FileNotFoundException {
+			throws InterruptedException {
 		
 		// GUI Components
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
@@ -177,22 +177,14 @@ public class Board extends JFrame implements ActionListener {
 					grid[i][j] = new Cell(i, j);
 				}
 			}
-			/*
-			 * GUI note:
-			 * 
-			 * Display the ships and stuff on the right here
-			 * 
-			 * Also there should be 2 length 3 ships
-			 */
+			
 			guiSetup();
 			humanPlayer.setName(playerName);
 
-		} else {
+		} else { // TODO
 			try {
 				File humanPlayerFile = new File(playerName + "HumanPlayer.txt");
 				Scanner humanScanner = new Scanner(humanPlayerFile);
-
-				humanPlayer.setName(playerName);
 
 				for (int i = 0; i < 5; i++) {
 					String positions = "";
@@ -841,7 +833,7 @@ public class Board extends JFrame implements ActionListener {
 			// TODO Save stuff
 			try {
 				// Save humanPlayer info
-				PrintWriter writer = new PrintWriter(humanPlayer.getName() + "HumanPlayer.txt");
+				PrintWriter writer = new PrintWriter(playerName + "HumanPlayer.txt");
 				// Save ship positions, in (#,#) - (#,#) - (#,#)... format - one row per ship
 				// for positions
 				// The save the hitCount right under the same ship's positions - all other
@@ -867,7 +859,7 @@ public class Board extends JFrame implements ActionListener {
 				writer.close();
 
 				// Save computerPlayer info
-				writer = new PrintWriter(humanPlayer.getName() + "ComputerPlayer.txt");
+				writer = new PrintWriter(playerName + "ComputerPlayer.txt");
 				// Save ship positions, as above
 				for (int i = 0; i < computerPlayer.getShips().size(); i++) {
 					String positions = "";
@@ -888,7 +880,7 @@ public class Board extends JFrame implements ActionListener {
 				}
 				writer.close();
 
-				writer = new PrintWriter(humanPlayer.getName() + "BoardGrid.txt");
+				writer = new PrintWriter(playerName + "BoardGrid.txt");
 				// First save guesses and useComplex
 				writer.println(guesses);
 				writer.println(useComplex);
