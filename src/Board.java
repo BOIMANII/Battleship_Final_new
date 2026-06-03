@@ -561,7 +561,6 @@ public class Board extends JFrame implements ActionListener{
 		    JButton clickedButton = (JButton) e.getSource();
 
 		    if (clickedButton.getClientProperty("row") != null) {
-		    	isPlace = true;
 		    	
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
@@ -735,7 +734,7 @@ public class Board extends JFrame implements ActionListener{
 					}
 				}
 				
-				// Update the grids after the guess
+				// Update the grids after the guess, check to see if player won
 				updateGrids();
 				checkWin();
 				
