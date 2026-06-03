@@ -158,9 +158,6 @@ public class Board extends JFrame implements ActionListener{
 		    }
 		}
 
-		playerCellButtons[0][0].setBackground(Color.green);
-		playerCellButtons[1][0].setBackground(Color.red);
-		playerCellButtons[0][1].setBackground(Color.black);
 		
 		// Board Logic
 		if (isLoad == false) {
@@ -657,7 +654,6 @@ public class Board extends JFrame implements ActionListener{
 		    JButton clickedButton = (JButton) e.getSource();
 
 		    if (clickedButton.getClientProperty("row") != null) {
-		    	isPlace = true;
 		    	
 		        int row = (int) clickedButton.getClientProperty("row");
 		        int col = (int) clickedButton.getClientProperty("col");
@@ -835,7 +831,7 @@ public class Board extends JFrame implements ActionListener{
 					}
 				}
 				
-				// Update the grids after the guess
+				// Update the grids after the guess, check to see if player won
 				updateGrids();
 				checkWin();
 				
