@@ -247,7 +247,58 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiSetup() {
+<<<<<<< HEAD
+	    background.setLayout(new GridLayout(1, 2));
+	    
+	    westGrid.setPreferredSize(new Dimension(800,800));
+	    westGrid.setOpaque(false);
+	    westGrid.setLayout(new GridLayout(10,10));
+	    
+	    eastGrid.setPreferredSize(new Dimension(800,800));
+	    eastGrid.setOpaque(false);
+	    eastGrid.setLayout(new GridLayout(1,2));
+	    
+	    westPanel.setPreferredSize(new Dimension(1000,1000));
+	    westPanel.setOpaque(false);
+	    westPanel.setLayout(new BorderLayout());
+	    
+	    northWestPanel.setPreferredSize(new Dimension(1000, 100)); 
+	    northWestPanel.setOpaque(false);
+	    northWestPanel.setLayout(new BorderLayout()); 
+	    
+	    northEastPanel.setPreferredSize(new Dimension(1000, 100));
+	    northEastPanel.setOpaque(false);
+	    
+	    eastPanel.setPreferredSize(new Dimension(1000,1000));
+	    eastPanel.setOpaque(false);
+	    eastPanel.setLayout(new BorderLayout());
+	            
+	    westEastGrid.setOpaque(false);
+	    westEastGrid.setLayout(new GridLayout(4,1, 5, 5));
+	    
+	    eastEastGrid.setOpaque(false);
+	    eastEastGrid.setLayout(new GridLayout(4,1, 5, 5));
+	    
+	    eastEastPanel.setPreferredSize(new Dimension(100,1000));
+	    eastEastPanel.setOpaque(false);
+	    
+	    toggleHorizontal.setPreferredSize(new Dimension(200,50));
+	    toggleHorizontal.addActionListener(this);
+	    toggleHorizontal.setBackground(Color.black);
+	    toggleHorizontal.setText("Set Horizontal");
+	    toggleHorizontal.setForeground(Color.yellow);
+	    
+	    java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
+	    
+	    textVenator.setText("<html><center>Venator: 1<br>Length: 5</center></html>"); // HTML was ai acceleration 
+	    textVenator.setFont(shipFont);
+	    textVenator.setHorizontalAlignment(JLabel.CENTER);
+	    textVenator.setBackground(Color.black);
+	    textVenator.setForeground(Color.yellow);
+	    textVenator.setOpaque(true);
+=======
 		background.setLayout(new GridLayout(1, 2));
+>>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 
 		westGrid.setPreferredSize(new Dimension(800, 800));
 		westGrid.setOpaque(false);
@@ -667,7 +718,15 @@ public class Board extends JFrame implements ActionListener {
 				break;
 			}
 		}
+<<<<<<< HEAD
+		
+		System.out.println(e.getSource().getClass());
+		System.out.println(e.getSource() == toggleHorizontal);
+		System.out.println(isPlace);
+		
+=======
 
+>>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)
 		if (isPlace == true) {
@@ -788,7 +847,12 @@ public class Board extends JFrame implements ActionListener {
 			// Checking the box means horizontal is used
 		} else if (toggleHorizontal == e.getSource()) {
 			useHorizontal = toggleHorizontal.isSelected();
+<<<<<<< HEAD
+			System.out.println("hey");
+		// Any other selection would be on the computer's board, which would be a guess
+=======
 			// Any other selection would be on the computer's board, which would be a guess
+>>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 		} else {
 			int[] guess = getGrid((JButton) e.getSource());
 
