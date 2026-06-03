@@ -63,7 +63,7 @@ public class GameLauncher implements ActionListener {
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
 		loadButton = new JButton("Load Previous");
-		infoButton = new JButton("?");
+		infoButton = new JButton("How to play");
 		buttonSize = new Dimension(180, 50);
 		background = new JLabel(backgroundI);
 		westPanel = new JPanel();

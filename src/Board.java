@@ -100,7 +100,7 @@ public class Board extends JFrame implements ActionListener {
 	 */
 	public Board(String playerName, boolean useComplex, boolean isLoad)
 			throws InterruptedException, FileNotFoundException {
-		this.playerName = playerName;
+		
 		// GUI Components
 		backgroundImage = new ImageIcon("backgroundBoard.jpg");
 		background = new JLabel(backgroundImage);
@@ -161,6 +161,11 @@ public class Board extends JFrame implements ActionListener {
 				computerCells[y][x].putClientProperty("row", y);
 				computerCells[y][x].putClientProperty("col", x);
 			}
+		}
+		if(playerName.equalsIgnoreCase("Enter Name")) {
+			this.playerName = "The Republic";
+		} else {
+			this.playerName = "Commander " + playerName;
 		}
 
 		// Board Logic
@@ -374,6 +379,7 @@ public class Board extends JFrame implements ActionListener {
 		toggleHorizontal.setBackground(Color.black);
 		toggleHorizontal.setText("Set Horizontal");
 		toggleHorizontal.setForeground(Color.yellow);
+		toggleHorizontal.addActionListener(this);
 
 		shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
 
@@ -407,7 +413,7 @@ public class Board extends JFrame implements ActionListener {
 
 		nameLabel.setText(playerName);
 		nameLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
-		nameLabel.setPreferredSize(new Dimension(200, 50));
+		nameLabel.setPreferredSize(new Dimension(400, 50));
 		nameLabel.setMaximumSize(new Dimension(200, 50));
 		nameLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 		nameLabel.setBackground(Color.black);
@@ -494,6 +500,7 @@ public class Board extends JFrame implements ActionListener {
 
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
+				playerCellButtons[i][j].setBorder(BorderFactory.createLineBorder(Color.cyan, 1));
 				westGrid.add(playerCellButtons[i][j]);
 			}
 		}
@@ -683,7 +690,7 @@ public class Board extends JFrame implements ActionListener {
 		// If invalid selection is made by player, popup error message
 		if (isHuman == true && canPlace == false) {
 
-			JOptionPane.showMessageDialog(null, "Invalid Placment", "ERROR", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Sir our ship can not be here", "INVALID", JOptionPane.WARNING_MESSAGE);
 			/*
 			 * GUI note:
 			 * 
@@ -775,7 +782,7 @@ public class Board extends JFrame implements ActionListener {
 			// By how many ships are placed, the length is determined (smallest ships placed
 			// first)
 			int length = shipsPlaced + 2;
-			if (length == 4 || length == 5) {
+			if (length >= 4) {
 				length--;
 			}
 			// Will return an int[][] of grid coordinates and mark on grid[][] cells if
@@ -894,7 +901,7 @@ public class Board extends JFrame implements ActionListener {
 
 			// If player already guessed grid, so inform them this selection is invalid
 			if (grid[guess[0]][guess[1]].isPlayerGuessed()) {
-				JOptionPane.showMessageDialog(null, "Already Guessed", "ERROR", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Sir we already checked this area", "INVALID", JOptionPane.WARNING_MESSAGE);
 
 				/*
 				 * GUI notes:
@@ -920,7 +927,22 @@ public class Board extends JFrame implements ActionListener {
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
 						sunk++;
-						JOptionPane.showMessageDialog(null, "YOU SUNK A " + ship.getName(), "CONGRATULATIONS",
+
+						String internalName = ship.getName().toUpperCase();
+						String displayedName = internalName; // Default fallback if no match is found
+						System.out.println(ship.getName());
+						System.out.println(internalName);
+						if (internalName.equals("VENATOR")) { 
+							displayedName = "THE MALEVOLENCE";
+						} else if (internalName.equals("ACCLIMATOR")) {
+							displayedName = "PROVIDENCE-CLASS DREADNOUGHT";
+						} else if (internalName.equals("ARQUINTIS")) {
+							displayedName = "RECUSANT-CLASS LIGHT DESTROYER";
+						} else if (internalName.equals("INTERCEPTOR")) {
+							displayedName = "HYENA-CLASS BOMBER";
+						}
+
+						JOptionPane.showMessageDialog(null, "YOU DESTROYED A " + displayedName, "CONGRATULATIONS",
 								JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 
 						/*
@@ -993,19 +1015,22 @@ public class Board extends JFrame implements ActionListener {
 			ship.evaluateSunk();
 			// If the computer's guess sinks player's ship
 			if (ship.getSunk()) {
-				JOptionPane.showMessageDialog(null, "THE ENEMY SUNK A " + ship.getName(), "BOOO",
-						JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
-				/*
-				 * GUI notes:
-				 * 
-				 * Popup info thingy that will say "Computer has sunk your ___"
-				 * 
-				 * I'd recommend using ship.getName() and maybe an explosion image to go with
-				 * the popup
-				 * 
-				 * If you want a list of ships each player still has, you adjust the ship count
-				 * here
-				 */
+				
+				String enemyInternalName = ship.getName().toUpperCase();
+				String enemyDisplayedName = enemyInternalName;
+				
+				if (enemyInternalName.equals("VENATOR")) {
+					enemyDisplayedName = "VENATOR-CLASS STAR DESTROYER";
+				} else if (enemyInternalName.equals("ACCLIMATOR")) { 
+					enemyDisplayedName = "ACCLAMATOR-CLASS ASSAULT SHIP"; // Fixed spelling
+				} else if (enemyInternalName.equals("ARQUINTIS")) { 
+					enemyDisplayedName = "ARQUITENS-CLASS COMMAND CRUISER"; // Fixed spelling
+				} else if (enemyInternalName.equals("INTERCEPTOR")) {
+					enemyDisplayedName = "INTERCEPTOR-CLASS CORVETTE";
+				}
+
+				JOptionPane.showMessageDialog(null, "THE ENEMY DESTROYED A " + enemyDisplayedName, "OH NO",
+					JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 			}
 		}
 
@@ -1037,7 +1062,7 @@ public class Board extends JFrame implements ActionListener {
 			 * new list and print
 			 */
 			
-			JOptionPane.showMessageDialog(null, "YOU SUNCK ALL THE CIS SHIPS", "VICTORY",
+			JOptionPane.showMessageDialog(null, "GOOD JOB COMMANDER WE DESTORYED ALL THE CIS SHIP THE SYSTEM IS SAVED", "VICTORY",
 					JOptionPane.INFORMATION_MESSAGE);
 			/*
 			 * GUI notes:
@@ -1048,16 +1073,16 @@ public class Board extends JFrame implements ActionListener {
 			// If player lost, print loss message and do nothing else
 		} else if (humanPlayer.getHasLost()) {
 			isOver = true;
-
+			
 			/*
 			 * GUI notes:
 			 * 
 			 * Popup defeat message
 			 */
-			JOptionPane.showMessageDialog(null, "YOU LOST AND GOT BLOWN UP", "BOOO",
+			JOptionPane.showMessageDialog(null, "SIR WE MUST RETREAT THE CIS HAVE WON THIS SYSTEM", "DEFEAT",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-
+		
 		if (isOver == true) {
 			/*
 			 * GUI notes:
