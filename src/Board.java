@@ -179,13 +179,12 @@ public class Board extends JFrame implements ActionListener {
 			}
 			
 			guiSetup();
-			humanPlayer.setName(playerName);
 
 		} else { // TODO
 			try {
-				File humanPlayerFile = new File(playerName + "HumanPlayer.txt");
+				File humanPlayerFile = new File(this.playerName + "HumanPlayer.txt");
 				Scanner humanScanner = new Scanner(humanPlayerFile);
-
+				
 				for (int i = 0; i < 5; i++) {
 					String positions = "";
 					positions = humanScanner.nextLine();
@@ -201,7 +200,7 @@ public class Board extends JFrame implements ActionListener {
 					humanPlayer.getShips().add(ship);
 				}
 
-				File computerPlayerFile = new File(playerName + "ComputerPlayer.txt");
+				File computerPlayerFile = new File(this.playerName + "ComputerPlayer.txt");
 				Scanner computerScanner = new Scanner(computerPlayerFile);
 
 				for (int i = 0; i < 5; i++) {
@@ -219,11 +218,15 @@ public class Board extends JFrame implements ActionListener {
 					computerPlayer.getShips().add(ship);
 				}
 
-				File boardFile = new File(playerName + "BoardGrid.txt");
+				File boardFile = new File(this.playerName + "BoardGrid.txt");
 				Scanner boardScanner = new Scanner(boardFile);
 
 				guesses = Integer.parseInt(boardScanner.nextLine());
 				useComplex = Boolean.parseBoolean(boardScanner.nextLine());
+				
+				hit = Integer.parseInt(boardScanner.nextLine());
+				miss = Integer.parseInt(boardScanner.nextLine());
+				sunk = Integer.parseInt(boardScanner.nextLine());
 
 				for (int i = 0; i < 10; i++) {
 					for (int j = 0; j < 10; j++) {
@@ -243,7 +246,9 @@ public class Board extends JFrame implements ActionListener {
 				computerScanner.close();
 				boardScanner.close();
 
-				updateGrids();
+				shipsPlaced = 5;
+				guiSetup();
+				guiChange();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null,
 						"ERROR NO SAVE FILE EXISTS FOR USER " + playerName + ", OPENING NEW EASY MODE GAME INSTEAD",
@@ -255,7 +260,9 @@ public class Board extends JFrame implements ActionListener {
 				frame.dispose();
 			}
 		}
-
+		
+		humanPlayer.setName(playerName);
+		
 	}
 
 	public void guiSetup() {
@@ -885,6 +892,10 @@ public class Board extends JFrame implements ActionListener {
 				// First save guesses and useComplex
 				writer.println(guesses);
 				writer.println(useComplex);
+				// Save hits, misses and sunk
+				writer.println(hit);
+				writer.println(miss);
+				writer.println(sunk);
 				// Save all grid boolean values in the boolean,boolean,boolean,boolean, format
 				// in the order they are listed in the Cell class
 				// Each grid should take only 1 row and each row stores the values for all 4
