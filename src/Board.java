@@ -31,6 +31,9 @@ public class Board extends JFrame implements ActionListener {
 	ComputerPlayer computerPlayer = new ComputerPlayer();
 	int guesses = 0;
 	String playerName;
+	int hit;
+	int miss;
+	int sunk;
 
 	// Gui components
 	// Note for naming convention alot of the oroginal code and names were for a
@@ -57,6 +60,9 @@ public class Board extends JFrame implements ActionListener {
 	JLabel nameLabel;
 	JOptionPane invalidPlacment;
 	JLabel computerNamePlate;
+	JLabel hitLabel;
+	JLabel missLabel;
+	JLabel sunkLabel;
 
 	ImageIcon iconShipBoom;
 	ImageIcon iconVenator; // Cruiser 5 length
@@ -121,6 +127,9 @@ public class Board extends JFrame implements ActionListener {
 		westSpacer = new JPanel();
 		westNumbersGrid = new JPanel(new GridLayout(1, 10));
 		namePanel = new JPanel();
+		hitLabel = new JLabel();
+		missLabel = new JLabel();
+		sunkLabel = new JLabel();
 
 		textVenator = new JLabel();
 		textAcclamator = new JLabel();
@@ -247,58 +256,7 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiSetup() {
-<<<<<<< HEAD
-	    background.setLayout(new GridLayout(1, 2));
-	    
-	    westGrid.setPreferredSize(new Dimension(800,800));
-	    westGrid.setOpaque(false);
-	    westGrid.setLayout(new GridLayout(10,10));
-	    
-	    eastGrid.setPreferredSize(new Dimension(800,800));
-	    eastGrid.setOpaque(false);
-	    eastGrid.setLayout(new GridLayout(1,2));
-	    
-	    westPanel.setPreferredSize(new Dimension(1000,1000));
-	    westPanel.setOpaque(false);
-	    westPanel.setLayout(new BorderLayout());
-	    
-	    northWestPanel.setPreferredSize(new Dimension(1000, 100)); 
-	    northWestPanel.setOpaque(false);
-	    northWestPanel.setLayout(new BorderLayout()); 
-	    
-	    northEastPanel.setPreferredSize(new Dimension(1000, 100));
-	    northEastPanel.setOpaque(false);
-	    
-	    eastPanel.setPreferredSize(new Dimension(1000,1000));
-	    eastPanel.setOpaque(false);
-	    eastPanel.setLayout(new BorderLayout());
-	            
-	    westEastGrid.setOpaque(false);
-	    westEastGrid.setLayout(new GridLayout(4,1, 5, 5));
-	    
-	    eastEastGrid.setOpaque(false);
-	    eastEastGrid.setLayout(new GridLayout(4,1, 5, 5));
-	    
-	    eastEastPanel.setPreferredSize(new Dimension(100,1000));
-	    eastEastPanel.setOpaque(false);
-	    
-	    toggleHorizontal.setPreferredSize(new Dimension(200,50));
-	    toggleHorizontal.addActionListener(this);
-	    toggleHorizontal.setBackground(Color.black);
-	    toggleHorizontal.setText("Set Horizontal");
-	    toggleHorizontal.setForeground(Color.yellow);
-	    
-	    java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
-	    
-	    textVenator.setText("<html><center>Venator: 1<br>Length: 5</center></html>"); // HTML was ai acceleration 
-	    textVenator.setFont(shipFont);
-	    textVenator.setHorizontalAlignment(JLabel.CENTER);
-	    textVenator.setBackground(Color.black);
-	    textVenator.setForeground(Color.yellow);
-	    textVenator.setOpaque(true);
-=======
 		background.setLayout(new GridLayout(1, 2));
->>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 
 		westGrid.setPreferredSize(new Dimension(800, 800));
 		westGrid.setOpaque(false);
@@ -312,11 +270,11 @@ public class Board extends JFrame implements ActionListener {
 		westPanel.setOpaque(false);
 		westPanel.setLayout(new BorderLayout());
 
-		northWestPanel.setPreferredSize(new Dimension(1000, 100));
+		northWestPanel.setPreferredSize(new Dimension(1000, 150));
 		northWestPanel.setOpaque(false);
 		northWestPanel.setLayout(new BorderLayout());
 
-		northEastPanel.setPreferredSize(new Dimension(1000, 100));
+		northEastPanel.setPreferredSize(new Dimension(1000, 150));
 		northEastPanel.setOpaque(false);
 
 		eastPanel.setPreferredSize(new Dimension(1000, 1000));
@@ -331,6 +289,37 @@ public class Board extends JFrame implements ActionListener {
 
 		eastEastPanel.setPreferredSize(new Dimension(100, 1000));
 		eastEastPanel.setOpaque(false);
+		
+		
+		hitLabel.setText("Hit:" + Integer.toString(hit));
+		hitLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+		hitLabel.setPreferredSize(new Dimension(200, 50));
+		hitLabel.setMaximumSize(new Dimension(200, 50));
+		hitLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+		hitLabel.setBackground(Color.black);
+		hitLabel.setForeground(Color.yellow);
+		hitLabel.setHorizontalAlignment(JLabel.CENTER);
+		hitLabel.setOpaque(true);
+		
+		missLabel.setText("Miss:" + Integer.toString(miss));
+		missLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+		missLabel.setPreferredSize(new Dimension(200, 50));
+		missLabel.setMaximumSize(new Dimension(200, 50));
+		missLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+		missLabel.setBackground(Color.black);
+		missLabel.setForeground(Color.yellow);
+		missLabel.setHorizontalAlignment(JLabel.CENTER);
+		missLabel.setOpaque(true);
+		
+		sunkLabel.setText("Sunk:" + Integer.toString(sunk));
+		sunkLabel.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+		sunkLabel.setPreferredSize(new Dimension(200, 50));
+		sunkLabel.setMaximumSize(new Dimension(200, 50));
+		sunkLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+		sunkLabel.setBackground(Color.black);
+		sunkLabel.setForeground(Color.yellow);
+		sunkLabel.setHorizontalAlignment(JLabel.CENTER);
+		sunkLabel.setOpaque(true);
 
 		toggleHorizontal.setPreferredSize(new Dimension(200, 50));
 		toggleHorizontal.setBackground(Color.black);
@@ -465,63 +454,74 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiChange() {
-		eastPanel.removeAll();
-		eastGrid.removeAll();
-		eastEastPanel.removeAll();
-		northEastPanel.removeAll();
+	    eastPanel.removeAll();
+	    eastGrid.removeAll();
+	    eastEastPanel.removeAll();
+	    northEastPanel.removeAll();
 
-		eastGrid.setPreferredSize(new Dimension(800, 800));
-		eastGrid.setLayout(new GridLayout(10, 10));
+	    eastGrid.setPreferredSize(new Dimension(800, 800));
+	    eastGrid.setLayout(new GridLayout(10, 10));
 
-		eastEastPanel.setPreferredSize(new Dimension(50, 800));
-		eastEastPanel.setLayout(new GridLayout(10, 1));
-		for (int i = 0; i < 10; i++) {
-			JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
-			label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
-			label.setForeground(Color.green);
-			eastEastPanel.add(label);
-		}
+	    eastEastPanel.setPreferredSize(new Dimension(50, 800));
+	    eastEastPanel.setLayout(new GridLayout(10, 1));
+	    for (int i = 0; i < 10; i++) {
+	        JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+	        label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
+	        label.setForeground(Color.green);
+	        eastEastPanel.add(label);
+	    }
 
-		northEastPanel.setLayout(new BorderLayout());
+	    northEastPanel.setLayout(new BorderLayout());
 
-		JPanel compNameWrapper = new JPanel();
-		compNameWrapper.setOpaque(false);
-		compNameWrapper.add(computerNamePlate);
-		northEastPanel.add(compNameWrapper, BorderLayout.NORTH);
+	    JPanel compNameWrapper = new JPanel();
+	    compNameWrapper.setOpaque(false);
+	    compNameWrapper.add(computerNamePlate);
+	    northEastPanel.add(compNameWrapper, BorderLayout.NORTH);
 
-		JPanel eastNumbersGrid = new JPanel(new GridLayout(1, 10));
-		eastNumbersGrid.setOpaque(false);
-		for (int i = 0; i < 10; i++) {
-			JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
-			label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
-			label.setForeground(Color.green);
-			eastNumbersGrid.add(label);
-		}
+	    JPanel eastNumbersGrid = new JPanel(new GridLayout(1, 10));
+	    eastNumbersGrid.setOpaque(false);
+	    for (int i = 0; i < 10; i++) {
+	        JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+	        label.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22));
+	        label.setForeground(Color.green);
+	        eastNumbersGrid.add(label);
+	    }
 
-		JPanel eastSpacer = new JPanel();
-		eastSpacer.setPreferredSize(new Dimension(50, 50));
-		eastSpacer.setOpaque(false);
+	    JPanel eastSpacer = new JPanel();
+	    eastSpacer.setPreferredSize(new Dimension(50, 50));
+	    eastSpacer.setOpaque(false);
 
-		JPanel eastBottomWrapper = new JPanel(new BorderLayout());
-		eastBottomWrapper.setOpaque(false);
-		eastBottomWrapper.add(eastSpacer, BorderLayout.EAST);
-		eastBottomWrapper.add(eastNumbersGrid, BorderLayout.CENTER);
+	    JPanel eastBottomWrapper = new JPanel(new BorderLayout());
+	    eastBottomWrapper.setOpaque(false);
+	    eastBottomWrapper.add(eastSpacer, BorderLayout.EAST);
+	    eastBottomWrapper.add(eastNumbersGrid, BorderLayout.CENTER);
 
-		northEastPanel.add(eastBottomWrapper, BorderLayout.SOUTH);
+	    northEastPanel.add(eastBottomWrapper, BorderLayout.SOUTH);
 
-		eastPanel.add(northEastPanel, BorderLayout.NORTH);
-		eastPanel.add(eastEastPanel, BorderLayout.EAST);
-		eastPanel.add(eastGrid, BorderLayout.CENTER);
+	    eastPanel.add(northEastPanel, BorderLayout.NORTH);
+	    eastPanel.add(eastEastPanel, BorderLayout.EAST);
+	    eastPanel.add(eastGrid, BorderLayout.CENTER);
+	    
+	    JPanel statsPanel = new JPanel(new GridLayout(1, 3, 10, 0)); 
+	    statsPanel.setOpaque(false);
+	    statsPanel.add(hitLabel);
+	    statsPanel.add(missLabel);
+	    statsPanel.add(sunkLabel);
+	    
+	    northWestPanel.add(statsPanel, BorderLayout.CENTER);
 
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				eastGrid.add(computerCells[i][j]);
-				playerCellButtons[i][j].setEnabled(false);
-			}
-		}
+	    for (int i = 0; i < 10; i++) {
+	        for (int j = 0; j < 10; j++) {
+	            eastGrid.add(computerCells[i][j]);
+	            playerCellButtons[i][j].setEnabled(false);
+	        }
+	    }
 
-		eastPanel.revalidate();
-		eastPanel.repaint();
+	    eastPanel.revalidate();
+	    eastPanel.repaint();
+	    
+	    northWestPanel.revalidate();
+	    northWestPanel.repaint();
 	}
 
 	public int[][] toCoords(String[] coordinates) {
@@ -718,15 +718,7 @@ public class Board extends JFrame implements ActionListener {
 				break;
 			}
 		}
-<<<<<<< HEAD
-		
-		System.out.println(e.getSource().getClass());
-		System.out.println(e.getSource() == toggleHorizontal);
-		System.out.println(isPlace);
-		
-=======
 
->>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)
 		if (isPlace == true) {
@@ -847,12 +839,7 @@ public class Board extends JFrame implements ActionListener {
 			// Checking the box means horizontal is used
 		} else if (toggleHorizontal == e.getSource()) {
 			useHorizontal = toggleHorizontal.isSelected();
-<<<<<<< HEAD
-			System.out.println("hey");
-		// Any other selection would be on the computer's board, which would be a guess
-=======
 			// Any other selection would be on the computer's board, which would be a guess
->>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
 		} else {
 			int[] guess = getGrid((JButton) e.getSource());
 
@@ -872,17 +859,18 @@ public class Board extends JFrame implements ActionListener {
 				// Set the grid as guessed, and increment guesses
 				grid[guess[0]][guess[1]].setPlayerGuessed(true);
 				guesses++;
-
 				// If computer ship is hit, increment hitCount and display message if sunk
 				if (grid[guess[0]][guess[1]].isComputerShipPresent()) {
 					// Determine which ship is hit, increment hitCount and display message if sunk
 					// (guaranteed not invalid result as we already determined computerPlayer has a
 					// ship there)
+					hit++;
 					Ship ship = findShip(guess, false);
 					ship.incrementHitCount();
 					ship.evaluateSunk();
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
+						sunk++;
 						JOptionPane.showMessageDialog(null, "YOU SUNK A " + ship.getName(), "CONGRATULATIONS",
 								JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 
@@ -898,6 +886,9 @@ public class Board extends JFrame implements ActionListener {
 						 * here
 						 */
 					}
+				} else {
+					miss++;
+
 				}
 
 				// Update the grids after the guess, check to see if player won
@@ -995,7 +986,9 @@ public class Board extends JFrame implements ActionListener {
 			 * Get arraylist of fileio stuff, add player's score and name to it, sort, save
 			 * new list and print
 			 */
-
+			
+			JOptionPane.showMessageDialog(null, "YOU SUNCK ALL THE CIS SHIPS", "VICTORY",
+					JOptionPane.INFORMATION_MESSAGE);
 			/*
 			 * GUI notes:
 			 * 
@@ -1011,6 +1004,8 @@ public class Board extends JFrame implements ActionListener {
 			 * 
 			 * Popup defeat message
 			 */
+			JOptionPane.showMessageDialog(null, "YOU LOST AND GOT BLOWN UP", "BOOO",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 
 		if (isOver == true) {
@@ -1024,6 +1019,13 @@ public class Board extends JFrame implements ActionListener {
 			 * button that'll close this one after initializing another board, thereby
 			 * playing again?)
 			 */
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					eastGrid.add(computerCells[i][j]);
+					playerCellButtons[i][j].setEnabled(false);
+				}
+			}
+			new EndScreen();
 		}
 	}
 
@@ -1124,20 +1126,25 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[y][x].setBackground(Color.green);
 				}
 				if (grid[x][y].isPlayerShipPresent() == true) {
-					playerCellButtons[y][x].setBackground(Color.gray);
+					playerCellButtons[y][x].setBackground(Color.orange);
 				}
 				if (grid[x][y].isPlayerGuessed() == true) {
-					playerCellButtons[y][x].setBackground(Color.black);
-				}
-				if (grid[x][y].isComputerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.black);
 				}
-				if (grid[x][y].isComputerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
-					playerCellButtons[y][x].setBackground(Color.red);
+				if (grid[x][y].isComputerGuessed() == true) {
+					playerCellButtons[y][x].setBackground(Color.black);
 				}
-				if (grid[x][y].isPlayerShipPresent() == true && grid[x][y].isComputerGuessed() == true) {
+				if (grid[x][y].isComputerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.red);
 				}
+				if (grid[x][y].isPlayerShipPresent() == true && grid[x][y].isComputerGuessed() == true) {
+					playerCellButtons[y][x].setBackground(Color.red);
+				}
+				
+				missLabel.setText("Miss:" + Integer.toString(miss));
+				hitLabel.setText("Hit:" + Integer.toString(hit));
+				sunkLabel.setText("Sunk:" + Integer.toString(sunk));
+
 
 			}
 		}

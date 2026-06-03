@@ -44,17 +44,6 @@ public class GameLauncher implements ActionListener {
 
 	public static void main(String[] args) {
 
-<<<<<<< HEAD
-		new EndScreen();
-=======
-<<<<<<< HEAD
-		// EndScreen endScreen = new EndScreen();
-=======
-
-//		EndScreen endScreen = new EndScreen();
-
->>>>>>> df1b96aafbfeea314fa39adfd8af70884b574fa2
->>>>>>> d73d7ed02f82c8f9391d9960686a9c2da1cc2d1d
 		GameLauncher engine = new GameLauncher();
 	}
 
