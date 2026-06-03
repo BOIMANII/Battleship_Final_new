@@ -140,7 +140,7 @@ public class GameLauncher implements ActionListener {
 			name = nameField.getText();
 			try {
 				board = new Board(name, true, false);
-			} catch (FileNotFoundException | InterruptedException e1) {
+			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -153,7 +153,7 @@ public class GameLauncher implements ActionListener {
 			name = nameField.getText();
 			try {
 				board = new Board(name, false, false);
-			} catch (FileNotFoundException | InterruptedException e1) {
+			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -165,9 +165,8 @@ public class GameLauncher implements ActionListener {
 			System.out.println("Gonna load something");
 			name = nameField.getText();
 			try {
-				board = new Board(name, false, true);
 				new Board(name, false, true);
-			} catch (FileNotFoundException | InterruptedException e1) {
+			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -176,7 +175,6 @@ public class GameLauncher implements ActionListener {
 			System.out.println("Dumping info");
 			new InfoFrame();
 		}
-		System.out.println(name);
 	}
 
 }
