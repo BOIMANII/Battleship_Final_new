@@ -130,8 +130,8 @@ public class GameLauncher implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == launchHardButton) {
+			SoundPlayer.playSound("sfxButton.wav");
 			SoundPlayer.playSound("sfxJump.wav");
-			System.out.println("Launch Hard");
 			difficultyNormal = false;
 			name = nameField.getText();
 			try {
@@ -145,8 +145,8 @@ public class GameLauncher implements ActionListener {
 		}
 
 		if (e.getSource() == launchEasyButton) {
+			SoundPlayer.playSound("sfxButton.wav");
 			SoundPlayer.playSound("sfxJump.wav");
-			System.out.println("Launch Normal");
 			difficultyNormal = true;
 			name = nameField.getText();
 			try {
@@ -160,8 +160,8 @@ public class GameLauncher implements ActionListener {
 		}
 
 		if (e.getSource() == loadButton) {
+			SoundPlayer.playSound("sfxButton.wav");
 			SoundPlayer.playSound("sfxJump.wav");
-			System.out.println("Gonna load something");
 			name = nameField.getText();
 			try {
 				new Board(name, false, true);
@@ -171,7 +171,7 @@ public class GameLauncher implements ActionListener {
 		}
 
 		if (e.getSource() == infoButton) {
-			System.out.println("Dumping info");
+			SoundPlayer.playSound("sfxButton.wav");
 			new InfoFrame();
 		}
 	}

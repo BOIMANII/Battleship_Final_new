@@ -159,7 +159,7 @@ public class Board extends JFrame implements ActionListener {
 				// Button Component
 				toggleHorizontal = new JCheckBox();
 				saveButton = new JButton();
-				loadButton = new JButton(); // Instantiated to match your declarations
+				loadButton = new JButton(); 
 
 				playerCellButtons = new JButton[10][10];
 				computerCells = new JButton[10][10];
@@ -212,8 +212,6 @@ public class Board extends JFrame implements ActionListener {
 				iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
 				iconArquitens = scaleImage("iconArquitens.png", 250, 100);
 				iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
-
-				// NEW: Scale matching 80x80 icons for the grid buttons
 				cellVenator = scaleImage("iconVenator.png", 80, 80);
 				cellAcclamator = scaleImage("iconAcclamator.png", 80, 80);
 				cellArquitens = scaleImage("iconArquitens.png", 80, 80);
@@ -935,13 +933,11 @@ public class Board extends JFrame implements ActionListener {
 			for (int x = 0; x < 10; x++) {
 				computerCells[y][x].setBackground(Color.green);
 				
-				// 1. Handle Empty Player Cells
 				if (grid[x][y].isPlayerShipPresent() == false) {
 					playerCellButtons[y][x].setBackground(Color.green);
-					playerCellButtons[y][x].setIcon(null); // Clear graphics if no ship
+					playerCellButtons[y][x].setIcon(null); 
 				}
 				
-				// 2. Handle Intact Player Ships (Draw Ship Sprites)
 				if (grid[x][y].isPlayerShipPresent() == true) {
 					playerCellButtons[y][x].setBackground(Color.orange);
 					
@@ -952,21 +948,20 @@ public class Board extends JFrame implements ActionListener {
 						
 						if (name.equalsIgnoreCase("Venator")) {
 							playerCellButtons[y][x].setIcon(cellVenator);
-							playerCellButtons[y][x].setDisabledIcon(cellVenator); // Keeps it vibrant!
+							playerCellButtons[y][x].setDisabledIcon(cellVenator);
 						} else if (name.equalsIgnoreCase("Acclimator")) {
 							playerCellButtons[y][x].setIcon(cellAcclamator);
-							playerCellButtons[y][x].setDisabledIcon(cellAcclamator); // Keeps it vibrant!
+							playerCellButtons[y][x].setDisabledIcon(cellAcclamator); 
 						} else if (name.equalsIgnoreCase("Arquintis")) {
 							playerCellButtons[y][x].setIcon(cellArquitens);
-							playerCellButtons[y][x].setDisabledIcon(cellArquitens);  // Keeps it vibrant!
+							playerCellButtons[y][x].setDisabledIcon(cellArquitens);  
 						} else if (name.equalsIgnoreCase("Interceptor")) {
 							playerCellButtons[y][x].setIcon(cellInterceptor);
-							playerCellButtons[y][x].setDisabledIcon(cellInterceptor); // Keeps it vibrant!
+							playerCellButtons[y][x].setDisabledIcon(cellInterceptor); 
 						}
 					}
 				}
 				
-				// 3. Handle Guess Intersections
 				if (grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.black);
 				}
@@ -974,17 +969,14 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[y][x].setBackground(Color.black);
 				}
 				
-				// 4. Handle Red Target Hits
 				if (grid[x][y].isComputerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.red);
 				}
 				
-				// If a player ship is hit, replace its graphic with a cell-sized explosion
 				if (grid[x][y].isPlayerShipPresent() == true && grid[x][y].isComputerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.red);
 				}
 				
-				// Refresh Text Displays
 				missLabel.setText("Miss:" + Integer.toString(miss));
 				hitLabel.setText("Hit:" + Integer.toString(hit));
 				sunkLabel.setText("Sunk:" + Integer.toString(sunk));
