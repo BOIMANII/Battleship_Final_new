@@ -33,6 +33,7 @@ public class InfoFrame extends JFrame{
 				" - Acclamator-class Assault Ship  [Size: 4 Sectors]\n" +
 				" - Arquitens-class Command Cruiser[Size: 3 Sectors]\n" +
 				" - Interceptor Class Corvette     [Size: 2 Sectors]\n\n" +
+				"CRITICAL: Ships will be deployed from smallest to largest\n" +
 				"CRITICAL: Do not overlap your ship components or position them beyond\n" +
 				"outer system grid coordinates.\n\n" +
 				"-----------------------------------------------------------------\n" +

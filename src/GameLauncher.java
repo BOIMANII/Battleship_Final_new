@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 
 public class GameLauncher implements ActionListener {
 
-	// Window Settings & Constants
+	// Window Settings And Constants
 	private int frameX = 960;
 	private int frameY = 540;
 	private Dimension buttonSize = new Dimension(180, 50);
@@ -54,8 +54,9 @@ public class GameLauncher implements ActionListener {
 	}
 
 	public GameLauncher() {
+		
 		frame = new JFrame("Star Wars Battleship");
-
+		
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
 		background = new JLabel(backgroundI);
@@ -129,8 +130,8 @@ public class GameLauncher implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == launchHardButton) {
+			SoundPlayer.playSound("sfxButton.wav");
 			SoundPlayer.playSound("sfxJump.wav");
-			System.out.println("Launch Hard");
 			difficultyNormal = false;
 			name = nameField.getText();
 			try {
@@ -139,11 +140,13 @@ public class GameLauncher implements ActionListener {
 				e1.printStackTrace();
 			}
 			frame.dispose();
+			new InfoFrame();
+
 		}
 
 		if (e.getSource() == launchEasyButton) {
+			SoundPlayer.playSound("sfxButton.wav");
 			SoundPlayer.playSound("sfxJump.wav");
-			System.out.println("Launch Normal");
 			difficultyNormal = true;
 			name = nameField.getText();
 			try {
@@ -152,11 +155,13 @@ public class GameLauncher implements ActionListener {
 				e1.printStackTrace();
 			}
 			frame.dispose();
+			new InfoFrame();
+
 		}
 
 		if (e.getSource() == loadButton) {
+			SoundPlayer.playSound("sfxButton.wav");
 			SoundPlayer.playSound("sfxJump.wav");
-			System.out.println("Gonna load something");
 			name = nameField.getText();
 			try {
 				new Board(name, false, true);
@@ -166,7 +171,7 @@ public class GameLauncher implements ActionListener {
 		}
 
 		if (e.getSource() == infoButton) {
-			System.out.println("Dumping info");
+			SoundPlayer.playSound("sfxButton.wav");
 			new InfoFrame();
 		}
 	}
