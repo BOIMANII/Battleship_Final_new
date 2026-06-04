@@ -696,7 +696,6 @@ public class Board extends JFrame implements ActionListener {
 
 				// After player's guess, computer will guess (this makes up one turn)
 				computerGuess();
-				checkWin();
 				
 			}
 		}

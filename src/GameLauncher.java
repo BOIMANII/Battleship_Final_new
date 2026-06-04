@@ -140,6 +140,8 @@ public class GameLauncher implements ActionListener {
 				e1.printStackTrace();
 			}
 			frame.dispose();
+			new InfoFrame();
+
 		}
 
 		if (e.getSource() == launchEasyButton) {
@@ -153,6 +155,8 @@ public class GameLauncher implements ActionListener {
 				e1.printStackTrace();
 			}
 			frame.dispose();
+			new InfoFrame();
+
 		}
 
 		if (e.getSource() == loadButton) {
