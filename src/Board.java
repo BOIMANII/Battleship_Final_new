@@ -91,6 +91,12 @@ public class Board extends JFrame implements ActionListener {
 		ImageIcon iconAcclamator;
 		ImageIcon iconArquitens;
 		ImageIcon iconInterceptor;
+		
+		// Cell-specific 80x80 variants for grid placement
+		ImageIcon cellVenator;
+		ImageIcon cellAcclamator;
+		ImageIcon cellArquitens;
+		ImageIcon cellInterceptor;
 
 		// User Prompts and Alerts
 		JOptionPane invalidPlacment;
@@ -199,7 +205,20 @@ public class Board extends JFrame implements ActionListener {
 				shipPlaceImage[1] = new JLabel(iconAcclamator);
 				shipPlaceImage[2] = new JLabel(iconArquitens);
 				shipPlaceImage[3] = new JLabel(iconInterceptor);
+				
+				// Ship Assets and Icons
+				iconShipBoom = new ImageIcon("iconShipBoom.png");
+				iconVenator = scaleImage("iconVenator.png", 250, 100);
+				iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
+				iconArquitens = scaleImage("iconArquitens.png", 250, 100);
+				iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
 
+				// NEW: Scale matching 80x80 icons for the grid buttons
+				cellVenator = scaleImage("iconVenator.png", 80, 80);
+				cellAcclamator = scaleImage("iconAcclamator.png", 80, 80);
+				cellArquitens = scaleImage("iconArquitens.png", 80, 80);
+				cellInterceptor = scaleImage("iconInterceptor.png", 80, 80);
+				
 				// User Prompts and Alerts
 				invalidPlacment = new JOptionPane();
 
@@ -912,45 +931,63 @@ public class Board extends JFrame implements ActionListener {
 	 * 
 	 */
 	public void updateGrids() {
-		/*
-		 * GUI note:
-		 * 
-		 * This method updates the color of the 2 grids to correctly reflect what is
-		 * going on
-		 * 
-		 * ie orange or something for a left side player ship not hit yet, red for hit
-		 * grids (both sides), blue for places not guessed yet and green for misses
-		 * (both sides)
-		 * 
-		 * Cell has a bunch of boolean values for this very reason
-		 */
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 10; x++) {
 				computerCells[y][x].setBackground(Color.green);
+				
+				// 1. Handle Empty Player Cells
 				if (grid[x][y].isPlayerShipPresent() == false) {
 					playerCellButtons[y][x].setBackground(Color.green);
+					playerCellButtons[y][x].setIcon(null); // Clear graphics if no ship
 				}
+				
+				// 2. Handle Intact Player Ships (Draw Ship Sprites)
 				if (grid[x][y].isPlayerShipPresent() == true) {
 					playerCellButtons[y][x].setBackground(Color.orange);
+					
+					Ship ship = findShip(new int[]{x, y}, true);
+					
+					if (ship != null) {
+						String name = ship.getName();
+						
+						if (name.equalsIgnoreCase("Venator")) {
+							playerCellButtons[y][x].setIcon(cellVenator);
+							playerCellButtons[y][x].setDisabledIcon(cellVenator); // Keeps it vibrant!
+						} else if (name.equalsIgnoreCase("Acclimator")) {
+							playerCellButtons[y][x].setIcon(cellAcclamator);
+							playerCellButtons[y][x].setDisabledIcon(cellAcclamator); // Keeps it vibrant!
+						} else if (name.equalsIgnoreCase("Arquintis")) {
+							playerCellButtons[y][x].setIcon(cellArquitens);
+							playerCellButtons[y][x].setDisabledIcon(cellArquitens);  // Keeps it vibrant!
+						} else if (name.equalsIgnoreCase("Interceptor")) {
+							playerCellButtons[y][x].setIcon(cellInterceptor);
+							playerCellButtons[y][x].setDisabledIcon(cellInterceptor); // Keeps it vibrant!
+						}
+					}
 				}
+				
+				// 3. Handle Guess Intersections
 				if (grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.black);
 				}
 				if (grid[x][y].isComputerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.black);
 				}
+				
+				// 4. Handle Red Target Hits
 				if (grid[x][y].isComputerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.red);
 				}
+				
+				// If a player ship is hit, replace its graphic with a cell-sized explosion
 				if (grid[x][y].isPlayerShipPresent() == true && grid[x][y].isComputerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.red);
 				}
 				
+				// Refresh Text Displays
 				missLabel.setText("Miss:" + Integer.toString(miss));
 				hitLabel.setText("Hit:" + Integer.toString(hit));
 				sunkLabel.setText("Sunk:" + Integer.toString(sunk));
-
-
 			}
 		}
 		this.revalidate();
