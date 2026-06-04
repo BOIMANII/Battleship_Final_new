@@ -816,13 +816,17 @@ public class Board extends JFrame implements ActionListener {
 				Scanner scoreScanner = new Scanner(scoreboardFile);
 				ArrayList<String> scores = new ArrayList<>();
 				
-				
+				System.out.println("The file exists");
 				// Read all scoreboard values - they should be sorted already
 				while (scoreScanner.hasNextLine()) {
 					String line = scoreScanner.nextLine();
-					scores.add(line);
+					if (!line.equals("")) {
+						scores.add(line);
+					}
 				}
 				scoreScanner.close();
+				
+				System.out.println("Scanned");
 				
 				// Add player's score
 				scores.add(playerScore);
@@ -830,14 +834,16 @@ public class Board extends JFrame implements ActionListener {
 				// Sort ArrayList appropriately, in ascending order (lower number of guesses at front)
 				// Since ArrayList is already sorted, we just need to grab the back most value
 				// and keep moving it forwards until we find where it is supposed to go
-				String temp = scores.get(scores.size());
-				for (int i = scores.size() - 1; i > -1; i--) {
+				String temp = scores.get(scores.size() - 1);
+				for (int i = scores.size() - 2; i > -1; i--) {
 					if (Integer.parseInt(scores.get(i).split(" - ")[0]) > Integer.parseInt(temp.split(" - ")[0])) {
 						scores.set(i + 1, scores.get(i));
 					} else {
 						scores.set(i + 1, temp);
 					}
 				}
+				
+				System.out.println("murrpit");
 				
 				/*
 				 * GUI note:
