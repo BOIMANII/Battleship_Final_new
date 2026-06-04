@@ -243,7 +243,7 @@ public class Board extends JFrame implements ActionListener {
 					positions = humanScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
 
-					int length = coordinates.length - 1;
+					int length = coordinates.length;
 					int[][] shipPositions = toCoords(coordinates);
 
 					Ship ship = new Ship(shipPositions, length);
@@ -261,7 +261,7 @@ public class Board extends JFrame implements ActionListener {
 					positions = computerScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
 
-					int length = coordinates.length - 1;
+					int length = coordinates.length;
 					int[][] shipPositions = toCoords(coordinates);
 
 					Ship ship = new Ship(shipPositions, length);
@@ -315,6 +315,10 @@ public class Board extends JFrame implements ActionListener {
 		}
 		
 		humanPlayer.setName(playerName);
+		for (int i = 0; i < humanPlayer.getShips().get(0).getPositions().length; i++) {
+			System.out.println(humanPlayer.getShips().get(0).getPositions()[i][0]);
+			System.out.println(humanPlayer.getShips().get(0).getPositions()[i][1]);
+		}
 		
 	}
 
@@ -323,7 +327,7 @@ public class Board extends JFrame implements ActionListener {
 	public int[][] toCoords(String[] coordinates) {
 		// Take the String[] of a ship's positions and create an int[][] based on the
 		// String
-		int length = coordinates.length - 1;
+		int length = coordinates.length;
 		int[][] shipPositions = new int[length][2];
 		for (int j = 0; j < length; j++) {
 			shipPositions[j][0] = Integer.parseInt(coordinates[j].substring(1, 2));
@@ -696,6 +700,7 @@ public class Board extends JFrame implements ActionListener {
 
 				// After player's guess, computer will guess (this makes up one turn)
 				computerGuess();
+				checkWin();
 				
 			}
 		}
@@ -932,7 +937,9 @@ public class Board extends JFrame implements ActionListener {
 				}
 			}
 			new EndScreen();
-			frame.dispose();
+			// This causes an error message to pop up in console but the error does not
+			// effect anything
+			frame.dispose(); //TODO
 
 		}
 	}
