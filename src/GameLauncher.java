@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 
 public class GameLauncher implements ActionListener {
 
-	// Window Settings & Constants
+	// Window Settings And Constants
 	private int frameX = 960;
 	private int frameY = 540;
 	private Dimension buttonSize = new Dimension(180, 50);
@@ -54,8 +54,9 @@ public class GameLauncher implements ActionListener {
 	}
 
 	public GameLauncher() {
+		
 		frame = new JFrame("Star Wars Battleship");
-
+		
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
 		background = new JLabel(backgroundI);
