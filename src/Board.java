@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -644,13 +646,6 @@ public class Board extends JFrame implements ActionListener {
 			// If player already guessed grid, so inform them this selection is invalid
 			if (grid[guess[0]][guess[1]].isPlayerGuessed()) {
 				JOptionPane.showMessageDialog(null, "Sir we already checked this area", "INVALID", JOptionPane.WARNING_MESSAGE);
-
-				/*
-				 * GUI notes:
-				 * 
-				 * Make error popup appear saying guess is invalid (already guessed), nothing
-				 * else happens
-				 */
 				// Player has not already guessed the grid, so increment hitCount of ship hit
 				// and check if sunk
 			} else {
@@ -689,18 +684,6 @@ public class Board extends JFrame implements ActionListener {
 
 						JOptionPane.showMessageDialog(null, "YOU DESTROYED A " + displayedName, "CONGRATULATIONS",
 								JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
-
-						/*
-						 * GUI notes:
-						 * 
-						 * Popup info thingy that will say "You have sunk computer's ___"
-						 * 
-						 * I'd recommend using ship.getName() and maybe an explosion image to go with
-						 * the popup
-						 * 
-						 * If you want a list of ships each player still has, you adjust the ship count
-						 * here
-						 */
 					}
 				} else {
 					miss++;
@@ -799,6 +782,10 @@ public class Board extends JFrame implements ActionListener {
 		boolean isOver = false;
 		if (computerPlayer.getHasLost()) {
 			isOver = true;
+			
+			// Print victory message
+			JOptionPane.showMessageDialog(null, "GOOD JOB COMMANDER, WE DESTORYED ALL THE SEPARATIST SHIPS! THE SYSTEM IS SAVED!", "VICTORY",
+					JOptionPane.INFORMATION_MESSAGE);
 
 			/*
 			 * TODO
@@ -808,25 +795,116 @@ public class Board extends JFrame implements ActionListener {
 			 * Get arraylist of fileio stuff, add player's score and name to it, sort, save
 			 * new list and print
 			 */
-			
-			JOptionPane.showMessageDialog(null, "GOOD JOB COMMANDER WE DESTORYED ALL THE CIS SHIP THE SYSTEM IS SAVED", "VICTORY",
-					JOptionPane.INFORMATION_MESSAGE);
 			/*
-			 * GUI notes:
+			 * Scoreboard displays by 3 columns of a bunch of rows (each row is 1 score saved)
 			 * 
-			 * Popup victory message (include scoreboard)
+			 * Name  |  guesses
+			 * 
+			 * Scoreboard is ranked based on number of guesses (less goes higher on the board) - if
+			 * there are two of the same number of guesses, the more recent one is placed below the
+			 * less recent one
+			 * 
+			 * Printed in a score - name format:
+			 * # - Name
+			 * ## - Name 2
+			 * ### - Name 3
 			 */
+			// If scoreboard already exists, read scoreboard file info, add player, sort, display and update
+			String playerScore = (hit + miss) + " - " + playerName;
+			try {
+				File scoreboardFile = new File("scoreBoard.txt");
+				Scanner scoreScanner = new Scanner(scoreboardFile);
+				ArrayList<String> scores = new ArrayList<>();
+				
+				
+				// Read all scoreboard values - they should be sorted already
+				while (scoreScanner.hasNextLine()) {
+					String line = scoreScanner.nextLine();
+					scores.add(line);
+				}
+				scoreScanner.close();
+				
+				// Add player's score
+				scores.add(playerScore);
+				
+				// Sort ArrayList appropriately, in ascending order (lower number of guesses at front)
+				// Since ArrayList is already sorted, we just need to grab the back most value
+				// and keep moving it forwards until we find where it is supposed to go
+				String temp = scores.get(scores.size());
+				for (int i = scores.size() - 1; i > -1; i--) {
+					if (Integer.parseInt(scores.get(i).split(" - ")[0]) > Integer.parseInt(temp.split(" - ")[0])) {
+						scores.set(i + 1, scores.get(i));
+					} else {
+						scores.set(i + 1, temp);
+					}
+				}
+				
+				/*
+				 * GUI note:
+				 * 
+				 * Make a scorebord JFrame or something (I think if you don't set default close condition
+				 * as exit on close it won't kill the program when just the scoreboard is closed
+				 * 
+				 * You use scores the ArrayList - it's all sorted with least # of guesses being at the front
+				 * Elements are already strings in the # - name format
+				 * ie "67 - Monkey"
+				 * 
+				 * Remember to add the title and the column headers
+				 * ie number of guesses - name
+				 */
+				
+				// Save new scores into scoreboard.txt
+				PrintWriter writer = new PrintWriter("scoreboard.txt");
+				for (int i = 0; i < scores.size(); i++) {
+					writer.println(scores.get(i));
+				}
+				writer.close();
+				
+			// If scoreboard doesn't exist, display player and make new scoreboard file, add player
+			} catch (Exception e) {
+				/*
+				 * GUI note:
+				 * 
+				 * Make a scorebord JFrame or something (I think if you don't set default close condition
+				 * as exit on close it won't kill the program when just the scoreboard is closed)
+				 * 
+				 * You use scores the ArrayList - it's all sorted with least # of guesses being at the front
+				 * Elements are already strings in the # - name format
+				 * ie "67 - Monkey"
+				 * 
+				 * Remember to add the title and the column headers
+				 * ie number of guesses - name
+				 * 
+				 * Just with playerScore this time because everything 
+				 */
+				
+				// This try catch is just so that eclipse does not flag the PrintWriter initialization
+				try {
+					// Save the player's score in the scoreboard file
+					PrintWriter writer = new PrintWriter("scoreboard.txt");
+					writer.println(playerScore);
+					writer.close();
+				} catch (Exception e1) {
+					/*
+					 * At the ICS4U level where we don't expect to deal with restricted folders, invalid
+					 * paths, etc this catch isn't going to catch anyways
+					 * 
+					 * As stated above this try catch is here to prevent eclipse from flagging the
+					 * initialization as a source of FileNotFoundException
+					 * 
+					 * Realistically either case a: file exists and case b: file does not exist both 
+					 * allow the PrintWriter to function properly (essentially it either overwrites the
+					 * file completely or, if it can't find the file with the same name, makes a new one
+					 * to the exact same effect)
+					 */
+				}
+			}
 
-			// If player lost, print loss message and do nothing else
+		// If player lost, print loss message and do nothing else
 		} else if (humanPlayer.getHasLost()) {
 			isOver = true;
 			
-			/*
-			 * GUI notes:
-			 * 
-			 * Popup defeat message
-			 */
-			JOptionPane.showMessageDialog(null, "SIR WE MUST RETREAT THE CIS HAVE WON THIS SYSTEM", "DEFEAT",
+			JOptionPane.showMessageDialog(null, "SIR WE MUST RETREAT THE SEPARATISTS HAVE WON THIS SYSTEM", "DEFEAT",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 		
