@@ -932,6 +932,8 @@ public class Board extends JFrame implements ActionListener {
 				}
 			}
 			new EndScreen();
+			frame.dispose();
+
 		}
 	}
 
