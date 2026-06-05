@@ -33,6 +33,7 @@ public class Board extends JFrame implements ActionListener {
 		int hit;
 		int miss;
 		int sunk;
+		int aiSunk;
 		boolean useHorizontal = false;
 		boolean useComplex;
 		boolean computerFirst;
@@ -247,7 +248,7 @@ public class Board extends JFrame implements ActionListener {
 					positions = humanScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
 
-					int length = coordinates.length - 1;
+					int length = coordinates.length;
 					int[][] shipPositions = toCoords(coordinates);
 
 					Ship ship = new Ship(shipPositions, length);
@@ -265,7 +266,7 @@ public class Board extends JFrame implements ActionListener {
 					positions = computerScanner.nextLine();
 					String[] coordinates = positions.split(" - ");
 
-					int length = coordinates.length - 1;
+					int length = coordinates.length;
 					int[][] shipPositions = toCoords(coordinates);
 
 					Ship ship = new Ship(shipPositions, length);
@@ -319,6 +320,10 @@ public class Board extends JFrame implements ActionListener {
 		}
 		
 		humanPlayer.setName(playerName);
+		for (int i = 0; i < humanPlayer.getShips().get(0).getPositions().length; i++) {
+			System.out.println(humanPlayer.getShips().get(0).getPositions()[i][0]);
+			System.out.println(humanPlayer.getShips().get(0).getPositions()[i][1]);
+		}
 		
 	}
 
@@ -327,7 +332,7 @@ public class Board extends JFrame implements ActionListener {
 	public int[][] toCoords(String[] coordinates) {
 		// Take the String[] of a ship's positions and create an int[][] based on the
 		// String
-		int length = coordinates.length - 1;
+		int length = coordinates.length;
 		int[][] shipPositions = new int[length][2];
 		for (int j = 0; j < length; j++) {
 			shipPositions[j][0] = Integer.parseInt(coordinates[j].substring(1, 2));
@@ -491,20 +496,6 @@ public class Board extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		boolean isPlace = false;
 
-		// Check if the button clicked is one of the player's grid
-		if (e.getSource() instanceof JButton) {// AI couldent figure it out
-			JButton clickedButton = (JButton) e.getSource();
-
-			if (clickedButton.getClientProperty("row") != null) {
-
-				int row = (int) clickedButton.getClientProperty("row");
-				int col = (int) clickedButton.getClientProperty("col");
-
-				System.out.println("Y: " + row + " X: " + col);
-				System.out.println("Grid button pressed");
-
-			}
-		}
 
 		// Check if the button pressed is in the player's board
 		for (int i = 0; i < 10; i++) {
@@ -646,7 +637,7 @@ public class Board extends JFrame implements ActionListener {
 			// Any other selection would be on the computer's board, which would be a guess
 		} else {
 			int[] guess = getGrid((JButton) e.getSource());
-
+			SoundPlayer.playSound("sfxShoot.wav");
 			// If player already guessed grid, so inform them this selection is invalid
 			if (grid[guess[0]][guess[1]].isPlayerGuessed()) {
 				JOptionPane.showMessageDialog(null, "Sir we already checked this area", "INVALID", JOptionPane.WARNING_MESSAGE);
@@ -700,6 +691,7 @@ public class Board extends JFrame implements ActionListener {
 
 				// After player's guess, computer will guess (this makes up one turn)
 				computerGuess();
+				checkWin();
 				
 			}
 		}
@@ -748,7 +740,7 @@ public class Board extends JFrame implements ActionListener {
 			ship.evaluateSunk();
 			// If the computer's guess sinks player's ship
 			if (ship.getSunk()) {
-				
+				aiSunk++;
 				String enemyInternalName = ship.getName().toUpperCase();
 				String enemyDisplayedName = enemyInternalName;
 				if(useComplex) {
@@ -815,19 +807,23 @@ public class Board extends JFrame implements ActionListener {
 			 * ### - Name 3
 			 */
 			// If scoreboard already exists, read scoreboard file info, add player, sort, display and update
-			String playerScore = (hit + miss) + " - " + playerName;
+			String playerScore = (((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk))) + " - " + playerName;
 			try {
 				File scoreboardFile = new File("scoreBoard.txt");
 				Scanner scoreScanner = new Scanner(scoreboardFile);
 				ArrayList<String> scores = new ArrayList<>();
 				
-				
+				System.out.println("The file exists");
 				// Read all scoreboard values - they should be sorted already
 				while (scoreScanner.hasNextLine()) {
 					String line = scoreScanner.nextLine();
-					scores.add(line);
+					if (!line.equals("")) {
+						scores.add(line);
+					}
 				}
 				scoreScanner.close();
+				
+				System.out.println("Scanned");
 				
 				// Add player's score
 				scores.add(playerScore);
@@ -835,14 +831,16 @@ public class Board extends JFrame implements ActionListener {
 				// Sort ArrayList appropriately, in ascending order (lower number of guesses at front)
 				// Since ArrayList is already sorted, we just need to grab the back most value
 				// and keep moving it forwards until we find where it is supposed to go
-				String temp = scores.get(scores.size());
-				for (int i = scores.size() - 1; i > -1; i--) {
+				String temp = scores.get(scores.size() - 1);
+				for (int i = scores.size() - 2; i > -1; i--) {
 					if (Integer.parseInt(scores.get(i).split(" - ")[0]) > Integer.parseInt(temp.split(" - ")[0])) {
 						scores.set(i + 1, scores.get(i));
 					} else {
 						scores.set(i + 1, temp);
 					}
 				}
+				
+				System.out.println("murrpit");
 				
 				/*
 				 * GUI note:
@@ -930,8 +928,10 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[i][j].setEnabled(false);
 				}
 			}
-			new EndScreen();
-			frame.dispose();
+			new EndScreen(hit, miss, sunk, aiSunk);
+			// This causes an error message to pop up in console but the error does not
+			// effect anything
+			frame.dispose(); //TODO
 
 		}
 	}
@@ -1081,6 +1081,8 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 	public void guiSetup() {
+		SoundPlayer.playMusic("musicSetup.wav");
+
 		java.awt.Font largeFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24);
 		java.awt.Font labelFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22);
 		java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
@@ -1277,6 +1279,7 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiChange() {
+		SoundPlayer.playMusic("musicBattle.wav");
 		eastPanel.removeAll();
 		eastGrid.removeAll();
 		eastEastPanel.removeAll();

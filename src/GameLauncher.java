@@ -54,7 +54,8 @@ public class GameLauncher implements ActionListener {
 	}
 
 	public GameLauncher() {
-		
+		SoundPlayer.playMusic("musicLauncher .wav");
+
 		frame = new JFrame("Star Wars Battleship");
 		
 		backgroundI = new ImageIcon("launchBackground.png");
@@ -111,7 +112,6 @@ public class GameLauncher implements ActionListener {
 		northPanel.add(displaceTitle);
 
 		frame.setVisible(true);
-		SoundPlayer.playMusic("musicLauncher .wav");
 	}
 
 	/**
