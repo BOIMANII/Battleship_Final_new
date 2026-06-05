@@ -40,7 +40,7 @@ public class EndScreen implements ActionListener {
 	 * Constructor for EndScreen * Holds the graphics for the game over screen.
 	 * Formatted identically to GameLauncher.
 	 */
-	public EndScreen(int hit, int miss, int sunk, int aiSunk) {
+	public EndScreen(int hit, int miss, int sunk, int aiSunk, boolean victory) {
 		SoundPlayer.playMusic("musicEnding.wav");
 		frame = new JFrame("Star Wars Battleship - Game Over");
 		playAgainButton = new JButton("Play Again");
@@ -49,7 +49,13 @@ public class EndScreen implements ActionListener {
 		scoreBoard = new JLabel();
 		yellowBorder = BorderFactory.createLineBorder(Color.yellow, 3);
 
-		backgroundI = new ImageIcon("backgroundEnding.Again.jpg");
+		
+		if(victory == true) {
+			backgroundI = new ImageIcon("backgroundEnding.Again.jpg");
+
+		}else {
+			backgroundI = new ImageIcon("backgroundLose.png");
+		}
 		titleI = new ImageIcon("titleText.png");
 
 		background = new JLabel(backgroundI);

@@ -921,7 +921,7 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[i][j].setEnabled(false);
 				}
 			}
-			new EndScreen(hit, miss, sunk, aiSunk);
+			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.hasLost);
 			this.dispose(); // TODO
 
 		}
