@@ -1,11 +1,19 @@
 import java.util.ArrayList;
 
+/**
+ * @author Andy Zhang
+ * @teacher Mr. Smintich
+ * @date 26 05 29
+ * 
+ * This is meant to support guess, and the AI algorithm for complex AI. 
+ */
+
 public class ComplexAI {
 
     private boolean lastHit = false;
     private int[] previous = {0, 0};
 
-    private int[] origin = null;      // first hit of current ship
+    private int[] origin = null;
     private int orientation = -1;     // 0 = horizontal, 1 = vertical, -1 = unknown
 
     private boolean posDone = false;  // RIGHT or DOWN side M found
@@ -38,7 +46,6 @@ public class ComplexAI {
         // -------------------------
         if (!lastHit) {
 
-            // If we were targeting a ship, this MISS belongs to one side
             if (origin != null && orientation != -1) {
                 debug("MISS while targeting → marking side done");
 
@@ -46,26 +53,44 @@ public class ComplexAI {
                 int dy = previous[1] - origin[1];
 
                 if (orientation == 0) { // horizontal
-                    if (dy > 0) posDone = true;   // RIGHT side M
-                    if (dy < 0) negDone = true;   // LEFT side M
+                    if (dy > 0) posDone = true;
+                    if (dy < 0) negDone = true;
                 } else { // vertical
-                    if (dx > 0) posDone = true;   // DOWN side M
-                    if (dx < 0) negDone = true;   // UP side M
+                    if (dx > 0) posDone = true;
+                    if (dx < 0) negDone = true;
                 }
 
-                // Only when BOTH sides are M do we revert to hunt
+                // FALLBACK: if both sides blocked, try the other orientation
                 if (posDone && negDone) {
-                    debug("BOTH sides M → revert to hitDist hunting FROM ORIGIN");
-                    previous = origin.clone();   // hunt starts from origin
+                    if (orientation == 1) {
+                        debug("FALLBACK → vertical blocked → trying horizontal");
+                        orientation = 0;
+                        posDone = false;
+                        negDone = false;
+                        previous = origin.clone();
+                        return target(visited);
+                    }
+                    if (orientation == 0) {
+                        debug("FALLBACK → horizontal blocked → trying vertical");
+                        orientation = 1;
+                        posDone = false;
+                        negDone = false;
+                        previous = origin.clone();
+                        return target(visited);
+                    }
+                }
+
+                // Only revert to hunt if BOTH orientations exhausted
+                if (posDone && negDone) {
+                    debug("BOTH orientations exhausted → revert to hunt FROM ORIGIN");
+                    previous = origin.clone();
                     resetTargeting();
                     return hunt(visited);
                 }
 
-                // Otherwise continue sweeping
                 return target(visited);
             }
 
-            // Not targeting → normal hunt
             return hunt(visited);
         }
 
@@ -84,34 +109,40 @@ public class ComplexAI {
     }
 
     // -------------------------
-    // HUNT MODE
+    // HUNT MODE (LOOP, NO RECURSION)
     // -------------------------
     private int[] hunt(boolean[][] visited) {
-        int row = previous[1];
-        int col = previous[0];
 
-        int offset = row % 2; // parity shift
+        for (int attempts = 0; attempts < 200; attempts++) {
 
-        col += hitDist;
+            int row = previous[1];
+            int col = previous[0];
 
-        if (col > 9) {
-            row++;
-            if (row > 9) row = 0;
-            col = offset;
-        }
+            int offset = row % 2;
 
-        int[] g = {col, row};
+            col += hitDist;
 
-        // Skip visited squares
-        if (visited[g[0]][g[1]]) {
-            debug("HUNT → (" + g[0] + "," + g[1] + ") already guessed, advancing");
+            if (col > 9) {
+                row++;
+                if (row > 9) row = 0;
+                col = offset;
+            }
+
+            int[] g = {col, row};
+
+            if (!visited[col][row]) {
+                previous = g;
+                debug("HUNT → firing at (" + col + "," + row + ") with offset " + offset);
+                return g;
+            }
+
+            debug("HUNT → (" + col + "," + row + ") already guessed, advancing");
             previous = g;
-            return hunt(visited);
         }
 
-        previous = g;
-        debug("HUNT → firing at (" + g[0] + "," + g[1] + ") with offset " + offset);
-        return g;
+        // Emergency fallback (should never happen)
+        debug("HUNT → fallback to (0,0)");
+        return new int[]{0, 0};
     }
 
     // -------------------------
@@ -119,9 +150,7 @@ public class ComplexAI {
     // -------------------------
     private int[] target(boolean[][] visited) {
 
-        // -------------------------
         // STEP 1: Find orientation
-        // -------------------------
         if (orientation == -1) {
             for (int d = 0; d < 4; d++) {
                 int tx = origin[0] + DIRS[d][0];
@@ -133,24 +162,21 @@ public class ComplexAI {
                 debug("TARGET (find orientation) → probing " + dirName(d) +
                       " at (" + tx + "," + ty + ")");
 
-                orientation = (d <= 1) ? 0 : 1; // horizontal or vertical
+                orientation = (d <= 1) ? 0 : 1;
                 posDone = false;
                 negDone = false;
                 return previous;
             }
 
-            // No valid probe
-            debug("TARGET → no valid probe around origin → reset + hunt");
+            debug("TARGET → no valid probe → reset + hunt");
             previous = origin.clone();
             resetTargeting();
             return hunt(visited);
         }
 
-        // -------------------------
         // STEP 2: Sweep POSITIVE side
-        // -------------------------
         if (!posDone) {
-            int dirIndex = (orientation == 0) ? 0 : 2; // RIGHT or DOWN
+            int dirIndex = (orientation == 0) ? 0 : 2;
             int nx = previous[0] + DIRS[dirIndex][0];
             int ny = previous[1] + DIRS[dirIndex][1];
 
@@ -164,11 +190,9 @@ public class ComplexAI {
             }
         }
 
-        // -------------------------
         // STEP 3: Sweep NEGATIVE side
-        // -------------------------
         if (!negDone) {
-            int dirIndex = (orientation == 0) ? 1 : 3; // LEFT or UP
+            int dirIndex = (orientation == 0) ? 1 : 3;
             int nx = origin[0] + DIRS[dirIndex][0];
             int ny = origin[1] + DIRS[dirIndex][1];
 
@@ -182,17 +206,34 @@ public class ComplexAI {
             }
         }
 
-        // -------------------------
-        // STEP 4: BOTH sides M → revert to hunt
-        // -------------------------
+        // STEP 4: BOTH sides M → fallback orientation or revert to hunt
         if (posDone && negDone) {
-            debug("TARGET → BOTH M found → revert to hitDist hunting FROM ORIGIN");
+
+            // Fallback orientation
+            if (orientation == 1) {
+                debug("FALLBACK → vertical blocked → trying horizontal");
+                orientation = 0;
+                posDone = false;
+                negDone = false;
+                previous = origin.clone();
+                return target(visited);
+            }
+
+            if (orientation == 0) {
+                debug("FALLBACK → horizontal blocked → trying vertical");
+                orientation = 1;
+                posDone = false;
+                negDone = false;
+                previous = origin.clone();
+                return target(visited);
+            }
+
+            debug("TARGET → BOTH orientations exhausted → revert to hunt");
             previous = origin.clone();
             resetTargeting();
             return hunt(visited);
         }
 
-        // Should not reach here
         debug("TARGET → fallback to hunt");
         previous = origin.clone();
         resetTargeting();
@@ -207,22 +248,27 @@ public class ComplexAI {
     }
 
     private void updateHitDist() {
-        if (sunkList.isEmpty()) {
-            hitDist = 2;
-            return;
+
+        int arquintisCount = 0;
+        for (String s : sunkList) {
+            if (s.equals("ARQUINTIS")) arquintisCount++;
         }
 
-        String last = sunkList.get(sunkList.size() - 1);
-        int length = switch (last) {
-            case "INTERCEPTOR" -> 2;
-            case "ARQUINTIS" -> 3;
-            case "ACCLIMATOR" -> 4;
-            case "VENATOR" -> 5;
-            default -> 2;
-        };
+        int smallestRemaining = 5;
 
-        hitDist = Math.max(1, length - 1);
-        debug("hitDist set to " + hitDist + " from " + last);
+        if (arquintisCount < 2) {
+            smallestRemaining = 3;
+        } else {
+            boolean has2 = !sunkList.contains("INTERCEPTOR");
+            boolean has4 = !sunkList.contains("ACCLIMATOR");
+
+            if (has2) smallestRemaining = 2;
+            else if (has4) smallestRemaining = 4;
+            else smallestRemaining = 5;
+        }
+
+        hitDist = smallestRemaining - 1;
+        debug("hitDist set to " + hitDist + " (smallest remaining ship = " + smallestRemaining + ")");
     }
 
     private boolean inBounds(int x, int y) {
