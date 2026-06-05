@@ -34,8 +34,10 @@ public class GameLauncher implements ActionListener {
 	// Image Icon Items
 	private JLabel background;
 	private JLabel title;
+	private JLabel logo;
 	private ImageIcon backgroundI;
 	private ImageIcon titleI;
+	private ImageIcon logoI;
 
 	// Interactive Items
 	private JTextField nameField;
@@ -58,11 +60,13 @@ public class GameLauncher implements ActionListener {
 		SoundPlayer.playMusic("musicLauncher.wav");
 
 		frame = new JFrame("Star Wars Battleship");
-
+		
+		logoI = new ImageIcon("imageLogo.png");
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
 		background = new JLabel(backgroundI);
 		title = new JLabel(titleI);
+		logo = new JLabel(logoI);
 
 		westPanel = new JPanel();
 		northPanel = new JPanel();
@@ -88,9 +92,15 @@ public class GameLauncher implements ActionListener {
 
 		northPanel.setPreferredSize(new Dimension(960, 200));
 		northPanel.setOpaque(false);
+		northPanel.setBackground(Color.black);
 
-		displaceTitle.setPreferredSize(new Dimension(370, 50));
+		displaceTitle.setPreferredSize(new Dimension(275, 50));
 		displaceTitle.setOpaque(false);
+		
+		logo.setText("Space Wizards");
+		logo.setVerticalTextPosition(JLabel.BOTTOM);
+		logo.setHorizontalTextPosition(JLabel.CENTER);
+		logo.setForeground(Color.yellow);
 
 		nameField.setHorizontalAlignment(JTextField.CENTER);
 		nameField.setPreferredSize(buttonSize);
@@ -114,6 +124,7 @@ public class GameLauncher implements ActionListener {
 
 		northPanel.add(title);
 		northPanel.add(displaceTitle);
+		northPanel.add(logo);
 
 		frame.setVisible(true);
 	}
