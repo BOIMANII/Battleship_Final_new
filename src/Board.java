@@ -33,6 +33,7 @@ public class Board extends JFrame implements ActionListener {
 		int hit;
 		int miss;
 		int sunk;
+		int aiSunk;
 		boolean useHorizontal = false;
 		boolean useComplex;
 		boolean computerFirst;
@@ -748,7 +749,7 @@ public class Board extends JFrame implements ActionListener {
 			ship.evaluateSunk();
 			// If the computer's guess sinks player's ship
 			if (ship.getSunk()) {
-				
+				aiSunk++;
 				String enemyInternalName = ship.getName().toUpperCase();
 				String enemyDisplayedName = enemyInternalName;
 				if(useComplex) {
@@ -815,7 +816,7 @@ public class Board extends JFrame implements ActionListener {
 			 * ### - Name 3
 			 */
 			// If scoreboard already exists, read scoreboard file info, add player, sort, display and update
-			String playerScore = (hit + miss) + " - " + playerName;
+			String playerScore = (((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk))) + " - " + playerName;
 			try {
 				File scoreboardFile = new File("scoreBoard.txt");
 				Scanner scoreScanner = new Scanner(scoreboardFile);
@@ -936,7 +937,7 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[i][j].setEnabled(false);
 				}
 			}
-			new EndScreen();
+			new EndScreen(hit, miss, sunk, aiSunk);
 			// This causes an error message to pop up in console but the error does not
 			// effect anything
 			frame.dispose(); //TODO

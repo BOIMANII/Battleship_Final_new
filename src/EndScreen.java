@@ -1,3 +1,4 @@
+
 /**
  * @author Anthony
  * @date 2026-05-27
@@ -10,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class EndScreen implements ActionListener {
 
@@ -18,6 +20,10 @@ public class EndScreen implements ActionListener {
 	private JPanel westPanel;
 	private JPanel northPanel;
 	private JPanel displaceTitle;
+	private JPanel eastPanel;
+	private JLabel scoreBoard;
+    private Border yellowBorder;
+
 
 	private JLabel background;
 	private JLabel title;
@@ -32,19 +38,22 @@ public class EndScreen implements ActionListener {
 	private Dimension buttonSize = new Dimension(180, 50);
 
 	/**
-	 * Constructor for EndScreen
-	 * * Holds the graphics for the game over screen.
+	 * Constructor for EndScreen * Holds the graphics for the game over screen.
 	 * Formatted identically to GameLauncher.
 	 */
-	public EndScreen() {
-		//SoundPlayer.playMusic("musicEnding.wav");
+	public EndScreen(int hit, int miss, int sunk, int aiSunk) {
+		SoundPlayer.playMusic("musicEnding.wav");
 		frame = new JFrame("Star Wars Battleship - Game Over");
 		playAgainButton = new JButton("Play Again");
 		quitButton = new JButton("Quit");
-		
+		eastPanel = new JPanel();
+		scoreBoard = new JLabel();
+		yellowBorder = BorderFactory.createLineBorder(Color.yellow, 3);
+
+
 		backgroundI = new ImageIcon("backgroundEnding.Again.jpg");
 		titleI = new ImageIcon("titleText.png");
-		
+
 		background = new JLabel(backgroundI);
 		westPanel = new JPanel();
 		northPanel = new JPanel();
@@ -72,6 +81,17 @@ public class EndScreen implements ActionListener {
 		westPanel.setOpaque(false);
 		westPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
 
+		eastPanel.setPreferredSize(new Dimension(300, 540));
+		eastPanel.setBackground(Color.black);
+		eastPanel.setBorder(yellowBorder);
+
+
+		scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
+				+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: "
+				+ ((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk)) + "</html>");
+		scoreBoard.setFont( new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+		scoreBoard.setForeground(Color.yellow);
+		
 		northPanel.setPreferredSize(new Dimension(960, 200));
 		northPanel.setOpaque(false);
 
@@ -81,26 +101,29 @@ public class EndScreen implements ActionListener {
 		frame.add(background);
 		background.add(westPanel, BorderLayout.WEST);
 		background.add(northPanel, BorderLayout.NORTH);
+		background.add(eastPanel, BorderLayout.EAST);
 		
+		eastPanel.add(scoreBoard);
+
 		westPanel.add(playAgainButton);
 		westPanel.add(quitButton);
-		
+
 		northPanel.add(title);
 		northPanel.add(displaceTitle);
 
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(3); 
+		frame.setDefaultCloseOperation(3);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playAgainButton) {
-			frame.dispose(); 
+			frame.dispose();
 			new GameLauncher();
 		}
 		if (e.getSource() == quitButton) {
-			System.exit(0); 
+			System.exit(0);
 		}
 	}
 }
