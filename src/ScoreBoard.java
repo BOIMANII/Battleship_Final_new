@@ -21,6 +21,7 @@ public class ScoreBoard extends JFrame {
 		Scanner scan = new Scanner(file);
 
 		String boardData = "<html><div style='text-align: center;'>";// Html writen by ai becuase i dont know html
+		boardData += "Score - Name" + "<br>";
 		while (scan.hasNextLine()) {
 			boardData += scan.nextLine() + "<br>";
 		}

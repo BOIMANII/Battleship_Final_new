@@ -659,14 +659,14 @@ public class Board extends JFrame implements ActionListener {
 						if (internalName.equals("VENATOR")) {
 							displayedName = "THE MALEVOLENCE";
 						} else if (internalName.equals("ACCLIMATOR")) {
-							displayedName = "PROVIDENCE-CLASS DREADNOUGHT";
+							displayedName = "A PROVIDENCE-CLASS DREADNOUGHT";
 						} else if (internalName.equals("ARQUINTIS")) {
-							displayedName = "RECUSANT-CLASS LIGHT DESTROYER";
+							displayedName = "A RECUSANT-CLASS LIGHT DESTROYER";
 						} else if (internalName.equals("INTERCEPTOR")) {
-							displayedName = "HYENA-CLASS BOMBER";
+							displayedName = "A HYENA-CLASS BOMBER";
 						}
 
-						JOptionPane.showMessageDialog(null, "YOU DESTROYED A " + displayedName, "CONGRATULATIONS",
+						JOptionPane.showMessageDialog(null, "YOU DESTROYED " + displayedName, "CONGRATULATIONS",
 								JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 					}
 				} else {
@@ -742,16 +742,16 @@ public class Board extends JFrame implements ActionListener {
 					complex.sunkList.add(enemyInternalName);
 				}
 				if (enemyInternalName.equals("VENATOR")) {
-					enemyDisplayedName = "VENATOR-CLASS STAR DESTROYER";
+					enemyDisplayedName = "A VENATOR-CLASS STAR DESTROYER";
 				} else if (enemyInternalName.equals("ACCLIMATOR")) {
-					enemyDisplayedName = "ACCLAMATOR-CLASS ASSAULT SHIP"; // Fixed spelling
+					enemyDisplayedName = "AN ACCLAMATOR-CLASS ASSAULT SHIP"; // Fixed spelling
 				} else if (enemyInternalName.equals("ARQUINTIS")) {
-					enemyDisplayedName = "ARQUITENS-CLASS COMMAND CRUISER"; // Fixed spelling
+					enemyDisplayedName = "AN ARQUITENS-CLASS COMMAND CRUISER"; // Fixed spelling
 				} else if (enemyInternalName.equals("INTERCEPTOR")) {
-					enemyDisplayedName = "INTERCEPTOR-CLASS CORVETTE";
+					enemyDisplayedName = "AN INTERCEPTOR-CLASS CORVETTE";
 				}
 
-				JOptionPane.showMessageDialog(null, "THE ENEMY DESTROYED A " + enemyDisplayedName, "OH NO",
+				JOptionPane.showMessageDialog(null, "THE ENEMY DESTROYED " + enemyDisplayedName, "OH NO",
 						JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 			}
 		}
@@ -804,7 +804,7 @@ public class Board extends JFrame implements ActionListener {
 			// display and update
 			String playerScore = (((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk))) + " - " + playerName;
 			try {
-				File scoreboardFile = new File("scoreBoard.txt");
+				File scoreboardFile = new File("scoreboard.txt");
 				Scanner scoreScanner = new Scanner(scoreboardFile);
 				ArrayList<String> scores = new ArrayList<>();
 
@@ -823,21 +823,20 @@ public class Board extends JFrame implements ActionListener {
 				// Add player's score
 				scores.add(playerScore);
 
-				// Sort ArrayList appropriately, in ascending order (lower number of guesses at
-				// front)
+				// Sort ArrayList appropriately, in descending order
 				// Since ArrayList is already sorted, we just need to grab the back most value
 				// and keep moving it forwards until we find where it is supposed to go
 				String temp = scores.get(scores.size() - 1);
-				for (int i = scores.size() - 2; i > -1; i--) {
-					if (Integer.parseInt(scores.get(i).split(" - ")[0]) > Integer.parseInt(temp.split(" - ")[0])) {
-						scores.set(i + 1, scores.get(i));
-					} else {
-						scores.set(i + 1, temp);
-					}
+				int i;
+				for (i = scores.size() - 2; i >= 0; i--) {
+				    if (Integer.parseInt(scores.get(i).split(" - ")[0])
+				            < Integer.parseInt(temp.split(" - ")[0])) {
+				        scores.set(i + 1, scores.get(i));
+				    } else {
+				        break;
+				    }
 				}
-
-				System.out.println("murrpit");
-
+				scores.set(i + 1, temp);
 				/*
 				 * GUI note:
 				 * 
@@ -854,8 +853,8 @@ public class Board extends JFrame implements ActionListener {
 
 				// Save new scores into scoreboard.txt
 				PrintWriter writer = new PrintWriter("scoreboard.txt");
-				for (int i = 0; i < scores.size(); i++) {
-					writer.println(scores.get(i));
+				for (int j = 0; j < scores.size(); j++) {
+					writer.println(scores.get(j));
 				}
 				writer.close();
 
