@@ -168,6 +168,7 @@ public class GameLauncher implements ActionListener {
 			SoundPlayer.playSound("sfxJump.wav");
 			name = nameField.getText();
 			try {
+				frame.dispose();
 				new Board(name, false, true);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();

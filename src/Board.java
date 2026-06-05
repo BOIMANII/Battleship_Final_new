@@ -43,7 +43,6 @@ public class Board extends JFrame implements ActionListener {
 
 
 		// Frame and Background
-		JFrame frame;
 		JLabel background;
 		ImageIcon backgroundImage;
 
@@ -315,7 +314,7 @@ public class Board extends JFrame implements ActionListener {
 				Board newBoard = new Board(playerName, false, false);
 				// This causes an error message to pop up in console but the error does not
 				// effect anything
-				frame.dispose();
+				this.dispose();
 			}
 		}
 		
@@ -927,7 +926,7 @@ public class Board extends JFrame implements ActionListener {
 			new EndScreen(hit, miss, sunk, aiSunk);
 			// This causes an error message to pop up in console but the error does not
 			// effect anything
-			frame.dispose(); //TODO
+			this.dispose(); //TODO
 
 		}
 	}
