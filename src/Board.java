@@ -492,20 +492,6 @@ public class Board extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		boolean isPlace = false;
 
-		// Check if the button clicked is one of the player's grid
-		if (e.getSource() instanceof JButton) {// AI couldent figure it out
-			JButton clickedButton = (JButton) e.getSource();
-
-			if (clickedButton.getClientProperty("row") != null) {
-
-				int row = (int) clickedButton.getClientProperty("row");
-				int col = (int) clickedButton.getClientProperty("col");
-
-				System.out.println("Y: " + row + " X: " + col);
-				System.out.println("Grid button pressed");
-
-			}
-		}
 
 		// Check if the button pressed is in the player's board
 		for (int i = 0; i < 10; i++) {
@@ -647,7 +633,7 @@ public class Board extends JFrame implements ActionListener {
 			// Any other selection would be on the computer's board, which would be a guess
 		} else {
 			int[] guess = getGrid((JButton) e.getSource());
-
+			SoundPlayer.playSound("sfxShoot.wav");
 			// If player already guessed grid, so inform them this selection is invalid
 			if (grid[guess[0]][guess[1]].isPlayerGuessed()) {
 				JOptionPane.showMessageDialog(null, "Sir we already checked this area", "INVALID", JOptionPane.WARNING_MESSAGE);
@@ -1090,7 +1076,7 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 	public void guiSetup() {
-		SoundPlayer.playMusic("musicLauncher.wav");
+		SoundPlayer.playMusic("musicSetup.wav");
 
 		java.awt.Font largeFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24);
 		java.awt.Font labelFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22);
