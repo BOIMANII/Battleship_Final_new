@@ -23,7 +23,7 @@ public class GameLauncher implements ActionListener {
 	// Window Settings And Constants
 	private int frameX = 960;
 	private int frameY = 540;
-	private Dimension buttonSize = new Dimension(180, 50);
+	private Dimension buttonSize = new Dimension(180, 40);
 
 	// Main GUI Panels
 	private JFrame frame;
@@ -43,6 +43,7 @@ public class GameLauncher implements ActionListener {
 	private JButton launchHardButton;
 	private JButton loadButton;
 	private JButton infoButton;
+	private JButton scoreButton;
 
 	// Tracking
 	private Board board;
@@ -57,7 +58,7 @@ public class GameLauncher implements ActionListener {
 		SoundPlayer.playMusic("musicLauncher .wav");
 
 		frame = new JFrame("Star Wars Battleship");
-		
+
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
 		background = new JLabel(backgroundI);
@@ -72,6 +73,7 @@ public class GameLauncher implements ActionListener {
 		launchHardButton = new JButton("New Hard");
 		loadButton = new JButton("Load Previous");
 		infoButton = new JButton("How to play");
+		scoreButton = new JButton("Scoreboard");
 
 		frame.setSize(frameX, frameY);
 		frame.setResizable(false);
@@ -97,6 +99,7 @@ public class GameLauncher implements ActionListener {
 		configureLauncherButton(launchHardButton);
 		configureLauncherButton(loadButton);
 		configureLauncherButton(infoButton);
+		configureLauncherButton(scoreButton);
 
 		frame.add(background);
 		background.add(westPanel, BorderLayout.WEST);
@@ -107,6 +110,7 @@ public class GameLauncher implements ActionListener {
 		westPanel.add(launchHardButton);
 		westPanel.add(loadButton);
 		westPanel.add(infoButton);
+		westPanel.add(scoreButton);
 
 		northPanel.add(title);
 		northPanel.add(displaceTitle);
@@ -115,8 +119,8 @@ public class GameLauncher implements ActionListener {
 	}
 
 	/**
-	 * Helper method to make buttons
-	 * All buttons are the same ecxept text
+	 * Helper method to make buttons All buttons are the same ecxept text
+	 * 
 	 * @param JButton
 	 */
 	private void configureLauncherButton(JButton button) {
@@ -164,6 +168,7 @@ public class GameLauncher implements ActionListener {
 			SoundPlayer.playSound("sfxJump.wav");
 			name = nameField.getText();
 			try {
+				frame.dispose();
 				new Board(name, false, true);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
@@ -173,6 +178,15 @@ public class GameLauncher implements ActionListener {
 		if (e.getSource() == infoButton) {
 			SoundPlayer.playSound("sfxButton.wav");
 			new InfoFrame();
+		}
+		if (e.getSource() == scoreButton) {
+			SoundPlayer.playSound("sfxButton.wav");
+			try {
+				new ScoreBoard();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }

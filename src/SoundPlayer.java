@@ -1,3 +1,4 @@
+
 /**
  * @author Anthony & Gemini 
  * @date 2026-06-03
@@ -11,44 +12,41 @@ import javax.sound.sampled.Clip;
 
 public class SoundPlayer {
 
-    private static Clip musicClip;
+	private static Clip musicClip;
 
-    
-    public static void playSound(String soundFilePath) {
-        try {
-            File soundFile = new File(soundFilePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-        } catch (Exception e) {
-            System.out.println("SFX Error: " + e.getMessage());
-        }
-    }
+	public static void playSound(String soundFilePath) {
+		try {
+			File soundFile = new File(soundFilePath);
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioStream);
+			clip.start();
+		} catch (Exception e) {
+			System.out.println("SFX Error: " + e.getMessage());
+		}
+	}
 
-   
-    public static void playMusic(String soundFilePath) {
-        try {
-            stopMusic();
+	public static void playMusic(String soundFilePath) {
+		try {
+			stopMusic();
 
-            File soundFile = new File(soundFilePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            
-            musicClip = AudioSystem.getClip();
-            musicClip.open(audioStream);
-            
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY); 
-            musicClip.start();
-        } catch (Exception e) {
-            System.out.println("Music Error: " + e.getMessage());
-        }
-    }
+			File soundFile = new File(soundFilePath);
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
 
+			musicClip = AudioSystem.getClip();
+			musicClip.open(audioStream);
 
-    public static void stopMusic() {
-        if (musicClip != null && musicClip.isRunning()) {
-            musicClip.stop(); 
-            musicClip.close(); 
-        }
-    }
+			musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+			musicClip.start();
+		} catch (Exception e) {
+			System.out.println("Music Error: " + e.getMessage());
+		}
+	}
+
+	public static void stopMusic() {
+		if (musicClip != null && musicClip.isRunning()) {
+			musicClip.stop();
+			musicClip.close();
+		}
+	}
 }

@@ -1,11 +1,15 @@
 import java.util.ArrayList;
-
 /**
- * @author Andy Zhang
+ * @author Andy
  * @teacher Mr. Smintich
  * @date 26 05 29
- * 
- * This is meant to support guess, and the AI algorithm for complex AI. 
+ *
+ * Complex Battleship AI with:
+ * - hitDist skipping
+ * - parity shifting
+ * - walk‑ship logic
+ * - fallback orientation
+ * - no recursion / no overflow
  */
 
 public class ComplexAI {
@@ -19,7 +23,11 @@ public class ComplexAI {
     private boolean posDone = false;  // RIGHT or DOWN side M found
     private boolean negDone = false;  // LEFT or UP side M found
 
+    private boolean orientationTriedBoth = false;
+
     private int hitDist = 2;
+    private int huntIndex = 0;        // NEW: true hitDist grid index
+
     public ArrayList<String> sunkList = new ArrayList<>();
 
     // RIGHT, LEFT, DOWN, UP
@@ -27,9 +35,6 @@ public class ComplexAI {
         {0, 1}, {0, -1}, {1, 0}, {-1, 0}
     };
 
-    // -------------------------
-    // PUBLIC API
-    // -------------------------
     public void setHit(boolean h) {
         lastHit = h;
     }
@@ -42,7 +47,7 @@ public class ComplexAI {
         updateHitDist();
 
         // -------------------------
-        // CASE 1: MISS
+        // MISS
         // -------------------------
         if (!lastHit) {
 
@@ -60,32 +65,28 @@ public class ComplexAI {
                     if (dx < 0) negDone = true;
                 }
 
-                // FALLBACK: if both sides blocked, try the other orientation
+                // Both sides M
                 if (posDone && negDone) {
-                    if (orientation == 1) {
-                        debug("FALLBACK → vertical blocked → trying horizontal");
-                        orientation = 0;
-                        posDone = false;
-                        negDone = false;
-                        previous = origin.clone();
-                        return target(visited);
-                    }
-                    if (orientation == 0) {
-                        debug("FALLBACK → horizontal blocked → trying vertical");
-                        orientation = 1;
-                        posDone = false;
-                        negDone = false;
-                        previous = origin.clone();
-                        return target(visited);
-                    }
-                }
 
-                // Only revert to hunt if BOTH orientations exhausted
-                if (posDone && negDone) {
-                    debug("BOTH orientations exhausted → revert to hunt FROM ORIGIN");
-                    previous = origin.clone();
-                    resetTargeting();
-                    return hunt(visited);
+                    // Try other orientation first
+                    if (!orientationTriedBoth) {
+                        debug("FALLBACK → switching orientation");
+                        orientation = (orientation == 0) ? 1 : 0;
+                        posDone = false;
+                        negDone = false;
+                        orientationTriedBoth = true;
+                        previous = origin.clone();
+                        return target(visited);
+                    }
+
+                    // WALK‑SHIP: use last hit as new origin
+                    debug("WALK SHIP → new origin = last hit");
+                    origin = previous.clone();
+                    orientation = -1;
+                    posDone = false;
+                    negDone = false;
+                    orientationTriedBoth = false;
+                    return target(visited);
                 }
 
                 return target(visited);
@@ -95,62 +96,63 @@ public class ComplexAI {
         }
 
         // -------------------------
-        // CASE 2: HIT
+        // HIT
         // -------------------------
         if (origin == null) {
             origin = previous.clone();
             orientation = -1;
             posDone = false;
             negDone = false;
+            orientationTriedBoth = false;
             debug("First HIT → origin set at (" + origin[0] + "," + origin[1] + ")");
         }
 
         return target(visited);
     }
 
-    // -------------------------
-    // HUNT MODE (LOOP, NO RECURSION)
-    // -------------------------
+    // ---------------------------------------------------------
+    // HUNT MODE — TRUE hitDist grid, no recursion, no overflow
+    // ---------------------------------------------------------
     private int[] hunt(boolean[][] visited) {
 
-        for (int attempts = 0; attempts < 200; attempts++) {
+        for (int attempts = 0; attempts < 300; attempts++) {
 
-            int row = previous[1];
-            int col = previous[0];
-
-            int offset = row % 2;
-
-            col += hitDist;
-
-            if (col > 9) {
-                row++;
-                if (row > 9) row = 0;
-                col = offset;
+            // If we've looped the board → shift parity
+            if (attempts == 200) {
+                debug("HUNT SHIFT → shifting parity down by 1 row");
+                huntIndex += 10; // skip a row
             }
 
-            int[] g = {col, row};
+            int row = (huntIndex / 10) % 10;
+            int col = huntIndex % 10;
+
+            // hitDist spacing rule
+            if ((col - (row % 2)) % hitDist != 0) {
+                huntIndex++;
+                continue;
+            }
 
             if (!visited[col][row]) {
-                previous = g;
-                debug("HUNT → firing at (" + col + "," + row + ") with offset " + offset);
-                return g;
+                previous = new int[]{col, row};
+                debug("HUNT → firing at (" + col + "," + row + ")");
+                huntIndex++;
+                return previous;
             }
 
-            debug("HUNT → (" + col + "," + row + ") already guessed, advancing");
-            previous = g;
+            debug("HUNT → (" + col + "," + row + ") already guessed");
+            huntIndex++;
         }
 
-        // Emergency fallback (should never happen)
         debug("HUNT → fallback to (0,0)");
         return new int[]{0, 0};
     }
 
-    // -------------------------
+    // ---------------------------------------------------------
     // TARGET MODE
-    // -------------------------
+    // ---------------------------------------------------------
     private int[] target(boolean[][] visited) {
 
-        // STEP 1: Find orientation
+        // Step 1: find orientation
         if (orientation == -1) {
             for (int d = 0; d < 4; d++) {
                 int tx = origin[0] + DIRS[d][0];
@@ -165,6 +167,7 @@ public class ComplexAI {
                 orientation = (d <= 1) ? 0 : 1;
                 posDone = false;
                 negDone = false;
+                orientationTriedBoth = false;
                 return previous;
             }
 
@@ -174,14 +177,14 @@ public class ComplexAI {
             return hunt(visited);
         }
 
-        // STEP 2: Sweep POSITIVE side
+        // Step 2: sweep positive side
         if (!posDone) {
             int dirIndex = (orientation == 0) ? 0 : 2;
             int nx = previous[0] + DIRS[dirIndex][0];
             int ny = previous[1] + DIRS[dirIndex][1];
 
             if (isM(nx, ny, visited)) {
-                debug("TARGET → positive side M/OOB at (" + nx + "," + ny + ")");
+                debug("TARGET → positive side M at (" + nx + "," + ny + ")");
                 posDone = true;
             } else {
                 previous = new int[]{nx, ny};
@@ -190,14 +193,14 @@ public class ComplexAI {
             }
         }
 
-        // STEP 3: Sweep NEGATIVE side
+        // Step 3: sweep negative side
         if (!negDone) {
             int dirIndex = (orientation == 0) ? 1 : 3;
             int nx = origin[0] + DIRS[dirIndex][0];
             int ny = origin[1] + DIRS[dirIndex][1];
 
             if (isM(nx, ny, visited)) {
-                debug("TARGET → negative side M/OOB at (" + nx + "," + ny + ")");
+                debug("TARGET → negative side M at (" + nx + "," + ny + ")");
                 negDone = true;
             } else {
                 previous = new int[]{nx, ny};
@@ -206,32 +209,26 @@ public class ComplexAI {
             }
         }
 
-        // STEP 4: BOTH sides M → fallback orientation or revert to hunt
+        // Step 4: both sides M
         if (posDone && negDone) {
 
-            // Fallback orientation
-            if (orientation == 1) {
-                debug("FALLBACK → vertical blocked → trying horizontal");
-                orientation = 0;
+            if (!orientationTriedBoth) {
+                debug("FALLBACK → switching orientation");
+                orientation = (orientation == 0) ? 1 : 0;
                 posDone = false;
                 negDone = false;
+                orientationTriedBoth = true;
                 previous = origin.clone();
                 return target(visited);
             }
 
-            if (orientation == 0) {
-                debug("FALLBACK → horizontal blocked → trying vertical");
-                orientation = 1;
-                posDone = false;
-                negDone = false;
-                previous = origin.clone();
-                return target(visited);
-            }
-
-            debug("TARGET → BOTH orientations exhausted → revert to hunt");
-            previous = origin.clone();
-            resetTargeting();
-            return hunt(visited);
+            debug("WALK SHIP → new origin = last hit");
+            origin = previous.clone();
+            orientation = -1;
+            posDone = false;
+            negDone = false;
+            orientationTriedBoth = false;
+            return target(visited);
         }
 
         debug("TARGET → fallback to hunt");
@@ -240,9 +237,9 @@ public class ComplexAI {
         return hunt(visited);
     }
 
-    // -------------------------
+    // ---------------------------------------------------------
     // HELPERS
-    // -------------------------
+    // ---------------------------------------------------------
     private boolean isM(int x, int y, boolean[][] visited) {
         return !inBounds(x, y) || visited[x][y];
     }
@@ -280,6 +277,7 @@ public class ComplexAI {
         orientation = -1;
         posDone = false;
         negDone = false;
+        orientationTriedBoth = false;
     }
 
     private String dirName(int d) {

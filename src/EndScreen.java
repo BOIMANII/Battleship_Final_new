@@ -22,8 +22,7 @@ public class EndScreen implements ActionListener {
 	private JPanel displaceTitle;
 	private JPanel eastPanel;
 	private JLabel scoreBoard;
-    private Border yellowBorder;
-
+	private Border yellowBorder;
 
 	private JLabel background;
 	private JLabel title;
@@ -41,7 +40,7 @@ public class EndScreen implements ActionListener {
 	 * Constructor for EndScreen * Holds the graphics for the game over screen.
 	 * Formatted identically to GameLauncher.
 	 */
-	public EndScreen(int hit, int miss, int sunk, int aiSunk) {
+	public EndScreen(int hit, int miss, int sunk, int aiSunk, boolean victory) {
 		SoundPlayer.playMusic("musicEnding.wav");
 		frame = new JFrame("Star Wars Battleship - Game Over");
 		playAgainButton = new JButton("Play Again");
@@ -50,8 +49,13 @@ public class EndScreen implements ActionListener {
 		scoreBoard = new JLabel();
 		yellowBorder = BorderFactory.createLineBorder(Color.yellow, 3);
 
+		
+		if(victory == true) {
+			backgroundI = new ImageIcon("backgroundEnding.Again.jpg");
 
-		backgroundI = new ImageIcon("backgroundEnding.Again.jpg");
+		}else {
+			backgroundI = new ImageIcon("backgroundLose.png");
+		}
 		titleI = new ImageIcon("titleText.png");
 
 		background = new JLabel(backgroundI);
@@ -85,13 +89,12 @@ public class EndScreen implements ActionListener {
 		eastPanel.setBackground(Color.black);
 		eastPanel.setBorder(yellowBorder);
 
-
 		scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
 				+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: "
 				+ ((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk)) + "</html>");
-		scoreBoard.setFont( new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
+		scoreBoard.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
 		scoreBoard.setForeground(Color.yellow);
-		
+
 		northPanel.setPreferredSize(new Dimension(960, 200));
 		northPanel.setOpaque(false);
 
@@ -102,7 +105,7 @@ public class EndScreen implements ActionListener {
 		background.add(westPanel, BorderLayout.WEST);
 		background.add(northPanel, BorderLayout.NORTH);
 		background.add(eastPanel, BorderLayout.EAST);
-		
+
 		eastPanel.add(scoreBoard);
 
 		westPanel.add(playAgainButton);

@@ -23,90 +23,88 @@ import java.util.Scanner;
 
 public class Board extends JFrame implements ActionListener {
 
-		// Game Logic
-		Cell[][] grid = new Cell[10][10];
-		HumanPlayer humanPlayer = new HumanPlayer();
-		ComputerPlayer computerPlayer = new ComputerPlayer();
-		String playerName;
-		int shipsPlaced = 0;
-		int guesses = 0;
-		int hit;
-		int miss;
-		int sunk;
-		int aiSunk;
-		boolean useHorizontal = false;
-		boolean useComplex;
-		boolean computerFirst;
+	// Game Logic
+	Cell[][] grid = new Cell[10][10];
+	HumanPlayer humanPlayer = new HumanPlayer();
+	ComputerPlayer computerPlayer = new ComputerPlayer();
+	String playerName;
+	int shipsPlaced = 0;
+	int guesses = 0;
+	int hit;
+	int miss;
+	int sunk;
+	int aiSunk;
+	boolean useHorizontal = false;
+	boolean useComplex;
+	boolean computerFirst;
 //		AI
-		private ComplexAI complex = new ComplexAI();
-		boolean[][] visited = new boolean[10][10];
+	private ComplexAI complex = new ComplexAI();
+	boolean[][] visited = new boolean[10][10];
 
+	// Frame and Background
+	JLabel background;
+	ImageIcon backgroundImage;
 
-		// Frame and Background
-		JFrame frame;
-		JLabel background;
-		ImageIcon backgroundImage;
+	// Layout Containers West (Player Board & Info)
+	JPanel westPanel;
+	JPanel westGrid;
+	JPanel westWestPanel;
+	JPanel northWestPanel;
+	JPanel namePanel;
+	JPanel westBottomPanel;
+	JPanel westNumbersGrid;
+	JPanel westSpacer;
+	JPanel statsPanel;
 
-		// Layout Containers West (Player Board & Info)
-		JPanel westPanel;
-		JPanel westGrid;
-		JPanel westWestPanel;
-		JPanel northWestPanel;
-		JPanel namePanel;
-		JPanel westBottomPanel;
-		JPanel westNumbersGrid;
-		JPanel westSpacer;
-		JPanel statsPanel;
+	// Layout Containers East (Enemy Board, Ships, & Controls)
+	JPanel eastPanel;
+	JPanel eastGrid;
+	JPanel eastEastGrid;
+	JPanel westEastGrid;
+	JPanel eastEastPanel;
+	JPanel northEastPanel;
+	JPanel southEastPanel;
+	JPanel aiNamePanel;
+	JPanel eastNumbersGrid;
+	JPanel eastSpacer;
+	JPanel toggelPanel;
 
-		// Layout Containers East (Enemy Board, Ships, & Controls)
-		JPanel eastPanel;
-		JPanel eastGrid;
-		JPanel eastEastGrid;
-		JPanel westEastGrid;
-		JPanel eastEastPanel;
-		JPanel northEastPanel;
-		JPanel southEastPanel;
-		JPanel aiNamePanel;
-		JPanel eastNumbersGrid;
-		JPanel eastSpacer;
-		JPanel toggelPanel;
+	// Button Component
+	JButton[][] playerCellButtons;
+	JButton[][] computerCells;
+	JButton saveButton;
+	JButton loadButton;
+	JCheckBox toggleHorizontal;
 
-		// Button Component
-		JButton[][] playerCellButtons;
-		JButton[][] computerCells;
-		JButton saveButton;
-		JButton loadButton;
-		JCheckBox toggleHorizontal;
+	// Name Plate and Stats Dispaly
+	JLabel nameLabel;
+	JLabel computerNamePlate;
+	JLabel hitLabel;
+	JLabel missLabel;
+	JLabel sunkLabel;
 
-		// Name Plate and Stats Dispaly
-		JLabel nameLabel;
-		JLabel computerNamePlate;
-		JLabel hitLabel;
-		JLabel missLabel;
-		JLabel sunkLabel;
+	// FleetDisplays
+	JLabel textVenator;
+	JLabel textAcclamator;
+	JLabel textArquitens;
+	JLabel textInterceptor;
 
-		// FleetDisplays
-		JLabel textVenator;
-		JLabel textAcclamator;
-		JLabel textArquitens;
-		JLabel textInterceptor;
+	// Ship Assets and Icons
+	JLabel[] shipPlaceImage;
+	ImageIcon iconShipBoom;
+	ImageIcon iconVenator;
+	ImageIcon iconAcclamator;
+	ImageIcon iconArquitens;
+	ImageIcon iconInterceptor;
 
-		// Ship Assets and Icons
-		JLabel[] shipPlaceImage;
-		ImageIcon iconShipBoom;
-		ImageIcon iconVenator;
-		ImageIcon iconAcclamator;
-		ImageIcon iconArquitens;
-		ImageIcon iconInterceptor;
-		
-		// Cell-specific 80x80 variants for grid placement
-		ImageIcon cellVenator;
-		ImageIcon cellAcclamator;
-		ImageIcon cellArquitens;
-		ImageIcon cellInterceptor;
+	// Cell-specific 80x80 variants for grid placement
+	ImageIcon cellVenator;
+	ImageIcon cellAcclamator;
+	ImageIcon cellArquitens;
+	ImageIcon cellInterceptor;
 
-		// User Prompts and Alerts
-		JOptionPane invalidPlacment;
+	// User Prompts and Alerts
+	JOptionPane invalidPlacment;
 
 	/**
 	 * Constructor for board This will set up humanPlayer's name, set whether or not
@@ -125,107 +123,106 @@ public class Board extends JFrame implements ActionListener {
 	 * @param useComplex
 	 * @throws FileNotFoundException
 	 */
-	public Board(String playerName, boolean useComplex, boolean isLoad)
-			throws InterruptedException {
-		
+	public Board(String playerName, boolean useComplex, boolean isLoad) throws InterruptedException {
+
 		// Game Logic
-				if (playerName.equalsIgnoreCase("Enter Name")) {
-					this.playerName = "The Republic";
-				} else {
-					this.playerName = "Commander " + playerName;
-				}
+		if (playerName.equalsIgnoreCase("Enter Name")) {
+			this.playerName = "The Republic";
+		} else {
+			this.playerName = "Commander " + playerName;
+		}
 
-				// Frame and Background
-				backgroundImage = new ImageIcon("backgroundBoard.jpg");
-				background = new JLabel(backgroundImage);
+		// Frame and Background
+		backgroundImage = new ImageIcon("backgroundBoard.jpg");
+		background = new JLabel(backgroundImage);
 
-				// Layout Containers West (Player Board & Info)
-				westPanel = new JPanel();
-				westGrid = new JPanel();
-				westWestPanel = new JPanel();
-				northWestPanel = new JPanel();
-				namePanel = new JPanel();
-				westBottomPanel = new JPanel(new BorderLayout());
-				westSpacer = new JPanel();
-				westNumbersGrid = new JPanel(new GridLayout(1, 10));
-				statsPanel = new JPanel();
+		// Layout Containers West (Player Board & Info)
+		westPanel = new JPanel();
+		westGrid = new JPanel();
+		westWestPanel = new JPanel();
+		northWestPanel = new JPanel();
+		namePanel = new JPanel();
+		westBottomPanel = new JPanel(new BorderLayout());
+		westSpacer = new JPanel();
+		westNumbersGrid = new JPanel(new GridLayout(1, 10));
+		statsPanel = new JPanel();
 
-				// Layout Containers East (Enemy Board, Ships, & Controls)
-				eastPanel = new JPanel();
-				eastGrid = new JPanel();
-				eastEastGrid = new JPanel();
-				westEastGrid = new JPanel();
-				eastEastPanel = new JPanel();
-				northEastPanel = new JPanel();
-				southEastPanel = new JPanel();
-				aiNamePanel = new JPanel();
-				eastNumbersGrid = new JPanel();
-				eastSpacer = new JPanel();
-				toggelPanel = new JPanel();
+		// Layout Containers East (Enemy Board, Ships, & Controls)
+		eastPanel = new JPanel();
+		eastGrid = new JPanel();
+		eastEastGrid = new JPanel();
+		westEastGrid = new JPanel();
+		eastEastPanel = new JPanel();
+		northEastPanel = new JPanel();
+		southEastPanel = new JPanel();
+		aiNamePanel = new JPanel();
+		eastNumbersGrid = new JPanel();
+		eastSpacer = new JPanel();
+		toggelPanel = new JPanel();
 
-				// Button Component
-				toggleHorizontal = new JCheckBox();
-				saveButton = new JButton();
-				loadButton = new JButton(); 
+		// Button Component
+		toggleHorizontal = new JCheckBox();
+		saveButton = new JButton();
+		loadButton = new JButton();
 
-				playerCellButtons = new JButton[10][10];
-				computerCells = new JButton[10][10];
+		playerCellButtons = new JButton[10][10];
+		computerCells = new JButton[10][10];
 
-				for (int y = 0; y < 10; y++) {
-					for (int x = 0; x < 10; x++) {
-						playerCellButtons[y][x] = new JButton();
-						playerCellButtons[y][x].addActionListener(this);
-						playerCellButtons[y][x].setPreferredSize(new Dimension(80, 80));
-						playerCellButtons[y][x].putClientProperty("row", y);
-						playerCellButtons[y][x].putClientProperty("col", x);
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 10; x++) {
+				playerCellButtons[y][x] = new JButton();
+				playerCellButtons[y][x].addActionListener(this);
+				playerCellButtons[y][x].setPreferredSize(new Dimension(80, 80));
+				playerCellButtons[y][x].putClientProperty("row", y);
+				playerCellButtons[y][x].putClientProperty("col", x);
 
-						computerCells[y][x] = new JButton();
-						computerCells[y][x].addActionListener(this);
-						computerCells[y][x].setPreferredSize(new Dimension(80, 80));
-						computerCells[y][x].putClientProperty("row", y);
-						computerCells[y][x].putClientProperty("col", x);
-					}
-				}
+				computerCells[y][x] = new JButton();
+				computerCells[y][x].addActionListener(this);
+				computerCells[y][x].setPreferredSize(new Dimension(80, 80));
+				computerCells[y][x].putClientProperty("row", y);
+				computerCells[y][x].putClientProperty("col", x);
+			}
+		}
 
-				// Name Plate and Stats Dispaly
-				nameLabel = new JLabel();
-				computerNamePlate = new JLabel();
-				hitLabel = new JLabel();
-				missLabel = new JLabel();
-				sunkLabel = new JLabel();
+		// Name Plate and Stats Dispaly
+		nameLabel = new JLabel();
+		computerNamePlate = new JLabel();
+		hitLabel = new JLabel();
+		missLabel = new JLabel();
+		sunkLabel = new JLabel();
 
-				// FleetDisplays
-				textVenator = new JLabel();
-				textAcclamator = new JLabel();
-				textArquitens = new JLabel();
-				textInterceptor = new JLabel();
+		// FleetDisplays
+		textVenator = new JLabel();
+		textAcclamator = new JLabel();
+		textArquitens = new JLabel();
+		textInterceptor = new JLabel();
 
-				// Ship Assets and Icons
-				iconShipBoom = new ImageIcon("iconShipBoom.png");
-				iconVenator = scaleImage("iconVenator.png", 250, 100);
-				iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
-				iconArquitens = scaleImage("iconArquitens.png", 250, 100);
-				iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
+		// Ship Assets and Icons
+		iconShipBoom = new ImageIcon("iconShipBoom.png");
+		iconVenator = scaleImage("iconVenator.png", 250, 100);
+		iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
+		iconArquitens = scaleImage("iconArquitens.png", 250, 100);
+		iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
 
-				shipPlaceImage = new JLabel[4];
-				shipPlaceImage[0] = new JLabel(iconVenator);
-				shipPlaceImage[1] = new JLabel(iconAcclamator);
-				shipPlaceImage[2] = new JLabel(iconArquitens);
-				shipPlaceImage[3] = new JLabel(iconInterceptor);
-				
-				// Ship Assets and Icons
-				iconShipBoom = new ImageIcon("iconShipBoom.png");
-				iconVenator = scaleImage("iconVenator.png", 250, 100);
-				iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
-				iconArquitens = scaleImage("iconArquitens.png", 250, 100);
-				iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
-				cellVenator = scaleImage("iconVenator.png", 80, 80);
-				cellAcclamator = scaleImage("iconAcclamator.png", 80, 80);
-				cellArquitens = scaleImage("iconArquitens.png", 80, 80);
-				cellInterceptor = scaleImage("iconInterceptor.png", 80, 80);
-				
-				// User Prompts and Alerts
-				invalidPlacment = new JOptionPane();
+		shipPlaceImage = new JLabel[4];
+		shipPlaceImage[0] = new JLabel(iconVenator);
+		shipPlaceImage[1] = new JLabel(iconAcclamator);
+		shipPlaceImage[2] = new JLabel(iconArquitens);
+		shipPlaceImage[3] = new JLabel(iconInterceptor);
+
+		// Ship Assets and Icons
+		iconShipBoom = new ImageIcon("iconShipBoom.png");
+		iconVenator = scaleImage("iconVenator.png", 250, 100);
+		iconAcclamator = scaleImage("iconAcclamator.png", 250, 100);
+		iconArquitens = scaleImage("iconArquitens.png", 250, 100);
+		iconInterceptor = scaleImage("iconInterceptor.png", 250, 100);
+		cellVenator = scaleImage("iconVenator.png", 80, 80);
+		cellAcclamator = scaleImage("iconAcclamator.png", 80, 80);
+		cellArquitens = scaleImage("iconArquitens.png", 80, 80);
+		cellInterceptor = scaleImage("iconInterceptor.png", 80, 80);
+
+		// User Prompts and Alerts
+		invalidPlacment = new JOptionPane();
 
 		// Board Logic
 		if (isLoad == false) {
@@ -235,14 +232,14 @@ public class Board extends JFrame implements ActionListener {
 					grid[i][j] = new Cell(i, j);
 				}
 			}
-			
+
 			guiSetup();
 
 		} else { // TODO
 			try {
 				File humanPlayerFile = new File(this.playerName + "HumanPlayer.txt");
 				Scanner humanScanner = new Scanner(humanPlayerFile);
-				
+
 				for (int i = 0; i < 5; i++) {
 					String positions = "";
 					positions = humanScanner.nextLine();
@@ -281,7 +278,7 @@ public class Board extends JFrame implements ActionListener {
 
 				guesses = Integer.parseInt(boardScanner.nextLine());
 				useComplex = Boolean.parseBoolean(boardScanner.nextLine());
-				
+
 				hit = Integer.parseInt(boardScanner.nextLine());
 				miss = Integer.parseInt(boardScanner.nextLine());
 				sunk = Integer.parseInt(boardScanner.nextLine());
@@ -315,15 +312,13 @@ public class Board extends JFrame implements ActionListener {
 				Board newBoard = new Board(playerName, false, false);
 				// This causes an error message to pop up in console but the error does not
 				// effect anything
-				frame.dispose();
+				this.dispose();
 			}
 		}
-		
-		humanPlayer.setName(playerName);
-		
-	}
 
-	
+		humanPlayer.setName(playerName);
+
+	}
 
 	public int[][] toCoords(String[] coordinates) {
 		// Take the String[] of a ship's positions and create an int[][] based on the
@@ -492,7 +487,6 @@ public class Board extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		boolean isPlace = false;
 
-
 		// Check if the button pressed is in the player's board
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -505,7 +499,7 @@ public class Board extends JFrame implements ActionListener {
 				break;
 			}
 		}
-		
+
 		// Based on selection, different things will happen
 		// If the player pressed one of the buttons on their own cells (to place a ship)
 		if (isPlace == true) {
@@ -636,7 +630,8 @@ public class Board extends JFrame implements ActionListener {
 			SoundPlayer.playSound("sfxShoot.wav");
 			// If player already guessed grid, so inform them this selection is invalid
 			if (grid[guess[0]][guess[1]].isPlayerGuessed()) {
-				JOptionPane.showMessageDialog(null, "Sir we already checked this area", "INVALID", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Sir we already checked this area", "INVALID",
+						JOptionPane.WARNING_MESSAGE);
 				// Player has not already guessed the grid, so increment hitCount of ship hit
 				// and check if sunk
 			} else {
@@ -650,20 +645,19 @@ public class Board extends JFrame implements ActionListener {
 					// ship there)
 					hit++;
 					Ship ship = findShip(guess, false);
-					
-					
+
 					ship.incrementHitCount();
 					ship.evaluateSunk();
 					// If the player's guess sinks computer's ship
 					if (ship.getSunk()) {
 						sunk++;
-						
+
 						String internalName = ship.getName().toUpperCase();
 						String displayedName = internalName; // Default fallback if no match is found
-					
+
 						System.out.println(ship.getName());
 						System.out.println(internalName);
-						if (internalName.equals("VENATOR")) { 
+						if (internalName.equals("VENATOR")) {
 							displayedName = "THE MALEVOLENCE";
 						} else if (internalName.equals("ACCLIMATOR")) {
 							displayedName = "PROVIDENCE-CLASS DREADNOUGHT";
@@ -688,7 +682,7 @@ public class Board extends JFrame implements ActionListener {
 				// After player's guess, computer will guess (this makes up one turn)
 				computerGuess();
 				checkWin();
-				
+
 			}
 		}
 	}
@@ -704,12 +698,12 @@ public class Board extends JFrame implements ActionListener {
 
 		// Have the computer generate a valid guess - if not valid, it keeps guessing
 		// until a valid one is found
-		
+
 		boolean valid = false;
 		while (valid == false) {
 			// Generate a guess
 			if (useComplex == true) {
-				
+
 				guess = complex.guess(visited);
 				visited[guess[0]][guess[1]] = true;
 			} else {
@@ -739,21 +733,21 @@ public class Board extends JFrame implements ActionListener {
 				aiSunk++;
 				String enemyInternalName = ship.getName().toUpperCase();
 				String enemyDisplayedName = enemyInternalName;
-				if(useComplex) {
+				if (useComplex) {
 					complex.sunkList.add(enemyInternalName);
 				}
 				if (enemyInternalName.equals("VENATOR")) {
 					enemyDisplayedName = "VENATOR-CLASS STAR DESTROYER";
-				} else if (enemyInternalName.equals("ACCLIMATOR")) { 
+				} else if (enemyInternalName.equals("ACCLIMATOR")) {
 					enemyDisplayedName = "ACCLAMATOR-CLASS ASSAULT SHIP"; // Fixed spelling
-				} else if (enemyInternalName.equals("ARQUINTIS")) { 
+				} else if (enemyInternalName.equals("ARQUINTIS")) {
 					enemyDisplayedName = "ARQUITENS-CLASS COMMAND CRUISER"; // Fixed spelling
 				} else if (enemyInternalName.equals("INTERCEPTOR")) {
 					enemyDisplayedName = "INTERCEPTOR-CLASS CORVETTE";
 				}
 
 				JOptionPane.showMessageDialog(null, "THE ENEMY DESTROYED A " + enemyDisplayedName, "OH NO",
-					JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
+						JOptionPane.INFORMATION_MESSAGE, iconShipBoom);
 			}
 		}
 
@@ -775,9 +769,10 @@ public class Board extends JFrame implements ActionListener {
 		boolean isOver = false;
 		if (computerPlayer.getHasLost()) {
 			isOver = true;
-			
+
 			// Print victory message
-			JOptionPane.showMessageDialog(null, "GOOD JOB COMMANDER, WE DESTORYED ALL THE SEPARATIST SHIPS! THE SYSTEM IS SAVED!", "VICTORY",
+			JOptionPane.showMessageDialog(null,
+					"GOOD JOB COMMANDER, WE DESTORYED ALL THE SEPARATIST SHIPS! THE SYSTEM IS SAVED!", "VICTORY",
 					JOptionPane.INFORMATION_MESSAGE);
 
 			/*
@@ -789,26 +784,25 @@ public class Board extends JFrame implements ActionListener {
 			 * new list and print
 			 */
 			/*
-			 * Scoreboard displays by 3 columns of a bunch of rows (each row is 1 score saved)
+			 * Scoreboard displays by 3 columns of a bunch of rows (each row is 1 score
+			 * saved)
 			 * 
-			 * Name  |  guesses
+			 * Name | guesses
 			 * 
-			 * Scoreboard is ranked based on number of guesses (less goes higher on the board) - if
-			 * there are two of the same number of guesses, the more recent one is placed below the
-			 * less recent one
+			 * Scoreboard is ranked based on number of guesses (less goes higher on the
+			 * board) - if there are two of the same number of guesses, the more recent one
+			 * is placed below the less recent one
 			 * 
-			 * Printed in a score - name format:
-			 * # - Name
-			 * ## - Name 2
-			 * ### - Name 3
+			 * Printed in a score - name format: # - Name ## - Name 2 ### - Name 3
 			 */
-			// If scoreboard already exists, read scoreboard file info, add player, sort, display and update
+			// If scoreboard already exists, read scoreboard file info, add player, sort,
+			// display and update
 			String playerScore = (((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk))) + " - " + playerName;
 			try {
 				File scoreboardFile = new File("scoreBoard.txt");
 				Scanner scoreScanner = new Scanner(scoreboardFile);
 				ArrayList<String> scores = new ArrayList<>();
-				
+
 				System.out.println("The file exists");
 				// Read all scoreboard values - they should be sorted already
 				while (scoreScanner.hasNextLine()) {
@@ -818,13 +812,14 @@ public class Board extends JFrame implements ActionListener {
 					}
 				}
 				scoreScanner.close();
-				
+
 				System.out.println("Scanned");
-				
+
 				// Add player's score
 				scores.add(playerScore);
-				
-				// Sort ArrayList appropriately, in ascending order (lower number of guesses at front)
+
+				// Sort ArrayList appropriately, in ascending order (lower number of guesses at
+				// front)
 				// Since ArrayList is already sorted, we just need to grab the back most value
 				// and keep moving it forwards until we find where it is supposed to go
 				String temp = scores.get(scores.size() - 1);
@@ -835,49 +830,51 @@ public class Board extends JFrame implements ActionListener {
 						scores.set(i + 1, temp);
 					}
 				}
-				
+
 				System.out.println("murrpit");
-				
+
 				/*
 				 * GUI note:
 				 * 
-				 * Make a scorebord JFrame or something (I think if you don't set default close condition
-				 * as exit on close it won't kill the program when just the scoreboard is closed
+				 * Make a scorebord JFrame or something (I think if you don't set default close
+				 * condition as exit on close it won't kill the program when just the scoreboard
+				 * is closed
 				 * 
-				 * You use scores the ArrayList - it's all sorted with least # of guesses being at the front
-				 * Elements are already strings in the # - name format
-				 * ie "67 - Monkey"
+				 * You use scores the ArrayList - it's all sorted with least # of guesses being
+				 * at the front Elements are already strings in the # - name format ie
+				 * "67 - Monkey"
 				 * 
-				 * Remember to add the title and the column headers
-				 * ie number of guesses - name
+				 * Remember to add the title and the column headers ie number of guesses - name
 				 */
-				
+
 				// Save new scores into scoreboard.txt
 				PrintWriter writer = new PrintWriter("scoreboard.txt");
 				for (int i = 0; i < scores.size(); i++) {
 					writer.println(scores.get(i));
 				}
 				writer.close();
-				
-			// If scoreboard doesn't exist, display player and make new scoreboard file, add player
+
+				// If scoreboard doesn't exist, display player and make new scoreboard file, add
+				// player
 			} catch (Exception e) {
 				/*
 				 * GUI note:
 				 * 
-				 * Make a scorebord JFrame or something (I think if you don't set default close condition
-				 * as exit on close it won't kill the program when just the scoreboard is closed)
+				 * Make a scorebord JFrame or something (I think if you don't set default close
+				 * condition as exit on close it won't kill the program when just the scoreboard
+				 * is closed)
 				 * 
-				 * You use scores the ArrayList - it's all sorted with least # of guesses being at the front
-				 * Elements are already strings in the # - name format
-				 * ie "67 - Monkey"
+				 * You use scores the ArrayList - it's all sorted with least # of guesses being
+				 * at the front Elements are already strings in the # - name format ie
+				 * "67 - Monkey"
 				 * 
-				 * Remember to add the title and the column headers
-				 * ie number of guesses - name
+				 * Remember to add the title and the column headers ie number of guesses - name
 				 * 
-				 * Just with playerScore this time because everything 
+				 * Just with playerScore this time because everything
 				 */
-				
-				// This try catch is just so that eclipse does not flag the PrintWriter initialization
+
+				// This try catch is just so that eclipse does not flag the PrintWriter
+				// initialization
 				try {
 					// Save the player's score in the scoreboard file
 					PrintWriter writer = new PrintWriter("scoreboard.txt");
@@ -885,28 +882,28 @@ public class Board extends JFrame implements ActionListener {
 					writer.close();
 				} catch (Exception e1) {
 					/*
-					 * At the ICS4U level where we don't expect to deal with restricted folders, invalid
-					 * paths, etc this catch isn't going to catch anyways
+					 * At the ICS4U level where we don't expect to deal with restricted folders,
+					 * invalid paths, etc this catch isn't going to catch anyways
 					 * 
 					 * As stated above this try catch is here to prevent eclipse from flagging the
 					 * initialization as a source of FileNotFoundException
 					 * 
-					 * Realistically either case a: file exists and case b: file does not exist both 
-					 * allow the PrintWriter to function properly (essentially it either overwrites the
-					 * file completely or, if it can't find the file with the same name, makes a new one
-					 * to the exact same effect)
+					 * Realistically either case a: file exists and case b: file does not exist both
+					 * allow the PrintWriter to function properly (essentially it either overwrites
+					 * the file completely or, if it can't find the file with the same name, makes a
+					 * new one to the exact same effect)
 					 */
 				}
 			}
 
-		// If player lost, print loss message and do nothing else
+			// If player lost, print loss message and do nothing else
 		} else if (humanPlayer.getHasLost()) {
 			isOver = true;
-			
+
 			JOptionPane.showMessageDialog(null, "SIR WE MUST RETREAT THE SEPARATISTS HAVE WON THIS SYSTEM", "DEFEAT",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+
 		if (isOver == true) {
 			/*
 			 * GUI notes:
@@ -924,10 +921,8 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[i][j].setEnabled(false);
 				}
 			}
-			new EndScreen(hit, miss, sunk, aiSunk);
-			// This causes an error message to pop up in console but the error does not
-			// effect anything
-			frame.dispose(); //TODO
+			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.hasLost);
+			this.dispose(); // TODO
 
 		}
 	}
@@ -1013,51 +1008,51 @@ public class Board extends JFrame implements ActionListener {
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 10; x++) {
 				computerCells[y][x].setBackground(Color.green);
-				
+
 				if (grid[x][y].isPlayerShipPresent() == false) {
 					playerCellButtons[y][x].setBackground(Color.green);
-					playerCellButtons[y][x].setIcon(null); 
+					playerCellButtons[y][x].setIcon(null);
 				}
-				
+
 				if (grid[x][y].isPlayerShipPresent() == true) {
 					playerCellButtons[y][x].setBackground(Color.orange);
-					
-					Ship ship = findShip(new int[]{x, y}, true);
-					
+
+					Ship ship = findShip(new int[] { x, y }, true);
+
 					if (ship != null) {
 						String name = ship.getName();
-						
+
 						if (name.equalsIgnoreCase("Venator")) {
 							playerCellButtons[y][x].setIcon(cellVenator);
 							playerCellButtons[y][x].setDisabledIcon(cellVenator);
 						} else if (name.equalsIgnoreCase("Acclimator")) {
 							playerCellButtons[y][x].setIcon(cellAcclamator);
-							playerCellButtons[y][x].setDisabledIcon(cellAcclamator); 
+							playerCellButtons[y][x].setDisabledIcon(cellAcclamator);
 						} else if (name.equalsIgnoreCase("Arquintis")) {
 							playerCellButtons[y][x].setIcon(cellArquitens);
-							playerCellButtons[y][x].setDisabledIcon(cellArquitens);  
+							playerCellButtons[y][x].setDisabledIcon(cellArquitens);
 						} else if (name.equalsIgnoreCase("Interceptor")) {
 							playerCellButtons[y][x].setIcon(cellInterceptor);
-							playerCellButtons[y][x].setDisabledIcon(cellInterceptor); 
+							playerCellButtons[y][x].setDisabledIcon(cellInterceptor);
 						}
 					}
 				}
-				
+
 				if (grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.black);
 				}
 				if (grid[x][y].isComputerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.black);
 				}
-				
+
 				if (grid[x][y].isComputerShipPresent() == true && grid[x][y].isPlayerGuessed() == true) {
 					computerCells[y][x].setBackground(Color.red);
 				}
-				
+
 				if (grid[x][y].isPlayerShipPresent() == true && grid[x][y].isComputerGuessed() == true) {
 					playerCellButtons[y][x].setBackground(Color.red);
 				}
-				
+
 				missLabel.setText("Miss:" + Integer.toString(miss));
 				hitLabel.setText("Hit:" + Integer.toString(hit));
 				sunkLabel.setText("Sunk:" + Integer.toString(sunk));
@@ -1075,7 +1070,7 @@ public class Board extends JFrame implements ActionListener {
 				java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(scaledImage);
 	}
-	
+
 	public void guiSetup() {
 		SoundPlayer.playMusic("musicSetup.wav");
 
@@ -1353,7 +1348,7 @@ public class Board extends JFrame implements ActionListener {
 
 		eastPanel.revalidate();
 		eastPanel.repaint();
-	    
+
 		northWestPanel.revalidate();
 		northWestPanel.repaint();
 
