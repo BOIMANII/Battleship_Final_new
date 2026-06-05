@@ -29,10 +29,10 @@ public class InfoFrame extends JFrame{
 				"Use the 'Set Horizontal' interface toggle to position your hulls safely\n" +
 				"within your 10x10 sector grid.\n\n" +
 				"Your battle group consists of 4 primary capital ships:\n" +
-				" - Venator-class Star Destroyer   [Size: 5 Sectors]\n" +
-				" - Acclamator-class Assault Ship  [Size: 4 Sectors]\n" +
-				" - Arquitens-class Command Cruiser[Size: 3 Sectors]\n" +
-				" - Interceptor Class Corvette     [Size: 2 Sectors]\n\n" +
+				" - 1 Venator-class Star Destroyer   [Size: 5 Sectors]\n" +
+				" - 1 Acclamator-class Assault Ship  [Size: 4 Sectors]\n" +
+				" - 1 Arquitens-class Command Cruiser[Size: 3 Sectors]\n" +
+				" - 1 Interceptor Class Corvette     [Size: 2 Sectors]\n\n" +
 				"CRITICAL: Ships will be deployed from smallest to largest\n" +
 				"CRITICAL: Do not overlap your ship components or position them beyond\n" +
 				"outer system grid coordinates.\n\n" +
@@ -51,7 +51,7 @@ public class InfoFrame extends JFrame{
 				"3. VICTORY CONDITIONS\n" +
 				"-----------------------------------------------------------------\n" +
 				"To secure a definitive victory for the Galactic Republic, you must target,\n" +
-				"track down, and completely sink all 4 Separatist ships.\n\n" +
+				"track down, and completely sink all 5 Separatist ships.\n\n" +
 				"If the Separatist fleet manages to pierce our defenses and turn all of\n" +
 				"your vessels into space dust first, the system falls to the Confederacy.\n\n" +
 				"Do your duty, Commander. The fate of the Republic rests on your shoulders.\n" +

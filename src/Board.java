@@ -1089,6 +1089,8 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 	public void guiSetup() {
+		SoundPlayer.playMusic("musicLauncher.wav");
+
 		java.awt.Font largeFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24);
 		java.awt.Font labelFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 22);
 		java.awt.Font shipFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18);
@@ -1285,6 +1287,7 @@ public class Board extends JFrame implements ActionListener {
 	}
 
 	public void guiChange() {
+		SoundPlayer.playMusic("musicBattle.wav");
 		eastPanel.removeAll();
 		eastGrid.removeAll();
 		eastEastPanel.removeAll();
