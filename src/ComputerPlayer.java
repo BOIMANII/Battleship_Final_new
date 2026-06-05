@@ -1,10 +1,9 @@
+
 /**
  * @author Max
  * @date 2026-05-26
  * Description: The object class of the computer's profile
  */
-
-
 
 import java.util.Random;
 

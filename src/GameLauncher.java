@@ -58,7 +58,7 @@ public class GameLauncher implements ActionListener {
 		SoundPlayer.playMusic("musicLauncher .wav");
 
 		frame = new JFrame("Star Wars Battleship");
-		
+
 		backgroundI = new ImageIcon("launchBackground.png");
 		titleI = new ImageIcon("titleText.png");
 		background = new JLabel(backgroundI);
@@ -119,8 +119,8 @@ public class GameLauncher implements ActionListener {
 	}
 
 	/**
-	 * Helper method to make buttons
-	 * All buttons are the same ecxept text
+	 * Helper method to make buttons All buttons are the same ecxept text
+	 * 
 	 * @param JButton
 	 */
 	private void configureLauncherButton(JButton button) {
@@ -179,7 +179,7 @@ public class GameLauncher implements ActionListener {
 			SoundPlayer.playSound("sfxButton.wav");
 			new InfoFrame();
 		}
-		if(e.getSource() == scoreButton) {
+		if (e.getSource() == scoreButton) {
 			SoundPlayer.playSound("sfxButton.wav");
 			try {
 				new ScoreBoard();
