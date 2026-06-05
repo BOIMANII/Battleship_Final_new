@@ -1,272 +1,296 @@
 import java.util.ArrayList;
-
 /**
- * @author Andy Zhang
+ * @author Andy
  * @teacher Mr. Smintich
  * @date 26 05 29
- * 
- *       This is meant to support guess, and the AI algorithm for complex AI.
+ *
+ * Complex Battleship AI with:
+ * - hitDist skipping
+ * - parity shifting
+ * - walk‑ship logic
+ * - fallback orientation
+ * - no recursion / no overflow
  */
 
 public class ComplexAI {
 
-	private boolean lastHit = false;
-	private int[] previous = { 0, 0 };
+    private boolean lastHit = false;
+    private int[] previous = {0, 0};
 
-	private int[] origin = null;
-	private int orientation = -1; // 0 = horizontal, 1 = vertical, -1 = unknown
+    private int[] origin = null;
+    private int orientation = -1;     // 0 = horizontal, 1 = vertical, -1 = unknown
 
-	private boolean posDone = false; // RIGHT or DOWN side M found
-	private boolean negDone = false; // LEFT or UP side M found
+    private boolean posDone = false;  // RIGHT or DOWN side M found
+    private boolean negDone = false;  // LEFT or UP side M found
 
-	private boolean orientationTriedBoth = false; // NEW FIX
+    private boolean orientationTriedBoth = false;
 
-	private int hitDist = 2;
-	public ArrayList<String> sunkList = new ArrayList<>();
+    private int hitDist = 2;
+    private int huntIndex = 0;        // NEW: true hitDist grid index
 
-	private final int[][] DIRS = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+    public ArrayList<String> sunkList = new ArrayList<>();
 
-	public void setHit(boolean h) {
-		lastHit = h;
-	}
+    // RIGHT, LEFT, DOWN, UP
+    private final int[][] DIRS = {
+        {0, 1}, {0, -1}, {1, 0}, {-1, 0}
+    };
 
-	public boolean getHit() {
-		return lastHit;
-	}
+    public void setHit(boolean h) {
+        lastHit = h;
+    }
 
-	public int[] guess(boolean[][] visited) {
-		updateHitDist();
+    public boolean getHit() {
+        return lastHit;
+    }
 
-		if (!lastHit) {
+    public int[] guess(boolean[][] visited) {
+        updateHitDist();
 
-			if (origin != null && orientation != -1) {
-				debug("MISS while targeting → marking side done");
+        // -------------------------
+        // MISS
+        // -------------------------
+        if (!lastHit) {
 
-				int dx = previous[0] - origin[0];
-				int dy = previous[1] - origin[1];
+            if (origin != null && orientation != -1) {
+                debug("MISS while targeting → marking side done");
 
-				if (orientation == 0) {
-					if (dy > 0)
-						posDone = true;
-					if (dy < 0)
-						negDone = true;
-				} else {
-					if (dx > 0)
-						posDone = true;
-					if (dx < 0)
-						negDone = true;
-				}
+                int dx = previous[0] - origin[0];
+                int dy = previous[1] - origin[1];
 
-				// If both sides M
-				if (posDone && negDone) {
+                if (orientation == 0) { // horizontal
+                    if (dy > 0) posDone = true;
+                    if (dy < 0) negDone = true;
+                } else { // vertical
+                    if (dx > 0) posDone = true;
+                    if (dx < 0) negDone = true;
+                }
 
-					// If we haven't tried the other orientation yet
-					if (!orientationTriedBoth) {
-						debug("FALLBACK → switching orientation");
+                // Both sides M
+                if (posDone && negDone) {
 
-						orientation = (orientation == 0) ? 1 : 0;
-						posDone = false;
-						negDone = false;
-						orientationTriedBoth = true;
+                    // Try other orientation first
+                    if (!orientationTriedBoth) {
+                        debug("FALLBACK → switching orientation");
+                        orientation = (orientation == 0) ? 1 : 0;
+                        posDone = false;
+                        negDone = false;
+                        orientationTriedBoth = true;
+                        previous = origin.clone();
+                        return target(visited);
+                    }
 
-						previous = origin.clone();
-						return target(visited);
-					}
+                    // WALK‑SHIP: use last hit as new origin
+                    debug("WALK SHIP → new origin = last hit");
+                    origin = previous.clone();
+                    orientation = -1;
+                    posDone = false;
+                    negDone = false;
+                    orientationTriedBoth = false;
+                    return target(visited);
+                }
 
-					// Both orientations exhausted → revert to hunt
-					debug("ALL 4 DIRECTIONS EXHAUSTED → revert to hitDist hunting FROM ORIGIN");
-					previous = origin.clone();
-					resetTargeting();
-					return hunt(visited);
-				}
+                return target(visited);
+            }
 
-				return target(visited);
-			}
+            return hunt(visited);
+        }
 
-			return hunt(visited);
-		}
+        // -------------------------
+        // HIT
+        // -------------------------
+        if (origin == null) {
+            origin = previous.clone();
+            orientation = -1;
+            posDone = false;
+            negDone = false;
+            orientationTriedBoth = false;
+            debug("First HIT → origin set at (" + origin[0] + "," + origin[1] + ")");
+        }
 
-		if (origin == null) {
-			origin = previous.clone();
-			orientation = -1;
-			posDone = false;
-			negDone = false;
-			orientationTriedBoth = false;
-			debug("First HIT → origin set at (" + origin[0] + "," + origin[1] + ")");
-		}
+        return target(visited);
+    }
 
-		return target(visited);
-	}
+    // ---------------------------------------------------------
+    // HUNT MODE — TRUE hitDist grid, no recursion, no overflow
+    // ---------------------------------------------------------
+    private int[] hunt(boolean[][] visited) {
 
-	private int[] hunt(boolean[][] visited) {
+        for (int attempts = 0; attempts < 300; attempts++) {
 
-		for (int attempts = 0; attempts < 200; attempts++) {
+            // If we've looped the board → shift parity
+            if (attempts == 200) {
+                debug("HUNT SHIFT → shifting parity down by 1 row");
+                huntIndex += 10; // skip a row
+            }
 
-			int row = previous[1];
-			int col = previous[0];
+            int row = (huntIndex / 10) % 10;
+            int col = huntIndex % 10;
 
-			int offset = row % 2;
+            // hitDist spacing rule
+            if ((col - (row % 2)) % hitDist != 0) {
+                huntIndex++;
+                continue;
+            }
 
-			col += hitDist;
+            if (!visited[col][row]) {
+                previous = new int[]{col, row};
+                debug("HUNT → firing at (" + col + "," + row + ")");
+                huntIndex++;
+                return previous;
+            }
 
-			if (col > 9) {
-				row++;
-				if (row > 9)
-					row = 0;
-				col = offset;
-			}
+            debug("HUNT → (" + col + "," + row + ") already guessed");
+            huntIndex++;
+        }
 
-			int[] g = { col, row };
+        debug("HUNT → fallback to (0,0)");
+        return new int[]{0, 0};
+    }
 
-			if (!visited[col][row]) {
-				previous = g;
-				debug("HUNT → firing at (" + col + "," + row + ")");
-				return g;
-			}
+    // ---------------------------------------------------------
+    // TARGET MODE
+    // ---------------------------------------------------------
+    private int[] target(boolean[][] visited) {
 
-			debug("HUNT → (" + col + "," + row + ") already guessed, advancing");
-			previous = g;
-		}
+        // Step 1: find orientation
+        if (orientation == -1) {
+            for (int d = 0; d < 4; d++) {
+                int tx = origin[0] + DIRS[d][0];
+                int ty = origin[1] + DIRS[d][1];
 
-		debug("HUNT → fallback to (0,0)");
-		return new int[] { 0, 0 };
-	}
+                if (!inBounds(tx, ty) || visited[tx][ty]) continue;
 
-	private int[] target(boolean[][] visited) {
+                previous = new int[]{tx, ty};
+                debug("TARGET (find orientation) → probing " + dirName(d) +
+                      " at (" + tx + "," + ty + ")");
 
-		if (orientation == -1) {
-			for (int d = 0; d < 4; d++) {
-				int tx = origin[0] + DIRS[d][0];
-				int ty = origin[1] + DIRS[d][1];
+                orientation = (d <= 1) ? 0 : 1;
+                posDone = false;
+                negDone = false;
+                orientationTriedBoth = false;
+                return previous;
+            }
 
-				if (!inBounds(tx, ty) || visited[tx][ty])
-					continue;
+            debug("TARGET → no valid probe → reset + hunt");
+            previous = origin.clone();
+            resetTargeting();
+            return hunt(visited);
+        }
 
-				previous = new int[] { tx, ty };
-				debug("TARGET (find orientation) → probing " + dirName(d) + " at (" + tx + "," + ty + ")");
+        // Step 2: sweep positive side
+        if (!posDone) {
+            int dirIndex = (orientation == 0) ? 0 : 2;
+            int nx = previous[0] + DIRS[dirIndex][0];
+            int ny = previous[1] + DIRS[dirIndex][1];
 
-				orientation = (d <= 1) ? 0 : 1;
-				posDone = false;
-				negDone = false;
-				orientationTriedBoth = false;
-				return previous;
-			}
+            if (isM(nx, ny, visited)) {
+                debug("TARGET → positive side M at (" + nx + "," + ny + ")");
+                posDone = true;
+            } else {
+                previous = new int[]{nx, ny};
+                debug("TARGET → sweeping positive side to (" + nx + "," + ny + ")");
+                return previous;
+            }
+        }
 
-			debug("TARGET → no valid probe → reset + hunt");
-			previous = origin.clone();
-			resetTargeting();
-			return hunt(visited);
-		}
+        // Step 3: sweep negative side
+        if (!negDone) {
+            int dirIndex = (orientation == 0) ? 1 : 3;
+            int nx = origin[0] + DIRS[dirIndex][0];
+            int ny = origin[1] + DIRS[dirIndex][1];
 
-		if (!posDone) {
-			int dirIndex = (orientation == 0) ? 0 : 2;
-			int nx = previous[0] + DIRS[dirIndex][0];
-			int ny = previous[1] + DIRS[dirIndex][1];
+            if (isM(nx, ny, visited)) {
+                debug("TARGET → negative side M at (" + nx + "," + ny + ")");
+                negDone = true;
+            } else {
+                previous = new int[]{nx, ny};
+                debug("TARGET → sweeping negative side to (" + nx + "," + ny + ")");
+                return previous;
+            }
+        }
 
-			if (isM(nx, ny, visited)) {
-				debug("TARGET → positive side M at (" + nx + "," + ny + ")");
-				posDone = true;
-			} else {
-				previous = new int[] { nx, ny };
-				debug("TARGET → sweeping positive side to (" + nx + "," + ny + ")");
-				return previous;
-			}
-		}
+        // Step 4: both sides M
+        if (posDone && negDone) {
 
-		if (!negDone) {
-			int dirIndex = (orientation == 0) ? 1 : 3;
-			int nx = origin[0] + DIRS[dirIndex][0];
-			int ny = origin[1] + DIRS[dirIndex][1];
+            if (!orientationTriedBoth) {
+                debug("FALLBACK → switching orientation");
+                orientation = (orientation == 0) ? 1 : 0;
+                posDone = false;
+                negDone = false;
+                orientationTriedBoth = true;
+                previous = origin.clone();
+                return target(visited);
+            }
 
-			if (isM(nx, ny, visited)) {
-				debug("TARGET → negative side M at (" + nx + "," + ny + ")");
-				negDone = true;
-			} else {
-				previous = new int[] { nx, ny };
-				debug("TARGET → sweeping negative side to (" + nx + "," + ny + ")");
-				return previous;
-			}
-		}
+            debug("WALK SHIP → new origin = last hit");
+            origin = previous.clone();
+            orientation = -1;
+            posDone = false;
+            negDone = false;
+            orientationTriedBoth = false;
+            return target(visited);
+        }
 
-		if (posDone && negDone) {
+        debug("TARGET → fallback to hunt");
+        previous = origin.clone();
+        resetTargeting();
+        return hunt(visited);
+    }
 
-			if (!orientationTriedBoth) {
-				debug("FALLBACK → switching orientation");
-				orientation = (orientation == 0) ? 1 : 0;
-				posDone = false;
-				negDone = false;
-				orientationTriedBoth = true;
-				previous = origin.clone();
-				return target(visited);
-			}
+    // ---------------------------------------------------------
+    // HELPERS
+    // ---------------------------------------------------------
+    private boolean isM(int x, int y, boolean[][] visited) {
+        return !inBounds(x, y) || visited[x][y];
+    }
 
-			debug("TARGET → ALL 4 DIRECTIONS EXHAUSTED → revert to hunt");
-			previous = origin.clone();
-			resetTargeting();
-			return hunt(visited);
-		}
+    private void updateHitDist() {
 
-		debug("TARGET → fallback to hunt");
-		previous = origin.clone();
-		resetTargeting();
-		return hunt(visited);
-	}
+        int arquintisCount = 0;
+        for (String s : sunkList) {
+            if (s.equals("ARQUINTIS")) arquintisCount++;
+        }
 
-	private boolean isM(int x, int y, boolean[][] visited) {
-		return !inBounds(x, y) || visited[x][y];
-	}
+        int smallestRemaining = 5;
 
-	private void updateHitDist() {
+        if (arquintisCount < 2) {
+            smallestRemaining = 3;
+        } else {
+            boolean has2 = !sunkList.contains("INTERCEPTOR");
+            boolean has4 = !sunkList.contains("ACCLIMATOR");
 
-		int arquintisCount = 0;
-		for (String s : sunkList) {
-			if (s.equals("ARQUINTIS"))
-				arquintisCount++;
-		}
+            if (has2) smallestRemaining = 2;
+            else if (has4) smallestRemaining = 4;
+            else smallestRemaining = 5;
+        }
 
-		int smallestRemaining = 5;
+        hitDist = smallestRemaining - 1;
+        debug("hitDist set to " + hitDist + " (smallest remaining ship = " + smallestRemaining + ")");
+    }
 
-		if (arquintisCount < 2) {
-			smallestRemaining = 3;
-		} else {
-			boolean has2 = !sunkList.contains("INTERCEPTOR");
-			boolean has4 = !sunkList.contains("ACCLIMATOR");
+    private boolean inBounds(int x, int y) {
+        return x >= 0 && x < 10 && y >= 0 && y < 10;
+    }
 
-			if (has2)
-				smallestRemaining = 2;
-			else if (has4)
-				smallestRemaining = 4;
-			else
-				smallestRemaining = 5;
-		}
+    private void resetTargeting() {
+        origin = null;
+        orientation = -1;
+        posDone = false;
+        negDone = false;
+        orientationTriedBoth = false;
+    }
 
-		hitDist = smallestRemaining - 1;
-		debug("hitDist set to " + hitDist + " (smallest remaining ship = " + smallestRemaining + ")");
-	}
+    private String dirName(int d) {
+        return switch (d) {
+            case 0 -> "RIGHT";
+            case 1 -> "LEFT";
+            case 2 -> "DOWN";
+            case 3 -> "UP";
+            default -> "UNKNOWN";
+        };
+    }
 
-	private boolean inBounds(int x, int y) {
-		return x >= 0 && x < 10 && y >= 0 && y < 10;
-	}
-
-	private void resetTargeting() {
-		origin = null;
-		orientation = -1;
-		posDone = false;
-		negDone = false;
-		orientationTriedBoth = false;
-	}
-
-	private String dirName(int d) {
-		return switch (d) {
-		case 0 -> "RIGHT";
-		case 1 -> "LEFT";
-		case 2 -> "DOWN";
-		case 3 -> "UP";
-		default -> "UNKNOWN";
-		};
-	}
-
-	private void debug(String msg) {
-		System.out.println("[AI DEBUG] " + msg);
-	}
+    private void debug(String msg) {
+        System.out.println("[AI DEBUG] " + msg);
+    }
 }
