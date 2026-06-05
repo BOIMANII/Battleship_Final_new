@@ -36,6 +36,10 @@ public class Board extends JFrame implements ActionListener {
 		boolean useHorizontal = false;
 		boolean useComplex;
 		boolean computerFirst;
+//		AI
+		private ComplexAI complex = new ComplexAI();
+		boolean[][] visited = new boolean[10][10];
+
 
 		// Frame and Background
 		JFrame frame;
@@ -712,13 +716,14 @@ public class Board extends JFrame implements ActionListener {
 
 		// Have the computer generate a valid guess - if not valid, it keeps guessing
 		// until a valid one is found
-		ComplexAI complex = new ComplexAI();
+		
 		boolean valid = false;
 		while (valid == false) {
 			// Generate a guess
 			if (useComplex == true) {
 				
-				guess = complex.guess();
+				guess = complex.guess(visited);
+				visited[guess[0]][guess[1]] = true;
 			} else {
 				SimpleAI simple = new SimpleAI();
 				guess = simple.guess();
@@ -732,7 +737,7 @@ public class Board extends JFrame implements ActionListener {
 
 		// Set the grid as guessed
 		grid[guess[0]][guess[1]].setComputerGuessed(true);
-
+		complex.setHit(grid[guess[0]][guess[1]].isPlayerShipPresent());
 		// If player ship is hit, increment hitCount and display message if sunk
 		if (grid[guess[0]][guess[1]].isPlayerShipPresent()) {
 			// Determine which ship is hit, increment hitCount and display message if sunk
