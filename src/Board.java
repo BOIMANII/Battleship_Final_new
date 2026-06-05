@@ -320,10 +320,6 @@ public class Board extends JFrame implements ActionListener {
 		}
 		
 		humanPlayer.setName(playerName);
-		for (int i = 0; i < humanPlayer.getShips().get(0).getPositions().length; i++) {
-			System.out.println(humanPlayer.getShips().get(0).getPositions()[i][0]);
-			System.out.println(humanPlayer.getShips().get(0).getPositions()[i][1]);
-		}
 		
 	}
 
