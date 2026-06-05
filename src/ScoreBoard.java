@@ -9,10 +9,10 @@ import java.io.FileNotFoundException;
 
 public class ScoreBoard extends JFrame {
 
-	JLabel background;
-	ImageIcon backgroundImage;
+	private JLabel background;
+	private ImageIcon backgroundImage;
 
-	File file;
+	private File file;
 
 	ScoreBoard() throws FileNotFoundException {
 		backgroundImage = new ImageIcon("infoBackground.jpg");

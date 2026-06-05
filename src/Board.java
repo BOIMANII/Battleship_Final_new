@@ -24,87 +24,86 @@ import java.util.Scanner;
 public class Board extends JFrame implements ActionListener {
 
 	// Game Logic
-	Cell[][] grid = new Cell[10][10];
-	HumanPlayer humanPlayer = new HumanPlayer();
-	ComputerPlayer computerPlayer = new ComputerPlayer();
-	String playerName;
-	int shipsPlaced = 0;
-	int guesses = 0;
-	int hit;
-	int miss;
-	int sunk;
-	int aiSunk;
-	boolean useHorizontal = false;
-	boolean useComplex;
-	boolean computerFirst;
+	private Cell[][] grid = new Cell[10][10];
+	private HumanPlayer humanPlayer = new HumanPlayer();
+	private ComputerPlayer computerPlayer = new ComputerPlayer();
+	private String playerName;
+	private int shipsPlaced = 0;
+	private int guesses = 0;
+	private int hit;
+	private int miss;
+	private int sunk;
+	private int aiSunk;
+	private boolean useHorizontal = false;
+	private boolean useComplex;
 //		AI
 	private ComplexAI complex = new ComplexAI();
-	boolean[][] visited = new boolean[10][10];
+	private boolean[][] visited = new boolean[10][10];
 
 	// Frame and Background
-	JLabel background;
-	ImageIcon backgroundImage;
+	private JLabel background;
+	private ImageIcon backgroundImage;
 
 	// Layout Containers West (Player Board & Info)
-	JPanel westPanel;
-	JPanel westGrid;
-	JPanel westWestPanel;
-	JPanel northWestPanel;
-	JPanel namePanel;
-	JPanel westBottomPanel;
-	JPanel westNumbersGrid;
-	JPanel westSpacer;
-	JPanel statsPanel;
+	private JPanel westPanel;
+	private JPanel westGrid;
+	private JPanel westWestPanel;
+	private JPanel northWestPanel;
+	private JPanel namePanel;
+	private JPanel westBottomPanel;
+	private JPanel westNumbersGrid;
+	private JPanel westSpacer;
+	private JPanel statsPanel;
 
 	// Layout Containers East (Enemy Board, Ships, & Controls)
-	JPanel eastPanel;
-	JPanel eastGrid;
-	JPanel eastEastGrid;
-	JPanel westEastGrid;
-	JPanel eastEastPanel;
-	JPanel northEastPanel;
-	JPanel southEastPanel;
-	JPanel aiNamePanel;
-	JPanel eastNumbersGrid;
-	JPanel eastSpacer;
-	JPanel toggelPanel;
+	private JPanel eastPanel;
+	private JPanel eastGrid;
+	private JPanel eastEastGrid;
+	private JPanel westEastGrid;
+	private JPanel eastEastPanel;
+	private JPanel northEastPanel;
+	private JPanel southEastPanel;
+	private JPanel aiNamePanel;
+	private JPanel eastNumbersGrid;
+	private JPanel eastSpacer;
+	private JPanel toggelPanel;
 
 	// Button Component
-	JButton[][] playerCellButtons;
-	JButton[][] computerCells;
-	JButton saveButton;
-	JButton loadButton;
-	JCheckBox toggleHorizontal;
+	private JButton[][] playerCellButtons;
+	private JButton[][] computerCells;
+	private JButton saveButton;
+	private JButton loadButton;
+	private JCheckBox toggleHorizontal;
 
 	// Name Plate and Stats Dispaly
-	JLabel nameLabel;
-	JLabel computerNamePlate;
-	JLabel hitLabel;
-	JLabel missLabel;
-	JLabel sunkLabel;
+	private JLabel nameLabel;
+	private JLabel computerNamePlate;
+	private JLabel hitLabel;
+	private JLabel missLabel;
+	private JLabel sunkLabel;
 
 	// FleetDisplays
-	JLabel textVenator;
-	JLabel textAcclamator;
-	JLabel textArquitens;
-	JLabel textInterceptor;
+	private JLabel textVenator;
+	private JLabel textAcclamator;
+	private JLabel textArquitens;
+	private JLabel textInterceptor;
 
 	// Ship Assets and Icons
-	JLabel[] shipPlaceImage;
-	ImageIcon iconShipBoom;
-	ImageIcon iconVenator;
-	ImageIcon iconAcclamator;
-	ImageIcon iconArquitens;
-	ImageIcon iconInterceptor;
+	private JLabel[] shipPlaceImage;
+	private ImageIcon iconShipBoom;
+	private ImageIcon iconVenator;
+	private ImageIcon iconAcclamator;
+	private ImageIcon iconArquitens;
+	private ImageIcon iconInterceptor;
 
 	// Cell-specific 80x80 variants for grid placement
-	ImageIcon cellVenator;
-	ImageIcon cellAcclamator;
-	ImageIcon cellArquitens;
-	ImageIcon cellInterceptor;
+	private ImageIcon cellVenator;
+	private ImageIcon cellAcclamator;
+	private ImageIcon cellArquitens;
+	private ImageIcon cellInterceptor;
 
 	// User Prompts and Alerts
-	JOptionPane invalidPlacment;
+	private JOptionPane invalidPlacment;
 
 	/**
 	 * Constructor for board This will set up humanPlayer's name, set whether or not
@@ -927,7 +926,7 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[i][j].setEnabled(false);
 				}
 			}
-			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.hasLost);
+			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.getHasLost());
 			this.dispose(); // TODO
 
 		}

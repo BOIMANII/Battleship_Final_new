@@ -28,10 +28,6 @@ public class Ship {
 		return hitCount;
 	}
 
-	public void setSunk(boolean sunk) {
-		isSunk = sunk;
-	}
-
 	public void setHitCount(int hits) {
 		hitCount = hits;
 	}
