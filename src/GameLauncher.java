@@ -2,7 +2,7 @@
 /**
  * @author Anthony
  * @date 2026-05-26
- * Description: Window to launch diffrent difficlys from
+ * Description: A window to launch different difficulties from.
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,7 +10,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class GameLauncher implements ActionListener {
 
@@ -124,7 +130,7 @@ public class GameLauncher implements ActionListener {
 	}
 
 	/**
-	 * Helper method to make buttons All buttons are the same ecxept text
+	 * Helper method to make buttons all buttons are the same 
 	 * 
 	 * @param JButton
 	 */
@@ -175,6 +181,7 @@ public class GameLauncher implements ActionListener {
 			try {
 				frame.dispose();
 				new Board(name, false, true);
+				// No InfoFrame the player will already know
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -189,7 +196,6 @@ public class GameLauncher implements ActionListener {
 			try {
 				new ScoreBoard();
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

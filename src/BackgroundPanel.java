@@ -2,7 +2,7 @@
 /**
  * @author Andy
  * @date 2026-05-26
- * Description: Im not sure what this does - Anthony
+ * Description: I'm not sure what this does. - Anthony
  */
 import javax.swing.*;
 import java.awt.*;

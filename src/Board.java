@@ -24,86 +24,87 @@ import java.util.Scanner;
 public class Board extends JFrame implements ActionListener {
 
 	// Game Logic
-	private Cell[][] grid = new Cell[10][10];
-	private HumanPlayer humanPlayer = new HumanPlayer();
-	private ComputerPlayer computerPlayer = new ComputerPlayer();
-	private String playerName;
-	private int shipsPlaced = 0;
-	private int guesses = 0;
-	private int hit;
-	private int miss;
-	private int sunk;
-	private int aiSunk;
-	private boolean useHorizontal = false;
-	private boolean useComplex;
+	Cell[][] grid = new Cell[10][10];
+	HumanPlayer humanPlayer = new HumanPlayer();
+	ComputerPlayer computerPlayer = new ComputerPlayer();
+	String playerName;
+	int shipsPlaced = 0;
+	int guesses = 0;
+	int hit;
+	int miss;
+	int sunk;
+	int aiSunk;
+	boolean useHorizontal = false;
+	boolean useComplex;
+	boolean computerFirst;
 //		AI
 	private ComplexAI complex = new ComplexAI();
-	private boolean[][] visited = new boolean[10][10];
+	boolean[][] visited = new boolean[10][10];
 
 	// Frame and Background
-	private JLabel background;
-	private ImageIcon backgroundImage;
+	JLabel background;
+	ImageIcon backgroundImage;
 
 	// Layout Containers West (Player Board & Info)
-	private JPanel westPanel;
-	private JPanel westGrid;
-	private JPanel westWestPanel;
-	private JPanel northWestPanel;
-	private JPanel namePanel;
-	private JPanel westBottomPanel;
-	private JPanel westNumbersGrid;
-	private JPanel westSpacer;
-	private JPanel statsPanel;
+	JPanel westPanel;
+	JPanel westGrid;
+	JPanel westWestPanel;
+	JPanel northWestPanel;
+	JPanel namePanel;
+	JPanel westBottomPanel;
+	JPanel westNumbersGrid;
+	JPanel westSpacer;
+	JPanel statsPanel;
 
 	// Layout Containers East (Enemy Board, Ships, & Controls)
-	private JPanel eastPanel;
-	private JPanel eastGrid;
-	private JPanel eastEastGrid;
-	private JPanel westEastGrid;
-	private JPanel eastEastPanel;
-	private JPanel northEastPanel;
-	private JPanel southEastPanel;
-	private JPanel aiNamePanel;
-	private JPanel eastNumbersGrid;
-	private JPanel eastSpacer;
-	private JPanel toggelPanel;
+	JPanel eastPanel;
+	JPanel eastGrid;
+	JPanel eastEastGrid;
+	JPanel westEastGrid;
+	JPanel eastEastPanel;
+	JPanel northEastPanel;
+	JPanel southEastPanel;
+	JPanel aiNamePanel;
+	JPanel eastNumbersGrid;
+	JPanel eastSpacer;
+	JPanel toggelPanel;
 
 	// Button Component
-	private JButton[][] playerCellButtons;
-	private JButton[][] computerCells;
-	private JButton saveButton;
-	private JButton loadButton;
-	private JCheckBox toggleHorizontal;
+	JButton[][] playerCellButtons;
+	JButton[][] computerCells;
+	JButton saveButton;
+	JButton loadButton;
+	JCheckBox toggleHorizontal;
 
 	// Name Plate and Stats Dispaly
-	private JLabel nameLabel;
-	private JLabel computerNamePlate;
-	private JLabel hitLabel;
-	private JLabel missLabel;
-	private JLabel sunkLabel;
+	JLabel nameLabel;
+	JLabel computerNamePlate;
+	JLabel hitLabel;
+	JLabel missLabel;
+	JLabel sunkLabel;
 
 	// FleetDisplays
-	private JLabel textVenator;
-	private JLabel textAcclamator;
-	private JLabel textArquitens;
-	private JLabel textInterceptor;
+	JLabel textVenator;
+	JLabel textAcclamator;
+	JLabel textArquitens;
+	JLabel textInterceptor;
 
 	// Ship Assets and Icons
-	private JLabel[] shipPlaceImage;
-	private ImageIcon iconShipBoom;
-	private ImageIcon iconVenator;
-	private ImageIcon iconAcclamator;
-	private ImageIcon iconArquitens;
-	private ImageIcon iconInterceptor;
+	JLabel[] shipPlaceImage;
+	ImageIcon iconShipBoom;
+	ImageIcon iconVenator;
+	ImageIcon iconAcclamator;
+	ImageIcon iconArquitens;
+	ImageIcon iconInterceptor;
 
 	// Cell-specific 80x80 variants for grid placement
-	private ImageIcon cellVenator;
-	private ImageIcon cellAcclamator;
-	private ImageIcon cellArquitens;
-	private ImageIcon cellInterceptor;
+	ImageIcon cellVenator;
+	ImageIcon cellAcclamator;
+	ImageIcon cellArquitens;
+	ImageIcon cellInterceptor;
 
 	// User Prompts and Alerts
-	private JOptionPane invalidPlacment;
+	JOptionPane invalidPlacment;
 
 	/**
 	 * Constructor for board This will set up humanPlayer's name, set whether or not
@@ -166,7 +167,8 @@ public class Board extends JFrame implements ActionListener {
 
 		playerCellButtons = new JButton[10][10];
 		computerCells = new JButton[10][10];
-
+		
+		// Filling player and computer girds with buttons
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 10; x++) {
 				playerCellButtons[y][x] = new JButton();
@@ -222,8 +224,8 @@ public class Board extends JFrame implements ActionListener {
 
 		// User Prompts and Alerts
 		invalidPlacment = new JOptionPane();
-
-		// Board Logic
+		
+		// -- START OF BOARD LOGIC --
 		if (isLoad == false) {
 			this.useComplex = useComplex;
 			for (int i = 0; i < 10; i++) {
@@ -309,8 +311,7 @@ public class Board extends JFrame implements ActionListener {
 						"NO SAVE FOUND", JOptionPane.ERROR_MESSAGE);
 				@SuppressWarnings("unused")
 				Board newBoard = new Board(playerName, false, false);
-				// This causes an error message to pop up in console but the error does not
-				// effect anything
+				
 				this.dispose();
 			}
 		}
@@ -683,10 +684,7 @@ public class Board extends JFrame implements ActionListener {
 					computerGuess();
 					checkWin();
 				}
-				
-
-				// After player's guess, computer will guess (this makes up one turn)
-				
+								
 
 			}
 		}
@@ -694,12 +692,6 @@ public class Board extends JFrame implements ActionListener {
 
 	public void computerGuess() {
 		int[] guess = { -1, -1 };
-
-		/*
-		 * TODO it's kind of stupid to have board determine if it's valid or not can't
-		 * it be written into the two classes? (especially complex the logic needs to
-		 * work around invalids)
-		 */
 
 		// Have the computer generate a valid guess - if not valid, it keeps guessing
 		// until a valid one is found
@@ -926,7 +918,7 @@ public class Board extends JFrame implements ActionListener {
 					playerCellButtons[i][j].setEnabled(false);
 				}
 			}
-			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.getHasLost());
+			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.hasLost);
 			this.dispose(); // TODO
 
 		}
