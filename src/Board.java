@@ -677,11 +677,17 @@ public class Board extends JFrame implements ActionListener {
 
 				// Update the grids after the guess, check to see if player won
 				updateGrids();
-				checkWin();
+				if (computerPlayer.getHasLost()) {
+					checkWin();
+				}
+				else {
+					computerGuess();
+					checkWin();
+				}
+				
 
 				// After player's guess, computer will guess (this makes up one turn)
-				computerGuess();
-				checkWin();
+				
 
 			}
 		}
