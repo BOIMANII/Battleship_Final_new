@@ -55,7 +55,7 @@ public class GameLauncher implements ActionListener {
 	}
 
 	public GameLauncher() {
-		SoundPlayer.playMusic("musicLauncher .wav");
+		SoundPlayer.playMusic("musicLauncher.wav");
 
 		frame = new JFrame("Star Wars Battleship");
 

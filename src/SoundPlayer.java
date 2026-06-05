@@ -2,7 +2,7 @@
 /**
  * @author Anthony & Gemini 
  * @date 2026-06-03
- * Description: Mostly ai made class to play sounds.
+ * Description:  ai assisted class to play sounds.
  */
 
 import java.io.File;
