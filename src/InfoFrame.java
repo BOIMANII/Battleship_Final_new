@@ -1,3 +1,9 @@
+
+/**
+ * @author Anthony
+ * @date 2026-05-27
+ * Description: This class launches a new window with game instructions
+ */
 import java.awt.Color;
 
 import javax.swing.*;
