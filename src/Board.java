@@ -236,7 +236,7 @@ public class Board extends JFrame implements ActionListener {
 
 			guiSetup();
 
-		} else { // TODO
+		} else { 
 			try {
 				File humanPlayerFile = new File(this.playerName + "HumanPlayer.txt");
 				Scanner humanScanner = new Scanner(humanPlayerFile);
@@ -394,7 +394,7 @@ public class Board extends JFrame implements ActionListener {
 	 * @param isHuman
 	 * @return
 	 */
-	public int[][] evaluateShipPlacement(int[] selection, int length, boolean isHuman) { // TODO
+	public int[][] evaluateShipPlacement(int[] selection, int length, boolean isHuman) {
 		boolean canPlace = true;
 		int x = selection[0];
 		int y = selection[1];
@@ -468,7 +468,6 @@ public class Board extends JFrame implements ActionListener {
 			// The invalid selection, signal no ship placement is to be made
 			placeCoords[0][0] = -1;
 		}
-		System.out.println("Thingy: " + placeCoords[0][0]); // TODO
 		return placeCoords;
 	}
 
@@ -521,7 +520,6 @@ public class Board extends JFrame implements ActionListener {
 				// Update grid so placement is seen
 				updateGrids();
 				if (shipsPlaced == 5) {
-					System.out.println("All player ships placed! Setting up computer board...");
 
 					// 1. Let the AI place its ships
 					setShips();
@@ -543,7 +541,7 @@ public class Board extends JFrame implements ActionListener {
 			}
 			// If the button pressed is the save button
 		} else if (saveButton == e.getSource()) {
-			// TODO Save stuff
+			
 			try {
 				// Save humanPlayer info
 				PrintWriter writer = new PrintWriter(playerName + "HumanPlayer.txt");
@@ -615,7 +613,7 @@ public class Board extends JFrame implements ActionListener {
 						writer.println(conditions);
 					}
 				}
-				writer.close(); // TODO
+				writer.close(); 
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
@@ -653,10 +651,9 @@ public class Board extends JFrame implements ActionListener {
 						sunk++;
 
 						String internalName = ship.getName().toUpperCase();
-						String displayedName = internalName; // Default fallback if no match is found
+						String displayedName = internalName; 
 
-						System.out.println(ship.getName());
-						System.out.println(internalName);
+						
 						if (internalName.equals("VENATOR")) {
 							displayedName = "THE MALEVOLENCE";
 						} else if (internalName.equals("ACCLIMATOR")) {
@@ -773,7 +770,7 @@ public class Board extends JFrame implements ActionListener {
 					JOptionPane.INFORMATION_MESSAGE);
 
 			/*
-			 * TODO
+			 * 
 			 * 
 			 * Scoreboard fileio stuff here:
 			 * 
@@ -800,7 +797,6 @@ public class Board extends JFrame implements ActionListener {
 				Scanner scoreScanner = new Scanner(scoreboardFile);
 				ArrayList<String> scores = new ArrayList<>();
 
-				System.out.println("The file exists");
 				// Read all scoreboard values - they should be sorted already
 				while (scoreScanner.hasNextLine()) {
 					String line = scoreScanner.nextLine();
@@ -810,7 +806,6 @@ public class Board extends JFrame implements ActionListener {
 				}
 				scoreScanner.close();
 
-				System.out.println("Scanned");
 
 				// Add player's score
 				scores.add(playerScore);
@@ -918,7 +913,7 @@ public class Board extends JFrame implements ActionListener {
 				}
 			}
 			new EndScreen(hit, miss, sunk, aiSunk, computerPlayer.getHasLost());
-			this.dispose(); // TODO
+			this.dispose(); 
 
 		}
 	}

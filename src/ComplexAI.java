@@ -237,6 +237,7 @@ public class ComplexAI {
 				return hunt(visited);
 			}
 
+
 			System.out.println("Target fallback → hunt");
 			previous = origin.clone();
 			resetTargeting();
@@ -287,4 +288,5 @@ public class ComplexAI {
 		negDone = false;
 		orientationTriedBoth = false;
 	}
+
 }
