@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 5725 - The Republic
-=======
 6100 - The Republic
 4625 - The Republic
 4275 - The Republic
@@ -9,33 +7,6 @@
 5425 - The Republic
 5425 - The Republic
 5425 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5700 - The Republic
-5425 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
-5800 - The Republic
 5650 - Commander Space Wizard
 5625 - Commander 12345
 5425 - The Republic
@@ -54,4 +25,3 @@
 5100 - The Republic
 4925 - Commander Space Wizard
 4175 - The Republic
->>>>>>> bad14d57aed4d4b34ebdac62bad71213a90ff9d8
