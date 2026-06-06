@@ -1,4 +1,4 @@
-Battleship_Final_new
+#Battleship_Final_new
 Project Title: Star wars battleship - Space Wizards
 This is the finished playable battleship game of the team Space Wizards, for Mr. Smintich's ICS4U class' culminating project
 If you are reading this, chances are you have already downloaded and unzipped/extracted from the zip file, which was uploaded to the shared drive as per requested
