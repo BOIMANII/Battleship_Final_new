@@ -36,6 +36,8 @@ public class EndScreen implements ActionListener {
 	private int frameY = 540;
 	private Dimension buttonSize = new Dimension(180, 50);
 
+	private int finalScore;
+
 	/**
 	 * Constructor for EndScreen. Has the graphics for EndScreen and is almost
 	 * idenitcal to GameLauncher.
@@ -63,6 +65,8 @@ public class EndScreen implements ActionListener {
 		title = new JLabel(titleI);
 		displaceTitle = new JPanel(); // To offset the title
 
+		finalScore = ((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk));
+
 		frame.setSize(backgroundI.getIconWidth(), backgroundI.getIconHeight());
 
 		background.setBounds(0, 0, frameX, frameY);
@@ -87,11 +91,18 @@ public class EndScreen implements ActionListener {
 		eastPanel.setPreferredSize(new Dimension(300, 540));
 		eastPanel.setBackground(Color.black);
 		eastPanel.setBorder(yellowBorder);
-		
+
 		// Gemini helped with html
-		scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
-				+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: "
-				+ ((100 * hit) - (25 * miss) + (1000 * sunk) - (250 * aiSunk)) + "</html>");
+		if (finalScore <= 0) {
+			scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
+					+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: " + finalScore
+					+ "<br>SKILL ISSUE<br>HOW DID YOU<br>GET A NEGITIVE!!" + "</html>");// IM SORRY IF YOU GET THIS MR
+																						// SMITICH BUT ITS A FEATURE NOT
+																						// A BUG
+		} else {
+			scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
+					+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: " + finalScore + "</html>");
+		}
 		scoreBoard.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 24));
 		scoreBoard.setForeground(Color.yellow);
 
