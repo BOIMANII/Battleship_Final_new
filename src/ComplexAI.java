@@ -2,16 +2,15 @@ import java.util.ArrayList;
 /**
  * @author Andy
  * @teacher Mr. Smintich
- * @date 26 05 29
+ * @date 2026-05-29
  *
- * Complex Battleship AI with:
- * - hitDist skipping
- * - parity shifting
- * - walk‑ship logic
- * - fallback orientation
- * - no recursion / no overflow
+ * Description: A complex Battleship AI featuring:
+ * - Hit-distribution skipping
+ * - Parity shifting
+ * - Walk-ship logic
+ * - Fallback orientation
+ * - No recursion or stack overflow
  */
-
 public class ComplexAI {
 
     private boolean lastHit = false;

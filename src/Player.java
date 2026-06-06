@@ -12,8 +12,8 @@ public abstract class Player {
 	// Preset name, only used by the computer player's display - when the game is
 	// launched, the player's name is overwritten with what is in the text box
 	String name = "Computer";
-	ArrayList<Ship> ships = new ArrayList<>();
-	boolean hasLost;
+	private ArrayList<Ship> ships = new ArrayList<>();
+	private boolean hasLost;
 
 	public String getName() {
 		return name;
