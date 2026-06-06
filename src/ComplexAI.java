@@ -293,6 +293,5 @@ public class ComplexAI {
     }
 
     private void debug(String msg) {
-        System.out.println("[AI DEBUG] " + msg);
     }
 }
