@@ -22,12 +22,8 @@ public class ScoreBoard extends JFrame {
 		title = new JLabel();
 		Scanner scan = new Scanner(file);
 
-<<<<<<< HEAD
-		
-=======
-		String boardData = "<html><div style='text-align: center;'>";// Html writen by ai becuase i dont know html
-		boardData += "Score - Name" + "<br>";
->>>>>>> 1ee9458e8a97894b19dea6425e70abf6ba5cea8c
+
+	
 		ArrayList<String> scores = new ArrayList<>();
 		while (scan.hasNextLine()) {
 			scores.add(scan.nextLine());
@@ -46,7 +42,7 @@ public class ScoreBoard extends JFrame {
 			}
 		}
 		
-		boardData = "<html><div style='text-align: center;'>HIGH SCORES<br><br>";		
+		String boardData = "<html><div style='text-align: center;'>HIGH SCORES<br><br>";		
 		int count = 0;
 		while (count < scores.size() && count < 10) {
 			boardData += scores.get(count) + "<br>";
