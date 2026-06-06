@@ -96,9 +96,8 @@ public class EndScreen implements ActionListener {
 		if (finalScore <= 0) {
 			scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
 					+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: " + finalScore
-					+ "<br>SKILL ISSUE<br>HOW DID YOU<br>GET A NEGITIVE!!" + "</html>");// IM SORRY IF YOU GET THIS MR
-																						// SMITICH BUT ITS A FEATURE NOT
-																						// A BUG
+					+ "<br>YOU ARE<br>THE WORST<br>ADMIRAL EVER!!" + "</html>");// ITS A FEATURE NOT
+			// A BUG
 		} else {
 			scoreBoard.setText("<html>FINAL SCORE<br>HITS: " + hit + "<br>MISSES: " + miss + "<br>SHIPS SUNK: " + sunk
 					+ "<br>SHIPS LOST: " + aiSunk + "<br>FINAL SCORE: " + finalScore + "</html>");

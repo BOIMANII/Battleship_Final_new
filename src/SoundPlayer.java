@@ -1,8 +1,8 @@
 
 /**
- * @author Anthony & Gemini 
+ * @author Anthony
  * @date 2026-06-03
- * Description:  ai assisted class to play sounds.
+ * Description:  class to play sounds.
  */
 
 import java.io.File;
