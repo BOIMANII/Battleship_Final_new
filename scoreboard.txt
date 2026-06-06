@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-5950 - Commander Ugly Monkey
-5800 - The Republic
-5600 - Commander Ugliest Monkey
-5275 - Commander Uglier Monkey
-=======
 4775 - The Republic
 5425 - The Republic
 5425 - The Republic
@@ -35,6 +29,7 @@
 5800 - The Republic
 5800 - The Republic
 5800 - The Republic
+5625 - Commander 12345
 5425 - The Republic
 5425 - The Republic
 5425 - The Republic
@@ -48,4 +43,3 @@
 5425 - The Republic
 5425 - The Republic
 5425 - The Republic
->>>>>>> 9fdc67a636a353a47744844280f5a652405d66d0
