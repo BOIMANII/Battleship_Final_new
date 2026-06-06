@@ -26,7 +26,7 @@ public class ComplexAI {
     private boolean orientationTriedBoth = false;
 
     private int hitDist = 2;
-    private int huntIndex = 0;        // NEW: true hitDist grid index
+    private int huntIndex = 0;        // true hitDist grid index
 
     public ArrayList<String> sunkList = new ArrayList<>();
 
@@ -64,6 +64,9 @@ public class ComplexAI {
                     if (dx > 0) posDone = true;
                     if (dx < 0) negDone = true;
                 }
+
+                // IMPORTANT: don't keep sweeping from the M cell
+                previous = origin.clone();
 
                 // Both sides M
                 if (posDone && negDone) {
