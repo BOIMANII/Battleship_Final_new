@@ -1,3 +1,59 @@
+<<<<<<< HEAD
 6100 - The Republic
 4625 - The Republic
 4275 - The Republic
+=======
+<<<<<<< HEAD
+5425 - Commander MonkeyMan - Monkey
+=======
+4775 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5700 - The Republic
+5425 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5800 - The Republic
+5625 - Commander 12345
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+5425 - The Republic
+<<<<<<< HEAD
+4175 - The Republic
+=======
+>>>>>>> a48d746aaff647734561c2cefbc7ee0d0bf6fcbc
+>>>>>>> cf0e8f5988adefcd6ca325690cbde02d80479f74
+>>>>>>> 44556635173a26236b44ee9cd77935e454892c75
